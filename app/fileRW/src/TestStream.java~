@@ -1,0 +1,15 @@
+/**
+ * @authors: Rodrigo Caetano O. ROCHA
+ * @date: 24 July 2013
+ */
+
+import java.io.IOException;
+
+public class TestStream extends Stream<String> {// implements Cloneable{
+	int taskId;
+	int temp;
+	public void start(int taskId){this.taskId = taskId; this.temp = 0;}
+	public void write(String data) throws StreamNotWritable, IOException { System.out.println(data); }
+	public String read() throws StreamNotReadable, IOException { if(temp<10){temp++; return("test "+temp+" ");}else{return null;}}
+	public void finish(){}
+}

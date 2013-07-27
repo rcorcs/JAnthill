@@ -1,0 +1,4 @@
+
+public abstract class Setup {
+	public abstract void run();
+}

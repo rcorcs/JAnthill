@@ -1,0 +1,27 @@
+package dcc.ufmg.anthill.info;
+/**
+ * @authors: Rodrigo Caetano O. ROCHA
+ * @date: 23 July 2013
+ */
+
+import java.util.HashMap;
+import java.util.Set;
+
+import dcc.ufmg.anthill.*;
+import dcc.ufmg.anthill.util.*;
+import dcc.ufmg.anthill.net.*;
+import dcc.ufmg.anthill.info.*;
+import dcc.ufmg.anthill.scheduler.*;
+import dcc.ufmg.anthill.stream.*;
+
+public class HostTaskInfo {
+	private HashMap<String, TaskInfo> tasks = new HashMap<String, TaskInfo>();
+
+	public void setTaskInfo(String moduleName, TaskInfo taskInfo){
+		this.tasks.put(moduleName, taskInfo);
+	}
+
+	public TaskInfo getTaskInfo(String moduleName){
+		return this.tasks.get(moduleName);
+	}
+}
