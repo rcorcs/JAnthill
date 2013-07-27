@@ -55,7 +55,7 @@ public class DefaultEnvironment extends Environment {
 		String appXml = hostInfo.getWorkspace()+AppSettings.getName()+"/"+(new File(AppSettings.getXMLFileName())).getName();
 		String xml = hostInfo.getWorkspace()+AppSettings.getName()+"/"+(new File(Settings.getXMLFileName())).getName();
 
-		String cmd = "java -cp "+anthillPath+":"+appPath+" "+Settings.getClassName()+" -tid "+taskId+" -app-xml "+appXml+" -m "+moduleInfo.getName()+" -xml "+xml+" -h "+hostName+" > "+hostInfo.getWorkspace()+AppSettings.getName()+"/logTaskId"+taskId+".log";
+		String cmd = "java -cp "+anthillPath+":"+appPath+" "+Settings.getClassName()+" -tid "+taskId+" -app-xml "+appXml+" -m "+moduleInfo.getName()+" -xml "+xml+" -h "+hostName+" -sa localhost -sp 8080"+" > "+hostInfo.getWorkspace()+AppSettings.getName()+"/logTaskId"+taskId+".log";
 
 		
 		int error = this.sshHosts.get(hostName).executeInBackground(cmd);

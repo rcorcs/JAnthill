@@ -5,11 +5,15 @@ package dcc.ufmg.anthill;
  */
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.ParserConfigurationException;
+import org.xml.sax.SAXException;
 import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
 import org.w3c.dom.Node;
 import org.w3c.dom.Element;
+import java.io.IOException;
 import java.io.File;
+import java.io.ByteArrayInputStream;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -43,12 +47,10 @@ public class TaskSettings {
 		return tasks;
 	}
 
-	public static void loadXMLString(String xml){
-		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-		DocumentBuilder builder = factory.newDocumentBuilder();
-		InputSource is = new InputSource(new StringReader(xml));
-		Document doc = builder.parse(is);
-		
+	public static void loadXMLString(String xml) throws ParserConfigurationException, SAXException, IOException{
+		ByteArrayInputStream stream = new ByteArrayInputStream(xml.getBytes());
+		DocumentBuilder builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
+		Document doc = builder.parse(stream);
 		//optional, but recommended
 			//read this - http://stackoverflow.com/questions/13786607/normalization-in-dom-parsing-with-java-how-does-it-work
 			doc.getDocumentElement().normalize();
@@ -65,7 +67,7 @@ public class TaskSettings {
 				nNode = nList.item(temp);
 				if(nNode.getNodeType() == Node.ELEMENT_NODE){
 					eElement = (Element)nNode;
-					addTaskInfo(new TaskInfo(eElement.getAttribute("host"), eElement.getAttribute("module"), eElement.getAttribute("tid")))
+					addTaskInfo(new TaskInfo(eElement.getAttribute("host"), AppSettings.getModuleInfo(eElement.getAttribute("module")), Integer.parseInt(eElement.getAttribute("tid"))));
 				}
 			}
 

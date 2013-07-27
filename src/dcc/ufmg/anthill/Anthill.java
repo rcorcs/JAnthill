@@ -42,6 +42,8 @@ public class Anthill {
 		String moduleName = null;
 		String taskId = null;
 		String hostName = null;
+		String webServerAddr = null;
+		String webServerPort = null;
 		for(int i = 0; i<args.length; i++){
 			if("-tid".equals(args[i])){
 				taskId = args[i+1];
@@ -53,6 +55,10 @@ public class Anthill {
 				appxmlFileName = args[i+1];
 			}else if("-m".equals(args[i])){
 				moduleName = args[i+1];
+			}else if("-sa".equals(args[i])){
+				webServerAddr = args[i+1];
+			}else if("-sp".equals(args[i])){
+				webServerPort = args[i+1];
 			}
 		}
 
@@ -61,7 +67,12 @@ public class Anthill {
 		if(appxmlFileName!=null && xmlFileName!=null && moduleName!=null && taskId!=null){
 			Settings.loadXMLFile(xmlFileName);
 			AppSettings.loadXMLFile(appxmlFileName);
-			
+			try{
+				TaskSettings.loadXMLString(WebClient.getContent("http://"+webServerAddr+":"+webServerPort+"/task/"));
+			}catch(Exception e){
+				e.printStackTrace();
+				System.exit(-1);
+			}
 			ModuleInfo moduleInfo = AppSettings.getModuleInfo(moduleName);
 			Filter filter = createFilter(moduleInfo.getInputStreamInfo().getClassName(), moduleInfo.getFilterInfo().getClassName(), moduleInfo.getOutputStreamInfo().getClassName());
 			filter.setModuleInfo(moduleInfo);
