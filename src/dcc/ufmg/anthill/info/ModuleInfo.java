@@ -1,7 +1,7 @@
 package dcc.ufmg.anthill.info;
 /**
- * @authors: Rodrigo Caetano O. ROCHA
- * @date: 24 July 2013
+ * @author Rodrigo Caetano O. ROCHA
+ * @date 24 July 2013
  */
 
 import java.util.HashMap;

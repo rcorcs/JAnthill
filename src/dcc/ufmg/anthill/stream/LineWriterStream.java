@@ -1,4 +1,8 @@
 package dcc.ufmg.anthill.stream;
+/**
+ * @author Rodrigo Caetano O. ROCHA
+ * @date 26 July 2013
+ */
 
 import java.io.File;
 import java.io.IOException;

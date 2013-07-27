@@ -1,10 +1,8 @@
 package dcc.ufmg.anthill.util;
-
 /**
- * @authors: Rodrigo Caetano O. ROCHA
- * @date: 25 July 2013
+ * @author Rodrigo Caetano O. ROCHA
+ * @date 25 July 2013
  */
-
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -28,22 +26,18 @@ public class Logger {
 	}
 	
 	public static void info(String message){
-		//sBuffer.append("INFO: ");
 		printlog("INFO: "+message);
 	}
 	
 	public static void warning(String message){
-		//sBuffer.append("WARNING: ");
 		printlog("WARNING: "+message);
 	}
 
 	public static void severe(String message){
-		//sBuffer.append("SEVERE: ");
 		printlog("SEVERE: "+message);
 	}
 
 	public static void fatal(String message){
-		//sBuffer.append("FATAL: ");
 		printlog("FATAL: "+message);
 	}
 

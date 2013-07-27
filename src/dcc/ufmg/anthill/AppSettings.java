@@ -1,7 +1,7 @@
 package dcc.ufmg.anthill;
 /**
- * @authors: Rodrigo Caetano O. ROCHA
- * @date: 24 July 2013
+ * @author Rodrigo Caetano O. ROCHA
+ * @date 24 July 2013
  */
 
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -32,18 +32,7 @@ public class AppSettings {
 	private static HashMap<String, FilterInfo> filters = new HashMap<String, FilterInfo>();
 	private static HashMap<String, StreamInfo> streams = new HashMap<String, StreamInfo>();
 	private static HashMap<String, ModuleInfo> modules = new HashMap<String, ModuleInfo>();
-	//private static ArrayList<ModuleInfo> modules = new ArrayList<ModuleInfo>();
 	private static ArrayList<File> files = new ArrayList<File>();
-
-	/*
-	public AppSettings(String xmlFileName){
-		this.filters = new HashMap<String, FilterInfo>();
-		this.streams = new HashMap<String, StreamInfo>();
-		this.modules = new ArrayList<ModuleInfo>();
-		this.files = new ArrayList<File>();
-		loadXML(xmlFileName);
-	}
-	*/
 
 	public static ArrayList<File> getFiles(){
 		return files;

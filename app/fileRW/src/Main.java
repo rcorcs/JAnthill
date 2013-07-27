@@ -1,6 +1,6 @@
 /**
- * @authors: Rodrigo Caetano O. ROCHA
- * @date: 23 July 2013
+ * @author Rodrigo Caetano O. ROCHA
+ * @date 23 July 2013
  */
 
 import java.io.IOException;

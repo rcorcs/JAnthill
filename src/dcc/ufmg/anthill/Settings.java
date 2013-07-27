@@ -1,7 +1,7 @@
 package dcc.ufmg.anthill;
 /**
- * @authors: Rodrigo Caetano O. ROCHA
- * @date: 23 July 2013
+ * @author Rodrigo Caetano O. ROCHA
+ * @date 23 July 2013
  */
 
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -28,12 +28,7 @@ public class Settings {
 	private static String fileName = null;
 	private static String className = null;
 	private static String xmlFileName = null;
-	/*
-	public Settings(String xmlFileName){
-		hosts = new HashMap<String, HostInfo>();
-		loadXML(xmlFileName);
-	}
-	*/
+
 	public static String getFilePath(){
 		return filePath;
 	}
@@ -111,16 +106,4 @@ public class Settings {
 			e.printStackTrace();
 		}
 	}
-	/*
-	public static void main(String []args){
-		Settings settings = new Settings("settings.xml");
-		System.out.println(settings.getHostInfo("victor-laptop").getName());
-		System.out.println(settings.getHostInfo("victor-laptop").getAddress());
-		System.out.println(settings.getHostInfo("victor-laptop").getSSHInfo().getUser());
-		System.out.println(settings.getHostInfo("victor-laptop").getSSHInfo().getPassword());
-		System.out.println(settings.getHostInfo("victor-laptop").getSSHInfo().getPort());
-		System.out.println(settings.getHostInfo("victor-laptop").getHDFSInfo().getPort());
-		System.out.println(settings.getHostInfo("victor-laptop").getHDFSInfo().getPath());
-	}
-	*/
 }

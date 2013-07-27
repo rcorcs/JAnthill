@@ -1,2 +1,0 @@
-javac -d ./classes/ -cp ./src/:./../../anthill.jar:./../../lib/jsch-0.1.50.jar ./src/*.java 
-jar cvf anthill.jar -C classes/ .

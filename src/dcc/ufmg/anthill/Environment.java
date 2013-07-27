@@ -1,7 +1,7 @@
 package dcc.ufmg.anthill;
 /**
- * @authors: Rodrigo Caetano O. ROCHA
- * @date: 26 July 2013
+ * @author Rodrigo Caetano O. ROCHA
+ * @date 26 July 2013
  */
 
 import dcc.ufmg.anthill.info.ModuleInfo;

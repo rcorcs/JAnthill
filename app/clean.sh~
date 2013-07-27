@@ -1,2 +1,0 @@
-rm -r ./test/classes/*
-rm ./test/*.jar
