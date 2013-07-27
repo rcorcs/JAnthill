@@ -11,31 +11,45 @@ import dcc.ufmg.anthill.info.*;
 import dcc.ufmg.anthill.scheduler.*;
 import dcc.ufmg.anthill.stream.*;
 
+/**
+ * This class will be executed on each slave node, for each instance of a module.
+ * It is responsible for instantiating an object of the filter class, the input stream class and the output stream class of the module, as specified by the application settings file (usually app-settings.xml).
+ */
 public class Anthill {
-	public static Filter createFilter(String inStreamName, String filterName, String outStreamName){
+	
+	/**
+	 * Returns a Filter object that can then be executed. The inStreamName, the filterName, and the outStreamName must specify absolute class name (e.g. dcc.ufmg.anthill.stream.LineReaderStream).
+	 * @param inStreamName name of the class of the input stream, i.e. the name of a class that extends {@link Stream}.
+	 * @param filterName name of the class of the filter, i.e. the name of a class that extends {@link Filter}.
+	 * @param outStreamName name of the class of the output stream, i.e. the name of a class that extends {@link Stream}.
+	 * @return the filter instance with instances of the input stream and output stream classes.
+	 * @see Filter
+	 * @see Stream
+	 */
+	public static Filter newFilterInstance(String inStreamName, String filterName, String outStreamName) throws ClassNotFoundException, InstantiationException, IllegalAccessException {
 		Stream inStream = null;
 		Filter filter = null;
 		Stream outStream = null;
-		try{
-			Class<?> inStreamClass = Class.forName(inStreamName);
-			Class<?> filterClass = Class.forName(filterName);
-			Class<?> outStreamClass = Class.forName(outStreamName);
+		
+		Class<?> inStreamClass = Class.forName(inStreamName);
+		Class<?> filterClass = Class.forName(filterName);
+		Class<?> outStreamClass = Class.forName(outStreamName);
 
-			inStream = (Stream)inStreamClass.newInstance();
-			filter = (Filter)filterClass.newInstance();
-			outStream = (Stream)outStreamClass.newInstance();
-		}catch(ClassNotFoundException e){
-			e.printStackTrace();
-		}catch(InstantiationException e){
-			e.printStackTrace();
-		}catch(IllegalAccessException e){
-			e.printStackTrace();
-		}
+		inStream = (Stream)inStreamClass.newInstance();
+		filter = (Filter)filterClass.newInstance();
+		outStream = (Stream)outStreamClass.newInstance();
+		
 		filter.setInputStream(inStream);
 		filter.setOutputStream(outStream);
 		return filter;
 	}
 	
+	/**
+	 * The main function that will be called for each slave node, for each instance of a module. This default application will be automaticaly executed by the master application.
+	 * @param args array of arguments needed to run a slave Anthill application. The default arguments are: -tid taskId -h slaveHostName -m moduleName -xml settingsXML -app-xml appSettingsXML -sa webServerAddress -sp webServerPort
+	 * @see Filter
+	 * @see Stream
+	 */
 	public static void main(String []args){
 		String xmlFileName = null;
 		String appxmlFileName = null;
@@ -62,19 +76,23 @@ public class Anthill {
 			}
 		}
 
-		//Filter filter = createFilter(inStreamName, filterName, outStreamName);
-
-		if(appxmlFileName!=null && xmlFileName!=null && moduleName!=null && taskId!=null){
+		if(appxmlFileName!=null && xmlFileName!=null && moduleName!=null && taskId!=null && hostName!=null && webServerAddr!=null && webServerPort!=null){
 			Settings.loadXMLFile(xmlFileName);
 			AppSettings.loadXMLFile(appxmlFileName);
 			try{
 				TaskSettings.loadXMLString(WebClient.getContent("http://"+webServerAddr+":"+webServerPort+"/task/"));
 			}catch(Exception e){
 				e.printStackTrace();
-				System.exit(-1);
+				System.exit(-1); //if there is something wrong, exits
 			}
 			ModuleInfo moduleInfo = AppSettings.getModuleInfo(moduleName);
-			Filter filter = createFilter(moduleInfo.getInputStreamInfo().getClassName(), moduleInfo.getFilterInfo().getClassName(), moduleInfo.getOutputStreamInfo().getClassName());
+			Filter filter = null;
+			try{
+				filter = newFilterInstance(moduleInfo.getInputStreamInfo().getClassName(), moduleInfo.getFilterInfo().getClassName(), moduleInfo.getOutputStreamInfo().getClassName());
+			}catch(Exception e){
+				e.printStackTrace();
+				System.exit(-1); //if there is something wrong, exits
+			}
 			filter.setModuleInfo(moduleInfo);
 			filter.getInputStream().setModuleInfo(moduleInfo);
 			filter.getOutputStream().setModuleInfo(moduleInfo);
