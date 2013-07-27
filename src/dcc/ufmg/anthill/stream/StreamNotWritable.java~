@@ -1,7 +1,0 @@
-package dcc.ufmg.anthill.stream;
-
-public class StreamNotWritable extends Exception {
-	public StreamNotWritable(){
-		super("Stream Not Writable");
-	}
-}

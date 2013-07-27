@@ -1,3 +1,0 @@
-rm -r ./classes/*
-rm -r ./classes/*
-rm *.jar
