@@ -198,6 +198,7 @@ class TaskHandler implements HttpHandler {
 			File parentUri = uri.getParentFile();		
 			responseBody.write("<tasks>\n".getBytes());
 			for(TaskInfo taskInfo : TaskSettings.getTaskInfo()){
+				/*
 				responseBody.write("<task><host>".getBytes());
 				responseBody.write(taskInfo.getHostName().getBytes());
 				responseBody.write("</host><module>".getBytes());
@@ -205,6 +206,14 @@ class TaskHandler implements HttpHandler {
 				responseBody.write("</module><tid>".getBytes());
 				responseBody.write((""+taskInfo.getTaskId()).getBytes());
 				responseBody.write("</tid></task>\n".getBytes());
+				*/
+				responseBody.write("<task host=\"".getBytes());
+				responseBody.write(taskInfo.getHostName().getBytes());
+				responseBody.write("\" module=\"".getBytes());
+				responseBody.write(taskInfo.getModuleInfo().getName().getBytes());
+				responseBody.write("\" tid=\"".getBytes());
+				responseBody.write((""+taskInfo.getTaskId()).getBytes());
+				responseBody.write("\" />\n".getBytes());
 			}
 			responseBody.write("</tasks>".getBytes());
 			responseBody.close();

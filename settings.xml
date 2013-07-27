@@ -3,20 +3,20 @@
 	<host>
 		<name>rcor</name>
 		<address>localhost</address>
-		<workspace>/home/rcor/JAnthill/</workspace>
+		<workspace>/home/username/JAnthill/</workspace>
 		<ssh>
-			<user>rcor</user>
-			<password>31415926</password>
+			<user>username</user>
+			<password>password</password>
 			<port>22</port>
 		</ssh>
 	</host>
 	<host>
 		<name>victor-laptop</name>
 		<address>192.168.0.100</address>
-		<workspace>/home/hduser/JAnthill/</workspace>
+		<workspace>/home/username/JAnthill/</workspace>
 		<ssh>
-			<user>hduser</user>
-			<password>rocha</password>
+			<user>username</user>
+			<password>password</password>
 			<port>22</port>
 		</ssh>
 		<hdfs>

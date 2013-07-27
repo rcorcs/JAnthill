@@ -5,14 +5,10 @@
 		<address>localhost</address>
 		<workspace>/home/rcor/JAnthill/</workspace>
 		<ssh>
-			<user>rcor</user>
-			<password>31415926</password>
+			<user>username</user>
+			<password>password</password>
 			<port>22</port>
 		</ssh>
-		<hdfs>
-			<port>54310</port>
-			<path>/usr/local/hadoop/bin/hadoop</path>
-		</hdfs>
 	</host>
 	<host>
 		<name>victor-laptop</name>

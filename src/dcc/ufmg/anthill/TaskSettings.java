@@ -3,6 +3,13 @@ package dcc.ufmg.anthill;
  * @authors: Rodrigo Caetano O. ROCHA
  * @date: 26 July 2013
  */
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.DocumentBuilder;
+import org.w3c.dom.Document;
+import org.w3c.dom.NodeList;
+import org.w3c.dom.Node;
+import org.w3c.dom.Element;
+import java.io.File;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -34,5 +41,33 @@ public class TaskSettings {
 
 	public static ArrayList<TaskInfo> getTaskInfo(){
 		return tasks;
+	}
+
+	public static void loadXMLString(String xml){
+		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+		DocumentBuilder builder = factory.newDocumentBuilder();
+		InputSource is = new InputSource(new StringReader(xml));
+		Document doc = builder.parse(is);
+		
+		//optional, but recommended
+			//read this - http://stackoverflow.com/questions/13786607/normalization-in-dom-parsing-with-java-how-does-it-work
+			doc.getDocumentElement().normalize();
+
+			//System.out.println("Root element :" + doc.getDocumentElement().getNodeName());
+
+			Node nNode = null;
+			Element eElement = null;
+			NodeList nList = null;
+			NodeList attrList = null;
+			
+			nList = doc.getElementsByTagName("task");
+			for(int temp = 0; temp < nList.getLength(); temp++){
+				nNode = nList.item(temp);
+				if(nNode.getNodeType() == Node.ELEMENT_NODE){
+					eElement = (Element)nNode;
+					addTaskInfo(new TaskInfo(eElement.getAttribute("host"), eElement.getAttribute("module"), eElement.getAttribute("tid")))
+				}
+			}
+
 	}
 }
