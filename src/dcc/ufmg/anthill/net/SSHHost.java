@@ -33,6 +33,9 @@ import dcc.ufmg.anthill.info.*;
 import dcc.ufmg.anthill.scheduler.*;
 import dcc.ufmg.anthill.stream.*;
 
+/**
+ * This class offers some useful tools for manipulating a remote host via a SSH connection.
+ */
 public class SSHHost {
 	private String user;
 	private String password;
@@ -46,11 +49,18 @@ public class SSHHost {
 	private JSch jsch;
 	private Session session;
 
-	
+	/**
+	 * Class constructor specifying only the username, the user password and the host address.
+    * This constructor assumes the default SSH port 22.
+	 */
 	public SSHHost(String user, String pwd, String host){
 		this(user, pwd, host, 22);
 	}
 
+	/**
+	 * Class constructor specifying the username, the user password, the host address and the SSH port.
+	 * This construction creates a SSH session that connects with the specified host.
+	 */
 	public SSHHost(String user, String pwd, String host, int port){
 		this.user = user;
 		this.password = pwd;
@@ -62,7 +72,7 @@ public class SSHHost {
 
 		try{
 			inetAddr = InetAddress.getByName(host);
-		}catch(UnknownHostException e){
+		}catch(UnknownHostException e){ //TODO throw this exception
 			e.printStackTrace();
 		}
 
@@ -79,6 +89,9 @@ public class SSHHost {
 		}
 	}
 
+	/**
+	 * Close the SSH session with the remote host.
+	 */
 	public void close(){
 		try{
 			this.session.disconnect();
@@ -87,7 +100,13 @@ public class SSHHost {
 		}		
 	}
 
-	public int executeInBackground(String command){
+	/**
+	 * Executes in background a command at the remote host.
+	 * It keeps verifying if the host is still reachable and if the remote host is not reachable it throws an {@link SSHConnectionLost}.
+	 * @param command any valid command to be executed from the ~/ directory.
+	 * @return the exit status of the command execution.
+	 */
+	public int executeInBackground(String command) throws SSHConnectionLost {
 		Channel 	channel 	= null;
 		ChannelExec channelExec = null;
 		int exitStatus = -1;
@@ -101,16 +120,16 @@ public class SSHHost {
 		   channel.connect();
 		   while(true){
 				if(channel.isClosed()){
-					//System.out.println("exit-status: "+channel.getExitStatus());
 					exitStatus = channel.getExitStatus();
 					break;
 				}
 				try{Thread.sleep(sleepTime);}catch(InterruptedException e){}
 				try{
 					if(!inetAddr.isReachable(pingTime)){
-						System.out.println("Lost Connection:"+channel.getExitStatus());
-						exitStatus = -2;
-						break;
+						//System.out.println("Lost Connection:"+channel.getExitStatus());
+						//exitStatus = -2;
+						//break;
+						throw new SSHConnectionLost();
 					}
 				}catch(IOException e){
 				}
@@ -122,7 +141,13 @@ public class SSHHost {
 		return exitStatus;
 	}
 
-	public int execute(String command){
+	/**
+	 * Executes a command at the remote host printing on the local host the standard output from the remote host.
+	 * It keeps verifying if the host is still reachable and if the remote host is not reachable it throws an {@link SSHConnectionLost}.
+	 * @param command any valid command to be executed from the ~/ directory.
+	 * @return the exit status of the command execution.
+	 */
+	public int execute(String command) throws SSHConnectionLost {
 		Channel 	channel 	= null;
 		ChannelExec channelExec = null;
 		int exitStatus = -1;
@@ -153,16 +178,16 @@ public class SSHHost {
 					e.printStackTrace();
 				}
 				if(channel.isClosed()){
-					//System.out.println("exit-status: "+channel.getExitStatus());
 					exitStatus = channel.getExitStatus();
 					break;
 				}
 				try{Thread.sleep(sleepTime);}catch(InterruptedException e){}
 				try{
 					if(!inetAddr.isReachable(pingTime)){
-						System.out.println("Lost Connection:"+channel.getExitStatus());
-						exitStatus = -2;
-						break;
+						//System.out.println("Lost Connection:"+channel.getExitStatus());
+						//exitStatus = -2;
+						//break;
+						throw new SSHConnectionLost();
 					}
 				}catch(IOException e){
 				}
@@ -174,7 +199,6 @@ public class SSHHost {
 		return exitStatus;
 	}
 
-	//not very efficient (yet).
 	private void mkdirs(ChannelSftp channelSftp, String remoteFolderPath){
 		File dir = new File(remoteFolderPath);
 		String []folders = dir.getPath().split("/");
@@ -182,23 +206,21 @@ public class SSHHost {
 		for(String folder : folders){
 			path = path+"/"+folder;
 			if(folder.length()>0){
-
-				/*try{
-					Vector<ChannelSftp.LsEntry> dirLs = channelSftp.ls(path);
-				}catch(SftpException ex){
-					hasFolder = false;
-					//ex.printStackTrace();
-				}*/
 				try{
 					channelSftp.mkdir(path);
 				}catch(SftpException e){
 					//e.printStackTrace();
 				}
 			}
-			//System.out.println("*"+folder);
 		}
 	}
 
+	/**
+	 * Uploads a file from the local host into the remote host. It creates the remote folder path if it does not exist yet, and then sends to the remote folder path the file specified by the file name and the local folder path.
+	 * @param localFileName name of the file to be uploaded.
+	 * @param localFolderPath local folder that contains the file to be uploaded.
+	 * @param remoteFolderPath remote folder that will receive the file.
+	 */
 	public void uploadFile(String localFileName, String localFolderPath, String remoteFolderPath){
 		Channel 	channel 	= null;
 		ChannelSftp channelSftp = null;
@@ -206,12 +228,11 @@ public class SSHHost {
 			localFolderPath=localFolderPath+"/";
 		}
 		try{
-			channel = this.session.openChannel("sftp"); //define a class member with this object (avoiding recreating it)
+			channel = this.session.openChannel("sftp");
 			channel.connect();
 			channelSftp = (ChannelSftp)channel;
 
 			this.mkdirs(channelSftp, remoteFolderPath); //make sure the folders path exist. create the remote path
-			//channelSftp.mkdir(remoteFolderPath); //create the folder
 
 			channelSftp.cd(remoteFolderPath);
 			File f = new File(localFolderPath+localFileName);
@@ -224,6 +245,12 @@ public class SSHHost {
 		}
 	}
 
+	/**
+	 * Downloads a file from the remote host into the local host. It creates the local folder path if it does not exist yet, and then receives the file specified by the file name and the remote folder path.
+	 * @param remoteFileName name of the file to be downloaded.
+	 * @param remoteFolderPath remote folder that contains the file to be downloaded.
+	 * @param localFolderPath local folder that will receive the file.
+	 */
 	public void downloadFile(String remoteFileName, String remoteFolderPath, String localFolderPath){
 		Channel 	channel 	= null;
 		ChannelSftp channelSftp = null;

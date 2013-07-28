@@ -79,8 +79,16 @@ public class SSHEnvironment extends Environment {
 		}
 		//Logger.warning(cmd);
 
-		int error = this.sshHosts.get(hostName).executeInBackground(cmd);
-
+		int error = 0;
+		try{
+			this.sshHosts.get(hostName).executeInBackground(cmd);
+		}catch(SSHConnectionLost e){
+			Logger.warning("Connection lost with the host "+hostName);
+			Logger.warning("Host "+hostName+" NOT reachable");
+			Settings.removeHost(hostName); //remove host
+			error = -1;
+		}
+		/*
 		if(error!=0){
 			InetAddress inetAddr = null;
 			try{
@@ -98,7 +106,7 @@ public class SSHEnvironment extends Environment {
 				e.printStackTrace();
 			}
 		}
-
+		*/
 		return error;
 	}
 	

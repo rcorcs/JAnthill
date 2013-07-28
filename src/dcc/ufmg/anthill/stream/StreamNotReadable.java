@@ -13,7 +13,7 @@ import dcc.ufmg.anthill.stream.*;
 
 public class StreamNotReadable extends Exception {
 	public StreamNotReadable(){
-		super("Stream Not Readable");
+		super("Stream not readable");
 	}
 }
 

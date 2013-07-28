@@ -1,7 +1,7 @@
-package dcc.ufmg.anthill.stream;
+package dcc.ufmg.anthill.net;
 /**
  * @author Rodrigo Caetano O. ROCHA
- * @date 26 July 2013
+ * @date 28 July 2013
  */
 
 import dcc.ufmg.anthill.*;
@@ -11,8 +11,9 @@ import dcc.ufmg.anthill.info.*;
 import dcc.ufmg.anthill.scheduler.*;
 import dcc.ufmg.anthill.stream.*;
 
-public class StreamNotWritable extends Exception {
-	public StreamNotWritable(){
-		super("Stream not writable");
+public class SSHConnectionLost extends Exception {
+	public SSHConnectionLost(){
+		super("SSH connection lost with the remote host");
 	}
 }
+
