@@ -53,7 +53,7 @@ public class Main{
 
 		manager.finishTasks();
 
-		//if(webServer!=null)webServer.stop();
+		if(webServer!=null)webServer.stop();
 
 		Logger.info("DONE!");
 	}

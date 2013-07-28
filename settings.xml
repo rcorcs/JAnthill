@@ -2,11 +2,11 @@
 <settings path="/home/rcor/dev/Java/JAnthill/" file="anthill.jar" class="dcc.ufmg.anthill.Anthill">
 	<host>
 		<name>rcor</name>
-		<address>192.168.0.101</address>
+		<address>localhost</address>
 		<workspace>/home/rcor/JAnthill/</workspace>
 		<ssh>
 			<user>rcor</user>
-			<password>31415926</password>
+			<password>rcor-password</password>
 			<port>22</port>
 		</ssh>
 	</host>
@@ -16,7 +16,7 @@
 		<workspace>/home/hduser/JAnthill/</workspace>
 		<ssh>
 			<user>hduser</user>
-			<password>rocha</password>
+			<password>hduser-password</password>
 			<port>22</port>
 		</ssh>
 		<hdfs>
