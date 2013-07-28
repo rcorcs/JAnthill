@@ -32,6 +32,8 @@ public class AppSettings {
 	private static HashMap<String, FilterInfo> filters = new HashMap<String, FilterInfo>();
 	private static HashMap<String, StreamInfo> streams = new HashMap<String, StreamInfo>();
 	private static HashMap<String, ModuleInfo> modules = new HashMap<String, ModuleInfo>();
+	private static ArrayList<FlowInfo> flows = new ArrayList<FlowInfo>();
+
 	private static ArrayList<File> files = new ArrayList<File>();
 
 	public static ArrayList<File> getFiles(){
@@ -143,13 +145,13 @@ public class AppSettings {
 				}
 			}
 
-			nList = ((Element)doc.getElementsByTagName("layout").item(0)).getElementsByTagName("module");
+			nList = doc.getElementsByTagName("module");
 			ModuleInfo moduleInfo = null;
 			for(int temp = 0; temp < nList.getLength(); temp++){
 				nNode = nList.item(temp);
 				if(nNode.getNodeType() == Node.ELEMENT_NODE){
 					eElement = (Element)nNode;
-					moduleInfo = new ModuleInfo(eElement.getAttribute("name"), getStreamInfo(eElement.getAttribute("from")), getFilterInfo(eElement.getAttribute("filter")), getStreamInfo(eElement.getAttribute("to")));
+					moduleInfo = new ModuleInfo(eElement.getAttribute("name"), getStreamInfo(eElement.getAttribute("input")), getFilterInfo(eElement.getAttribute("filter")), getStreamInfo(eElement.getAttribute("output")));
 					if(eElement.getAttribute("instances")!=null){
 						moduleInfo.setInstances(Integer.parseInt(eElement.getAttribute("instances")));
 					}else {
@@ -165,6 +167,18 @@ public class AppSettings {
 					modules.put(moduleInfo.getName(), moduleInfo);
 				}
 			}
+
+			nList = doc.getElementsByTagName("flow");
+			FlowInfo flowInfo = null;
+			for(int temp = 0; temp < nList.getLength(); temp++){
+				nNode = nList.item(temp);
+				if(nNode.getNodeType() == Node.ELEMENT_NODE){
+					eElement = (Element)nNode;
+					flowInfo = new FlowInfo(getModuleInfo(eElement.getAttribute("from")), getModuleInfo(eElement.getAttribute("to")));
+					flows.add(flowInfo);
+				}
+			}
+
 		}catch(Exception e) {
 			e.printStackTrace();
 		}

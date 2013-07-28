@@ -33,6 +33,10 @@ public class TaskSettings {
 		tasks.add(taskInfo);
 	}
 
+	public static void clear(){
+		tasks.clear();
+	}
+
 	public static void removeTaskInfo(TaskInfo taskInfo){
 		for(int i = 0; i<tasks.size(); i++){
 			TaskInfo task = tasks.get(i);

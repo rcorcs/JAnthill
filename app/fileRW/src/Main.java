@@ -27,14 +27,14 @@ public class Main{
 
 		RoundRobinTaskScheduler scheduler = new RoundRobinTaskScheduler();
 
-		TaskManager manager = new TaskManager(scheduler, new DefaultEnvironment());
+		TaskManager manager = new TaskManager(scheduler, new SSHEnvironment());
 
 		int webServerPort = 8000 + (int)(Math.random() * (9000 - 8000));
 		WebServerSettings.setPort(webServerPort);
 		try{
 			Logger.info("Server at "+NetUtil.getLocalInet4Address().getHostAddress()+" on port "+webServerPort);
 			WebServerSettings.setAddress(NetUtil.getLocalInet4Address().getHostAddress().toString());
-			Logger.info("Server at "+NetUtil.getLocalInet6Address().getHostAddress()+" on port "+webServerPort);
+			//Logger.info("Server at "+NetUtil.getLocalInet6Address().getHostAddress()+" on port "+webServerPort);
 		}catch(SocketException e){
 			e.printStackTrace();
 		}
@@ -53,8 +53,12 @@ public class Main{
 
 		manager.finishTasks();
 
-		if(webServer!=null)webServer.stop();
+		if(webServer!=null) {
+			webServer.stop();
+			webServer = null;
+		}
 
 		Logger.info("DONE!");
+		System.exit(0); //bug: o programa não está finalizando normalmente, provavelmente existe alguma thread que está se mantendo viva.
 	}
 }

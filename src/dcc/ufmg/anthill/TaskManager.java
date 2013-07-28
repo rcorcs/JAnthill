@@ -112,11 +112,16 @@ public class TaskManager {
 		//DEBUG LOG
 		Logger.info("All "+this.tasks.size()+" tasks have finished");
 		for(TaskThread thread : this.tasks){
-			try{thread.join();}catch(InterruptedException e){e.printStackTrace();}
+			try{thread.interrupt(); thread.join();}catch(InterruptedException e){e.printStackTrace();}
 		}
 	}
 
 	public void finishTasks(){
+		for(TaskThread thread : this.tasks){
+			thread.stop();
+		}
+		this.tasks.clear();
+		TaskSettings.clear();
 		environment.finish();
 	}
 }

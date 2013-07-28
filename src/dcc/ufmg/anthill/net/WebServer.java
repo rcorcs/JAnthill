@@ -64,7 +64,10 @@ public class WebServer {
 	}
 
 	public void stop(){
-		server.stop(1);
+		//DEBUG LOG
+		Logger.info("Stopping HTTP Server");
+		server.stop(0);
+		Logger.info("HTTP Server Stopped");
 	}
 }
 

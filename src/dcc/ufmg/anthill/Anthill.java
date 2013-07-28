@@ -61,39 +61,52 @@ public class Anthill {
 		for(int i = 0; i<args.length; i++){
 			if("-tid".equals(args[i])){
 				taskId = args[i+1];
+				Logger.info("-tid "+taskId);
 			}else if("-h".equals(args[i])){
 				hostName = args[i+1];
+				Logger.info("-h "+hostName);
 			}else if("-xml".equals(args[i])){
 				xmlFileName = args[i+1];
+				Logger.info("-xml "+xmlFileName);
 			}else if("-app-xml".equals(args[i])){
 				appxmlFileName = args[i+1];
+				Logger.info("-app-xml "+appxmlFileName);
 			}else if("-m".equals(args[i])){
 				moduleName = args[i+1];
+				Logger.info("-m "+moduleName);
 			}else if("-sa".equals(args[i])){
 				webServerAddr = args[i+1];
+				Logger.info("-sa "+webServerAddr);
 			}else if("-sp".equals(args[i])){
 				webServerPort = args[i+1];
+				Logger.info("-sp "+webServerPort);
 			}
 		}
 
+		Logger.info("checking IF");
 		if(appxmlFileName!=null && xmlFileName!=null && moduleName!=null && taskId!=null && hostName!=null && webServerAddr!=null && webServerPort!=null){
+			Logger.info("Loading Settings");
 			Settings.loadXMLFile(xmlFileName);
+			Logger.info("Loading AppSettings");
 			AppSettings.loadXMLFile(appxmlFileName);
-			WebServerSettings.setAddress(webServerAddr);
+			/*WebServerSettings.setAddress(webServerAddr);
 			WebServerSettings.setPort(Integer.parseInt(webServerPort));
 			try{
 				TaskSettings.loadXMLString(WebClient.getContent(WebServerSettings.getTaskPage()));
 			}catch(Exception e){
 				e.printStackTrace();
 				System.exit(-1); //if there is something wrong, exits
-			}
+			}*/
+			Logger.info("Gettings ModuleInfo");
 			ModuleInfo moduleInfo = AppSettings.getModuleInfo(moduleName);
 			Filter filter = null;
 			try{
+				Logger.info("Instantiating module");
 				filter = newFilterInstance(moduleInfo.getInputStreamInfo().getClassName(), moduleInfo.getFilterInfo().getClassName(), moduleInfo.getOutputStreamInfo().getClassName());
 			}catch(Exception e){
 				e.printStackTrace();
-				System.exit(-1); //if there is something wrong, exits
+				System.exit(0); //if there is something wrong, exits
+				//System.exit(-1); //if there is something wrong, exits
 			}
 			filter.setModuleInfo(moduleInfo);
 			filter.getInputStream().setModuleInfo(moduleInfo);

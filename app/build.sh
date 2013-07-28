@@ -6,4 +6,8 @@ javac -d ./fileRW/classes/ -cp ./fileRW/src/:./../anthill.jar:./../lib/jsch-0.1.
 jar cvf ./fileRW/fileRW.jar -C ./fileRW/classes/ .
 rm ./fileRW/src/*~ ./fileRW/*~
 
+javac -d ./hdfsFileRW/classes/ -cp ./hdfsFileRW/src/:./../anthill.jar:./../lib/jsch-0.1.50.jar ./hdfsFileRW/src/*.java 
+jar cvf ./hdfsFileRW/hdfsFileRW.jar -C ./hdfsFileRW/classes/ .
+rm ./hdfsFileRW/src/*~ ./hdfsFileRW/*~
+
 rm *~

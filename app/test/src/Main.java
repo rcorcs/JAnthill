@@ -24,7 +24,7 @@ public class Main{
 
 		RoundRobinTaskScheduler scheduler = new RoundRobinTaskScheduler();
 
-		TaskManager manager = new TaskManager(scheduler, new DefaultEnvironment());
+		TaskManager manager = new TaskManager(scheduler, new SSHEnvironment());
 
 		WebServer webServer = null;
 		try{

@@ -9,11 +9,9 @@
 	<stream name="inStream" class="dcc.ufmg.anthill.stream.LineReaderStream" />
 	<stream name="outStream" class="dcc.ufmg.anthill.stream.LineWriterStream" />
 
-	<layout>
-		<module name="mainModule" filter="printer" from="inStream" to="outStream"  instances="5">
-			<attr name="input" value="input.txt"/>
-			<attr name="output" value="output.txt"/>
-		</module>
-	</layout>
+	<module name="mainModule" filter="printer" input="inStream" output="outStream"  instances="5">
+		<attr name="input" value="input.txt"/>
+		<attr name="output" value="output.txt"/>
+	</module>
 
 </app-settings>

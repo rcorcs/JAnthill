@@ -26,6 +26,7 @@ public class TaskThread extends Thread{
 		this.moduleInfo = moduleInfo;
 		this.taskId = taskId;
 		this.error = 0;
+		this.setDaemon(true);
 	}
 
 	public void setEnvironment(Environment environment){
