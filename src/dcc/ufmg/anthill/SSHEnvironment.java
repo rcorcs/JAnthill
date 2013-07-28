@@ -70,17 +70,16 @@ public class SSHEnvironment extends Environment {
 			executable = hostInfo.getHDFSInfo().getPath()+" jar "+anthillPath+" "+Settings.getClassName();
 			//classPath = appPath;
 			String exportClassPath = "export HADOOP_CLASSPATH="+classPath;
-			Logger.warning(exportClassPath);
+			//Logger.warning(exportClassPath);
 			//this.sshHosts.get(hostName).executeInBackground(exportClassPath);
 			cmd = executable+" -tid "+taskId+" -app-xml "+appXml+" -m "+moduleInfo.getName()+" -xml "+xml+" -h "+hostName+" -sa "+WebServerSettings.getAddress()+" -sp "+WebServerSettings.getPort();
 			cmd = exportClassPath+" && "+cmd;
 		}else {
 			cmd = executable+" -cp "+classPath+" "+Settings.getClassName()+" -tid "+taskId+" -app-xml "+appXml+" -m "+moduleInfo.getName()+" -xml "+xml+" -h "+hostName+" -sa "+WebServerSettings.getAddress()+" -sp "+WebServerSettings.getPort()+" > "+hostInfo.getWorkspace()+AppSettings.getName()+"/"+(moduleInfo.getName()+"-tid"+taskId)+".log";
 		}
-		Logger.warning(cmd);
+		//Logger.warning(cmd);
 
 		int error = this.sshHosts.get(hostName).executeInBackground(cmd);
-		//int error = 0;
 
 		if(error!=0){
 			InetAddress inetAddr = null;

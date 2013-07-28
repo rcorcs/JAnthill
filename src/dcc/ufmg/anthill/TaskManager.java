@@ -117,9 +117,9 @@ public class TaskManager {
 	}
 
 	public void finishTasks(){
-		for(TaskThread thread : this.tasks){
+		/*for(TaskThread thread : this.tasks){
 			thread.stop();
-		}
+		}*/
 		this.tasks.clear();
 		TaskSettings.clear();
 		environment.finish();
