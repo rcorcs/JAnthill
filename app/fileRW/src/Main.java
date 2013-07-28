@@ -5,6 +5,8 @@
 
 import java.io.IOException;
 
+import java.net.SocketException;
+
 import dcc.ufmg.anthill.*;
 import dcc.ufmg.anthill.util.*;
 import dcc.ufmg.anthill.net.*;
@@ -18,6 +20,7 @@ public class Main{
 	* @param args
 	*/
 	public static void main(String[] args) {
+
 		Settings.loadXMLFile(args[0]);//"settings.xml"
 
 		AppSettings.loadXMLFile(args[1]);//"app-settings.xml"
@@ -26,9 +29,19 @@ public class Main{
 
 		TaskManager manager = new TaskManager(scheduler, new DefaultEnvironment());
 
+		int webServerPort = 8000 + (int)(Math.random() * (9000 - 8000));
+		WebServerSettings.setPort(webServerPort);
+		try{
+			Logger.info("Server at "+NetUtil.getLocalInet4Address().getHostAddress()+" on port "+webServerPort);
+			WebServerSettings.setAddress(NetUtil.getLocalInet4Address().getHostAddress().toString());
+			Logger.info("Server at "+NetUtil.getLocalInet6Address().getHostAddress()+" on port "+webServerPort);
+		}catch(SocketException e){
+			e.printStackTrace();
+		}
+		
 		WebServer webServer = null;
 		try{
-			webServer = new WebServer(8080);
+			webServer = new WebServer(webServerPort);
 			webServer.start();
 		}catch(IOException e){
 			e.printStackTrace();
@@ -40,7 +53,7 @@ public class Main{
 
 		manager.finishTasks();
 
-		if(webServer!=null)webServer.stop();
+		//if(webServer!=null)webServer.stop();
 
 		Logger.info("DONE!");
 	}

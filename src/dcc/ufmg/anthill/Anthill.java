@@ -79,8 +79,10 @@ public class Anthill {
 		if(appxmlFileName!=null && xmlFileName!=null && moduleName!=null && taskId!=null && hostName!=null && webServerAddr!=null && webServerPort!=null){
 			Settings.loadXMLFile(xmlFileName);
 			AppSettings.loadXMLFile(appxmlFileName);
+			WebServerSettings.setAddress(webServerAddr);
+			WebServerSettings.setPort(Integer.parseInt(webServerPort));
 			try{
-				TaskSettings.loadXMLString(WebClient.getContent("http://"+webServerAddr+":"+webServerPort+"/task/"));
+				TaskSettings.loadXMLString(WebClient.getContent(WebServerSettings.getTaskPage()));
 			}catch(Exception e){
 				e.printStackTrace();
 				System.exit(-1); //if there is something wrong, exits
