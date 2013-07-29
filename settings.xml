@@ -6,7 +6,7 @@
 		<workspace>/home/rcor/JAnthill/</workspace>
 		<ssh>
 			<user>rcor</user>
-			<password>31415926</password>
+			<password>rcor-password</password>
 			<port>22</port>
 		</ssh>
 	</host>
@@ -16,7 +16,7 @@
 		<workspace>/home/hduser/JAnthill/</workspace>
 		<ssh>
 			<user>hduser</user>
-			<password>rocha</password>
+			<password>hduser-password</password>
 			<port>22</port>
 		</ssh>
 		<hdfs>
