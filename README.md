@@ -1,5 +1,5 @@
 JAnthill has been built with the purpose of being modular, simple and efficient, in this order of importance.
-JAnthill is being developed by Rodrigo Caetano O. ROCHA (homepages.dcc.ufmg.br/~rcor/).
+JAnthill is being developed by Rodrigo Caetano O. ROCHA (http://homepages.dcc.ufmg.br/~rcor/).
 
 JAnthill is a Java implementation of the Anthill filter-stream programming model.
 Anthill is a programming model for processing large data sets with a parallel, distributed algorithm on a cluster (an alternative for the largely known MapReduce programming model).

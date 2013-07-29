@@ -5,12 +5,14 @@
 
 	<filter name="printer" class="TestFilter" />
 
-	<stream name="inStream" class="dcc.ufmg.anthill.stream.HDFSLineReaderStream" />
-	<stream name="outStream" class="dcc.ufmg.anthill.stream.HDFSLineWriterStream" />
-
-	<module name="mainModule" filter="printer" input="inStream" output="outStream"  instances="2">
-		<attr name="input" value="/home/hduser/gutenberg/pg5000.txt"/>
-		<attr name="output" value="output.txt"/>
+	<stream name="instream" class="dcc.ufmg.anthill.stream.HDFSLineReaderStream">
+		<attr name="filename" value="pg5000.txt"/>
+		<attr name="path" value="/home/hduser/gutenberg/"/>
+	</stream>
+	<stream name="outstream" class="dcc.ufmg.anthill.stream.HDFSLineWriterStream">
+		<attr name="path" value="/home/hduser/output/"/>
+	</stream>
+	<module name="mainModule" filter="printer" input="instream" output="outstream"  instances="2">
 	</module>
 
 </app-settings>

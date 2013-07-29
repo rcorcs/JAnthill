@@ -109,7 +109,9 @@ public class Anthill {
 			}
 			filter.setModuleInfo(moduleInfo);
 			filter.getInputStream().setModuleInfo(moduleInfo);
+			filter.getInputStream().setStreamInfo(moduleInfo.getInputStreamInfo());
 			filter.getOutputStream().setModuleInfo(moduleInfo);
+			filter.getOutputStream().setStreamInfo(moduleInfo.getOutputStreamInfo());
 			filter.run(hostName, Integer.parseInt(taskId));
 		}else System.exit(-1);
 	}

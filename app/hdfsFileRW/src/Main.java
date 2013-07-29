@@ -61,6 +61,6 @@ public class Main{
 		}
 
 		Logger.info("DONE!");
-		System.exit(0); //bug: o programa não está finalizando normalmente, provavelmente existe alguma thread que está se mantendo viva.
+		//System.exit(0); //bug: o programa não está finalizando normalmente, provavelmente existe alguma thread que está se mantendo viva.
 	}
 }

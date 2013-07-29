@@ -13,6 +13,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
+import org.apache.commons.lang.RandomStringUtils;
+
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.FSDataInputStream;
 import org.apache.hadoop.fs.FSDataOutputStream;
@@ -42,7 +44,14 @@ public class HDFSLineWriterStream extends Stream<String> {
 			e.printStackTrace();
 			return;
 		}
-		String fileName = Settings.getHostInfo(hostName).getWorkspace()+AppSettings.getName()+"/"+getModuleInfo().getName()+"/tid"+taskId+"_"+getModuleInfo().getAttribute("output");
+		//String fileName = Settings.getHostInfo(hostName).getWorkspace()+AppSettings.getName()+"/"+getModuleInfo().getName()+"/tid"+taskId+"_"+getModuleInfo().getAttribute("output");
+		String fileName = getStreamInfo().getAttribute("filename");
+		if(fileName==null){
+			fileName = RandomStringUtils.randomAlphanumeric(20);
+		}else{
+			//parse <attr name="fileName" value="${module}${tid}pg5000.txt"/>
+		}
+		fileName = getStreamInfo().getAttribute("path")+fileName;
 		//String nameNodeAddr = Settings.getHostInfo(hostName).getAddress()+":"+Settings.getHostInfo(hostName).getHDFSInfo().getPort();
 		String nameNodeAddr = "localhost"+":"+Settings.getHostInfo(hostName).getHDFSInfo().getPort();
 		Path path = new Path("hdfs://"+nameNodeAddr+fileName);
@@ -60,7 +69,7 @@ public class HDFSLineWriterStream extends Stream<String> {
 
 	public void write(String data) throws StreamNotWritable, IOException {
 		if(writer!=null){
-			byte[] bytes = data.getBytes();
+			byte[] bytes = (data+"\n").getBytes();
 			writer.write(bytes, 0, bytes.length);
 		}else throw new IOException();
 	}
