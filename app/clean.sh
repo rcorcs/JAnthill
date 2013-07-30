@@ -9,3 +9,7 @@ rm ./hdfsFileRW/*.jar
 
 rm -r ./hdfsKeyValueWrite/classes/*
 rm ./hdfsKeyValueWrite/*.jar
+
+rm -r ./hdfsKeyValueRW/classes/*
+rm ./hdfsKeyValueRW/*.jar
+

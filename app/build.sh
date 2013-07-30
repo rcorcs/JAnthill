@@ -14,4 +14,8 @@ javac -d ./hdfsKeyValueWrite/classes/ -cp ./hdfsKeyValueWrite/src/:./../anthill.
 jar cvf ./hdfsKeyValueWrite/hdfsKeyValueWrite.jar -C ./hdfsKeyValueWrite/classes/ .
 rm ./hdfsKeyValueWrite/src/*~ ./hdfsKeyValueWrite/*~
 
+javac -d ./hdfsKeyValueRW/classes/ -cp ./hdfsKeyValueRW/src/:./../anthill.jar:./../lib/jsch-0.1.50.jar ./hdfsKeyValueRW/src/*.java 
+jar cvf ./hdfsKeyValueRW/hdfsKeyValueRW.jar -C ./hdfsKeyValueRW/classes/ .
+rm ./hdfsKeyValueRW/src/*~ ./hdfsKeyValueRW/*~
+
 rm *~

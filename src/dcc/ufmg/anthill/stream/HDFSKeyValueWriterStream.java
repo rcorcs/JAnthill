@@ -49,7 +49,7 @@ public class HDFSKeyValueWriterStream extends Stream< SimpleEntry<String,String>
 			return;
 		}
 
-		//check for possible errors errors
+		//check for possible errors
 		if(getStreamInfo().getAttribute("divisor")==null || getStreamInfo().getAttribute("path")==null) return;
 
 		divisor = Integer.parseInt(getStreamInfo().getAttribute("divisor"));

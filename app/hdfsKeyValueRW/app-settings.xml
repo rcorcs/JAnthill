@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<app-settings name="HDFSKeyValueRW" path="/home/rcor/dev/Java/JAnthill/app/hdfsKeyValueRW/" file="hdfsKeyValueRW.jar">
+	<file path="/home/rcor/dev/Java/JAnthill/app/hdfsKeyValueRW/" name="app-settings.xml" />
+	<file path="/home/rcor/dev/Java/JAnthill/" name="settings.xml" />
+
+	<filter name="keyvaluefilter" class="KVFilter" />
+
+	<stream name="instream" class="dcc.ufmg.anthill.stream.HDFSKeyValueReaderStream">
+		<attr name="path" value="/home/hduser/output/KVOutput/"/>
+	</stream>
+	<stream name="outstream" class="dcc.ufmg.anthill.stream.HDFSKeyValueWriterStream">
+		<attr name="path" value="/home/hduser/output/WordCounterOutput/"/>
+		<attr name="divisor" value="1"/>
+	</stream>
+	<module name="kvwmodule" filter="keyvaluefilter" input="instream" output="outstream"  instances="5">
+	</module>
+
+</app-settings>
