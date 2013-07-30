@@ -36,6 +36,9 @@ import dcc.ufmg.anthill.info.*;
 import dcc.ufmg.anthill.scheduler.*;
 import dcc.ufmg.anthill.stream.*;
 
+/**
+ * 
+ */
 public class HDFSLineReaderStream extends Stream<String> {
 	private FSDataInputStream reader;
 	private FileSystem fileSystem;

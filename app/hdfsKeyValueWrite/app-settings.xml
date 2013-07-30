@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<app-settings name="HDFSKeyValueWrite" path="/home/rcor/dev/Java/JAnthill/app/hdfsKeyValueWrite/" file="hdfsKeyValueWrite.jar">
+	<file path="/home/rcor/dev/Java/JAnthill/app/hdfsKeyValueWrite/" name="app-settings.xml" />
+	<file path="/home/rcor/dev/Java/JAnthill/" name="settings.xml" />
+
+	<filter name="keyvaluefilter" class="KVFilter" />
+
+	<stream name="instream" class="dcc.ufmg.anthill.stream.HDFSLineReaderStream">
+		<attr name="filename" value="pg5000.txt"/>
+		<attr name="path" value="/home/hduser/gutenberg/"/>
+	</stream>
+	<stream name="outstream" class="dcc.ufmg.anthill.stream.HDFSKeyValueWriterStream">
+		<attr name="path" value="/home/hduser/output/KVOutput/"/>
+		<attr name="divisor" value="5"/>
+	</stream>
+	<module name="kvwmodule" filter="keyvaluefilter" input="instream" output="outstream"  instances="4">
+	</module>
+
+</app-settings>
