@@ -10,4 +10,5 @@ The original paper can be read at http://homepages.dcc.ufmg.br/~dorgival/artigos
 The JAnthill API is not very stable yet, since it still under construction (we are still considering it as a beta version).
 But you can download it and use it freely, knowning that if you want to update your JAnthill version, you might have to change your applications a bit.
 
-
+See also:
+How to install Hadoop HDFS on Ubuntu: http://www.michael-noll.com/tutorials/running-hadoop-on-ubuntu-linux-single-node-cluster/
