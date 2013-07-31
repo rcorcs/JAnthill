@@ -184,12 +184,13 @@ public class AppSettings {
 						nNode = nList.item(temp);
 						if(nNode.getNodeType() == Node.ELEMENT_NODE){
 							eElement = (Element)nNode;
+							String name = eElement.getAttribute("name");
 							String moduleName = eElement.getAttribute("module");
 							String isbreak = eElement.getAttribute("break");
 							if(isbreak!=null){
-								itemInfo = new SequenceItemInfo(moduleName, "true".equalsIgnoreCase(isbreak));
+								itemInfo = new SequenceItemInfo(name, moduleName, "true".equalsIgnoreCase(isbreak));
 							}else if(moduleName!=null){
-								itemInfo = new SequenceItemInfo(moduleName);
+								itemInfo = new SequenceItemInfo(name, moduleName);
 							}
 							if(itemInfo!=null) sequence.add(itemInfo);
 							itemInfo = null;

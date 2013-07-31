@@ -14,18 +14,28 @@ import dcc.ufmg.anthill.scheduler.*;
 import dcc.ufmg.anthill.stream.*;
 
 public class SequenceItemInfo {
+	private String name;
 	private String moduleName;
 	private boolean isBreakValue;
 
-	public SequenceItemInfo(String moduleName, boolean isBreakValue){
+	public SequenceItemInfo(String name, String moduleName, boolean isBreakValue){
+		this.name = name;
 		this.isBreakValue = isBreakValue;
 		this.moduleName = moduleName;
 	}
 
-	public SequenceItemInfo(String moduleName){
-		this(moduleName, false);
+	public SequenceItemInfo(String name, String moduleName){
+		this(name, moduleName, false);
 	}
 
+	public void setName(String name){
+		this.name = name;
+	}
+
+	public String getName(){
+		return this.name;
+	}
+	
 	public void setModuleName(String moduleName){
 		this.moduleName = moduleName;
 	}
