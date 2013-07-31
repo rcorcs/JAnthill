@@ -18,4 +18,8 @@ javac -d ./hdfsKeyValueRW/classes/ -cp ./hdfsKeyValueRW/src/:./../anthill.jar:./
 jar cvf ./hdfsKeyValueRW/hdfsKeyValueRW.jar -C ./hdfsKeyValueRW/classes/ .
 rm ./hdfsKeyValueRW/src/*~ ./hdfsKeyValueRW/*~
 
+javac -d ./wordCounter/classes/ -cp ./wordCounter/src/:./../anthill.jar:./../lib/jsch-0.1.50.jar ./wordCounter/src/*.java 
+jar cvf ./wordCounter/wordCounter.jar -C ./wordCounter/classes/ .
+rm ./wordCounter/src/*~ ./wordCounter/*~
+
 rm *~

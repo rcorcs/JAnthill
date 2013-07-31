@@ -32,7 +32,7 @@ public class AppSettings {
 	private static HashMap<String, FilterInfo> filters = new HashMap<String, FilterInfo>();
 	private static HashMap<String, StreamInfo> streams = new HashMap<String, StreamInfo>();
 	private static HashMap<String, ModuleInfo> modules = new HashMap<String, ModuleInfo>();
-	private static ArrayList<FlowInfo> flows = new ArrayList<FlowInfo>();
+	private static ArrayList<SequenceItemInfo> sequence = new ArrayList<SequenceItemInfo>();
 
 	private static ArrayList<File> files = new ArrayList<File>();
 
@@ -66,6 +66,10 @@ public class AppSettings {
 	
 	public static Set<String> getModules(){
 		return modules.keySet();
+	}
+
+	public static ArrayList<SequenceItemInfo> getSequence(){
+		return sequence;
 	}
 
 	public static String getXMLFileName(){
@@ -167,18 +171,32 @@ public class AppSettings {
 					modules.put(moduleInfo.getName(), moduleInfo);
 				}
 			}
-
-			nList = doc.getElementsByTagName("flow");
-			FlowInfo flowInfo = null;
-			for(int temp = 0; temp < nList.getLength(); temp++){
-				nNode = nList.item(temp);
+			
+			
+			
+			nList = doc.getElementsByTagName("sequence");
+			SequenceItemInfo itemInfo = null;
+			if(nList.getLength()>0){
+				nNode = nList.item(0);
 				if(nNode.getNodeType() == Node.ELEMENT_NODE){
-					eElement = (Element)nNode;
-					flowInfo = new FlowInfo(getModuleInfo(eElement.getAttribute("from")), getModuleInfo(eElement.getAttribute("to")));
-					flows.add(flowInfo);
+					nList = ((Element)nNode).getElementsByTagName("item");
+					for(int temp = 0; temp < nList.getLength(); temp++){
+						nNode = nList.item(temp);
+						if(nNode.getNodeType() == Node.ELEMENT_NODE){
+							eElement = (Element)nNode;
+							String moduleName = eElement.getAttribute("module");
+							String isbreak = eElement.getAttribute("break");
+							if(isbreak!=null){
+								itemInfo = new SequenceItemInfo(moduleName, "true".equalsIgnoreCase(isbreak));
+							}else if(moduleName!=null){
+								itemInfo = new SequenceItemInfo(moduleName);
+							}
+							if(itemInfo!=null) sequence.add(itemInfo);
+							itemInfo = null;
+						}
+					}
 				}
 			}
-
 		}catch(Exception e) {
 			e.printStackTrace();
 		}

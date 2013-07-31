@@ -13,6 +13,7 @@ import dcc.ufmg.anthill.net.*;
 import dcc.ufmg.anthill.info.*;
 import dcc.ufmg.anthill.scheduler.*;
 import dcc.ufmg.anthill.stream.*;
+import dcc.ufmg.anthill.stream.hdfs.*;
 
 public class KVFilter extends Filter<String, SimpleEntry<String,String> >{
 	public void start(String hostName, int taskId){}

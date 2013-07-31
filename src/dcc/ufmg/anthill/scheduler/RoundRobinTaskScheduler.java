@@ -15,6 +15,9 @@ import dcc.ufmg.anthill.info.*;
 import dcc.ufmg.anthill.scheduler.*;
 import dcc.ufmg.anthill.stream.*;
 
+/**
+ * handling all processes without priority (also known as cyclic executive).
+ */
 public class RoundRobinTaskScheduler extends TaskScheduler {
 	private Deque<String> hostsDeque;
 

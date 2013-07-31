@@ -13,3 +13,5 @@ rm ./hdfsKeyValueWrite/*.jar
 rm -r ./hdfsKeyValueRW/classes/*
 rm ./hdfsKeyValueRW/*.jar
 
+rm -r ./wordCounter/classes/*
+rm ./wordCounter/*.jar

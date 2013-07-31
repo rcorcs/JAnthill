@@ -34,11 +34,11 @@ public class Main{
 			e.printStackTrace();
 		}
 
-		manager.createTasks();
+		manager.start();
 
-		manager.runTasks();
+		manager.run();
 
-		manager.finishTasks();
+		manager.finish();
 
 		if(webServer!=null)webServer.stop();
 

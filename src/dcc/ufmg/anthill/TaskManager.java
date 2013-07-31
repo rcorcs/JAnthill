@@ -15,6 +15,9 @@ import java.util.Set;
 import java.util.HashSet;
 import java.util.HashMap;
 
+import java.util.Deque;
+import java.util.ArrayDeque;
+
 import dcc.ufmg.anthill.*;
 import dcc.ufmg.anthill.util.*;
 import dcc.ufmg.anthill.net.*;
@@ -37,12 +40,14 @@ public class TaskManager {
 	private Environment environment;
 
 	private ArrayList<TaskThread> tasks;
+	private Deque<SequenceItemInfo> sequenceDeque;
 
 	public TaskManager(TaskScheduler taskScheduler, Environment environment){
 		this.taskScheduler = taskScheduler;
 		this.environment = environment;
 
 		tasks = new ArrayList<TaskThread>();
+		sequenceDeque = new ArrayDeque<SequenceItemInfo>();
 	}
 
 	private TaskThread cloneTask(TaskThread task){
@@ -64,7 +69,19 @@ public class TaskManager {
 		return thread;
 	}
 
+	public void start(){
+		environment.start();
+		taskScheduler.start();
+
+		for(SequenceItemInfo info : AppSettings.getSequence()){
+			sequenceDeque.addLast(info);
+		}
+
+		Logger.info("Sequence: "+sequenceDeque.size());
+		environment.setup();
+	}
 	public void createTasks(){
+		/*
 		environment.start();
 		taskScheduler.start();
 	
@@ -79,6 +96,23 @@ public class TaskManager {
 		}
 
 		environment.setup();
+		*/
+		while(sequenceDeque.size()>0){
+			SequenceItemInfo sequenceItem = sequenceDeque.removeFirst(); // Remove the host from the top
+			if(sequenceItem.getModuleName()!=null && sequenceItem.getModuleName().trim().length()>0){
+				Logger.info("Sequence Item: "+sequenceItem.getModuleName());
+				ModuleInfo moduleInfo = AppSettings.getModuleInfo(sequenceItem.getModuleName());
+				//DEBUG LOG
+				Logger.info("Creating "+moduleInfo.getInstances()+" instances of the module "+moduleInfo.getName());
+				for(int i = 0; i<moduleInfo.getInstances(); i++){
+					String hostName = taskScheduler.nextHost(moduleInfo, i+1);
+					createTask(hostName, moduleInfo, i+1);
+				}
+			}
+			if(sequenceItem.isBreak()){
+				break;
+			}
+		}
 	}
 
 	public void runTasks(){
@@ -122,6 +156,17 @@ public class TaskManager {
 		}*/
 		this.tasks.clear();
 		TaskSettings.clear();
+		//environment.finish();
+	}
+
+	public void run(){
+		do{
+			createTasks();
+			runTasks();
+			finishTasks();
+		}while(sequenceDeque.size()>0);
+	}
+	public void finish(){
 		environment.finish();
 	}
 }

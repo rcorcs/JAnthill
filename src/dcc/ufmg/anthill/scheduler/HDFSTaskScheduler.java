@@ -15,6 +15,7 @@ import dcc.ufmg.anthill.info.*;
 import dcc.ufmg.anthill.scheduler.*;
 import dcc.ufmg.anthill.stream.*;
 
+//TODO schedule the modules considering data locality
 public class HDFSTaskScheduler extends TaskScheduler {
 	private Deque<String> hostsDeque;
 

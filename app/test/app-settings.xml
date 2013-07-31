@@ -8,8 +8,9 @@
 	<stream name="stream" class="TestStream">
 	</stream>
 
-	<layout>
-		<module name="mainModule" filter="printer" from="stream" to="stream"  instances="5" />
-	</layout>
-
+	<module name="mainModule" filter="printer" from="stream" to="stream"  instances="5" />
+	
+	<sequence>
+		<item name="1" module="mainModule" />
+	</sequence>
 </app-settings>

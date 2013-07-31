@@ -14,4 +14,8 @@
 		<attr name="output" value="output.txt"/>
 	</module>
 
+	<sequence>
+		<item name="1" module="mainModule" />
+	</sequence>
+
 </app-settings>

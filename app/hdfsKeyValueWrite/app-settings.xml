@@ -5,15 +5,20 @@
 
 	<filter name="keyvaluefilter" class="KVFilter" />
 
-	<stream name="instream" class="dcc.ufmg.anthill.stream.HDFSLineReaderStream">
+	<stream name="instream" class="dcc.ufmg.anthill.stream.hdfs.LineReader">
 		<attr name="filename" value="pg5000.txt"/>
 		<attr name="path" value="/home/hduser/gutenberg/"/>
 	</stream>
-	<stream name="outstream" class="dcc.ufmg.anthill.stream.HDFSKeyValueWriterStream">
+	<stream name="outstream" class="dcc.ufmg.anthill.stream.hdfs.KeyValueWriter">
 		<attr name="path" value="/home/hduser/output/KVOutput/"/>
 		<attr name="divisor" value="5"/>
 	</stream>
+
 	<module name="kvwmodule" filter="keyvaluefilter" input="instream" output="outstream"  instances="4">
 	</module>
+
+	<sequence>
+		<item name="1" module="kvwmodule" />
+	</sequence>
 
 </app-settings>

@@ -5,14 +5,18 @@
 
 	<filter name="keyvaluefilter" class="KVFilter" />
 
-	<stream name="instream" class="dcc.ufmg.anthill.stream.HDFSKeyValueReaderStream">
+	<stream name="instream" class="dcc.ufmg.anthill.stream.hdfs.KeyValueReader">
 		<attr name="path" value="/home/hduser/output/KVOutput/"/>
 	</stream>
-	<stream name="outstream" class="dcc.ufmg.anthill.stream.HDFSKeyValueWriterStream">
+	<stream name="outstream" class="dcc.ufmg.anthill.stream.hdfs.KeyValueWriter">
 		<attr name="path" value="/home/hduser/output/WordCounterOutput/"/>
 		<attr name="divisor" value="1"/>
 	</stream>
 	<module name="kvwmodule" filter="keyvaluefilter" input="instream" output="outstream"  instances="5">
 	</module>
+	
+	<sequence>
+		<item name="1" module="kvwmodule" />
+	</sequence>
 
 </app-settings>

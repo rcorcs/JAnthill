@@ -14,6 +14,7 @@ import dcc.ufmg.anthill.net.*;
 import dcc.ufmg.anthill.info.*;
 import dcc.ufmg.anthill.scheduler.*;
 import dcc.ufmg.anthill.stream.*;
+import dcc.ufmg.anthill.stream.hdfs.*;
 
 public class KVFilter extends Filter< SimpleEntry<String,String> , SimpleEntry<String,String> >{
 	private HashMap<String, Integer> wordCounter;

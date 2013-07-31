@@ -13,6 +13,7 @@ import dcc.ufmg.anthill.net.*;
 import dcc.ufmg.anthill.info.*;
 import dcc.ufmg.anthill.scheduler.*;
 import dcc.ufmg.anthill.stream.*;
+import dcc.ufmg.anthill.stream.hdfs.*;
 
 public class Main{
 
@@ -49,11 +50,11 @@ public class Main{
 			e.printStackTrace();
 		}
 
-		manager.createTasks();
+		manager.start();
 
-		manager.runTasks();
+		manager.run();
 
-		manager.finishTasks();
+		manager.finish();
 
 		if(webServer!=null) {
 			webServer.stop();
