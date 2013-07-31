@@ -13,7 +13,7 @@ JAnthill
 > The original paper can be read at http://homepages.dcc.ufmg.br/~dorgival/artigos/sbac2005.pdf.
 > 
 > The JAnthill API is not very stable yet, since it still under construction (we are still considering it as a beta version) and then the methods signature might change a bit.
-> But you can download it and use it freely, knowning that if you want to update your JAnthill version, you might have to change your applications a bit.
+> But you can download it and use it freely, knowning that if you want to update your JAnthill version, you might have to slightly change your applications.
 
 ### See also
 
