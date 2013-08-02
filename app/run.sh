@@ -12,7 +12,8 @@
 
 #java -cp ./netBCRW/netBCRW.jar:./../anthill.jar:./../lib/jsch-0.1.50.jar Main ./../settings.xml ./netBCRW/app-settings.xml
 
-java -cp ./netKVRW/netKVRW.jar:./../anthill.jar:./../lib/jsch-0.1.50.jar Main ./../settings.xml ./netKVRW/app-settings.xml
+#java -cp ./netKVRW/netKVRW.jar:./../anthill.jar:./../lib/jsch-0.1.50.jar Main ./../settings.xml ./netKVRW/app-settings.xml
 
 #java -cp ./netWordCounter/netWordCounter.jar:./../anthill.jar:./../lib/jsch-0.1.50.jar Main ./../settings.xml ./netWordCounter/app-settings.xml
 
+java -cp ./fastWordCounter/fastWordCounter.jar:./../anthill.jar:./../lib/jsch-0.1.50.jar Main ./../settings.xml ./fastWordCounter/app-settings.xml

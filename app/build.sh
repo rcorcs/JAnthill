@@ -34,4 +34,10 @@ javac -d ./netWordCounter/classes/ -cp ./netWordCounter/src/:./../anthill.jar:./
 jar cvf ./netWordCounter/netWordCounter.jar -C ./netWordCounter/classes/ .
 rm ./netWordCounter/src/*~ ./netWordCounter/*~
 
+javac -d ./fastWordCounter/classes/ -cp ./fastWordCounter/src/:./../anthill.jar:./../lib/jsch-0.1.50.jar ./fastWordCounter/src/*.java 
+jar cvf ./fastWordCounter/fastWordCounter.jar -C ./fastWordCounter/classes/ .
+rm ./fastWordCounter/src/*~ ./fastWordCounter/*~
+
+
 rm *~
+

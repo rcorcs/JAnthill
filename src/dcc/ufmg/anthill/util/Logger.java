@@ -6,6 +6,7 @@ package dcc.ufmg.anthill.util;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Calendar;
 
 import dcc.ufmg.anthill.*;
 import dcc.ufmg.anthill.util.*;
@@ -15,7 +16,7 @@ import dcc.ufmg.anthill.scheduler.*;
 import dcc.ufmg.anthill.stream.*;
 
 public class Logger {
-	private final static SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd' 'HH:MM:ss:S");
+	private final static SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd' 'HH:mm:ss:S");
 	private static StringBuffer sBuffer = new StringBuffer();
 
 	private static void output(){
@@ -46,8 +47,8 @@ public class Logger {
 	}
 
 	private static void printlog(String message){
-		Date date = new Date();
-		sBuffer.append(dateFormat.format(date));
+		sBuffer.append(dateFormat.format(new Date()));
+		//sBuffer.append(dateFormat.format(Calendar.getInstance().getTime()));
 
 		StackTraceElement[] trace = Thread.currentThread().getStackTrace();
 		if(trace.length>=3){

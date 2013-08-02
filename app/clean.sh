@@ -24,3 +24,6 @@ rm ./netKVRW/*.jar
 
 rm -r ./netWordCounter/classes/*
 rm ./netWordCounter/*.jar
+
+rm -r ./fastWordCounter/classes/*
+rm ./fastWordCounter/*.jar

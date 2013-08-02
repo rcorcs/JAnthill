@@ -1,0 +1,37 @@
+<?xml version="1.0"?>
+<app-settings name="FastWordCounter" path="/home/rcor/dev/Java/JAnthill/app/fastWordCounter/" file="fastWordCounter.jar">
+	<file path="/home/rcor/dev/Java/JAnthill/app/fastWordCounter/" name="app-settings.xml" />
+	<file path="/home/rcor/dev/Java/JAnthill/" name="settings.xml" />
+
+	<filter name="mapperfilter" class="MapFilter" />
+	<filter name="reducerfilter" class="ReduceFilter" />
+
+	<stream name="mapinput" class="dcc.ufmg.anthill.stream.hdfs.LineReader">
+		<attr name="filename" value="pg5000.txt"/>
+		<attr name="path" value="/home/hduser/gutenberg/"/>
+	</stream>
+
+	<stream name="mapoutput" class="dcc.ufmg.anthill.stream.hdfs.KeyValueWriter">
+		<attr name="path" value="/home/hduser/output/KVOutput/"/>
+		<attr name="divisor" value="1"/>
+	</stream>
+
+	<stream name="reduceinput" class="dcc.ufmg.anthill.stream.hdfs.KeyValueReader">
+		<attr name="path" value="/home/hduser/output/KVOutput/"/>
+	</stream>
+	<stream name="reduceoutput" class="dcc.ufmg.anthill.stream.hdfs.KeyValueWriter">
+		<attr name="path" value="/home/hduser/output/WordCounterOutput/"/>
+		<attr name="divisor" value="1"/>
+	</stream>
+
+	<module name="mapper" filter="mapperfilter" input="mapinput" output="mapoutput"  instances="1" />
+	<module name="reducer" filter="reducerfilter" input="reduceinput" output="reduceoutput"  instances="1" />
+
+	<flow from="" to="" />
+ 
+	<sequence>
+		<item name="1" module="mapper" />
+		<item name="2" break="true" />
+		<item name="3" module="reducer" />
+	</sequence>
+</app-settings>

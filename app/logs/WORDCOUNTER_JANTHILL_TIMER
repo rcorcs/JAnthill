@@ -1,0 +1,231 @@
+2013-08-02 17:18:20:765 dcc.ufmg.anthill.Settings loadXMLFile
+INFO: Loading settings from ./../settings.xml
+2013-08-02 17:18:20:805 dcc.ufmg.anthill.AppSettings loadXMLFile
+INFO: Loading settings from ./wordCounter/app-settings.xml
+2013-08-02 17:18:20:822 Main main
+INFO: Server at 192.168.0.103 on port 8597
+2013-08-02 17:18:20:853 dcc.ufmg.anthill.net.WebServer start
+INFO: HTTP Server is listening on port 8597
+2013-08-02 17:18:20:855 dcc.ufmg.anthill.SSHEnvironment validateHosts
+WARNING: Host rcor NOT Reachable
+2013-08-02 17:18:21:667 dcc.ufmg.anthill.TaskManager start
+INFO: Sequence: 3
+2013-08-02 17:18:22:92 dcc.ufmg.anthill.TaskManager createTasks
+INFO: Sequence Item: mapper
+2013-08-02 17:18:22:93 dcc.ufmg.anthill.TaskManager createTasks
+INFO: Creating 4 instances of the module mapper
+2013-08-02 17:18:22:93 dcc.ufmg.anthill.TaskManager createTask
+INFO: Creating Task mapper taskId 1 host victor-laptop
+2013-08-02 17:18:22:101 dcc.ufmg.anthill.TaskManager createTask
+INFO: Creating Task mapper taskId 2 host victor-laptop
+2013-08-02 17:18:22:101 dcc.ufmg.anthill.TaskManager createTask
+INFO: Creating Task mapper taskId 3 host victor-laptop
+2013-08-02 17:18:22:101 dcc.ufmg.anthill.TaskManager createTask
+INFO: Creating Task mapper taskId 4 host victor-laptop
+2013-08-02 17:18:22:101 dcc.ufmg.anthill.TaskManager runTasks
+INFO: Starting 4 tasks
+2013-08-02 17:18:22:1022013-08-02 17:18:22:102 dcc.ufmg.anthill.TaskThread run
+INFO: Started Running mapper taskId 1 host victor-laptop
+2013-08-02 17:18:22:1022013-08-02 17:18:22:102 dcc.ufmg.anthill.TaskThread run
+INFO: Started Running mapper taskId 1 host victor-laptop
+ dcc.ufmg.anthill.TaskThread run
+INFO: Started Running mapper taskId 2 host victor-laptop
+2013-08-02 17:18:22:1022013-08-02 17:18:22:102 dcc.ufmg.anthill.TaskThread run
+INFO: Started Running mapper taskId 1 host victor-laptop
+ dcc.ufmg.anthill.TaskThread run
+INFO: Started Running mapper taskId 2 host victor-laptop
+2013-08-02 17:18:22:102 dcc.ufmg.anthill.TaskThread run
+INFO: Started Running mapper taskId 3 host victor-laptop
+2013-08-02 17:18:22:107 dcc.ufmg.anthill.TaskThread run
+INFO: Started Running mapper taskId 4 host victor-laptop
+2013-08-02 17:18:33:614 dcc.ufmg.anthill.TaskManager runTasks
+INFO: All 4 tasks have finished
+2013-08-02 17:18:33:615 dcc.ufmg.anthill.TaskManager createTasks
+INFO: Sequence Item: reducer
+2013-08-02 17:18:33:615 dcc.ufmg.anthill.TaskManager createTasks
+INFO: Creating 5 instances of the module reducer
+2013-08-02 17:18:33:615 dcc.ufmg.anthill.TaskManager createTask
+INFO: Creating Task reducer taskId 1 host victor-laptop
+2013-08-02 17:18:33:615 dcc.ufmg.anthill.TaskManager createTask
+INFO: Creating Task reducer taskId 2 host victor-laptop
+2013-08-02 17:18:33:615 dcc.ufmg.anthill.TaskManager createTask
+INFO: Creating Task reducer taskId 3 host victor-laptop
+2013-08-02 17:18:33:615 dcc.ufmg.anthill.TaskManager createTask
+INFO: Creating Task reducer taskId 4 host victor-laptop
+2013-08-02 17:18:33:615 dcc.ufmg.anthill.TaskManager createTask
+INFO: Creating Task reducer taskId 5 host victor-laptop
+2013-08-02 17:18:33:617 dcc.ufmg.anthill.TaskManager runTasks
+INFO: Starting 5 tasks
+2013-08-02 17:18:33:617 dcc.ufmg.anthill.TaskThread run
+INFO: Started Running reducer taskId 1 host victor-laptop
+2013-08-02 17:18:33:618 dcc.ufmg.anthill.TaskThread run
+INFO: Started Running reducer taskId 2 host victor-laptop
+2013-08-02 17:18:33:619 dcc.ufmg.anthill.TaskThread run
+INFO: Started Running reducer taskId 3 host victor-laptop
+2013-08-02 17:18:33:619 dcc.ufmg.anthill.TaskThread run
+INFO: Started Running reducer taskId 4 host victor-laptop
+2013-08-02 17:18:33:629 dcc.ufmg.anthill.TaskThread run
+INFO: Started Running reducer taskId 5 host victor-laptop
+2013-08-02 17:18:45:143 dcc.ufmg.anthill.TaskManager runTasks
+INFO: All 5 tasks have finished
+2013-08-02 17:18:45:143 dcc.ufmg.anthill.SSHEnvironment finish
+INFO: Closing 1 hosts connections
+2013-08-02 17:18:45:143 dcc.ufmg.anthill.SSHEnvironment finish
+INFO: Closing connection with host victor-laptop
+2013-08-02 17:18:45:147 dcc.ufmg.anthill.net.WebServer stop
+INFO: Stopping HTTP Server
+2013-08-02 17:18:45:147 dcc.ufmg.anthill.net.WebServer stop
+INFO: HTTP Server Stopped
+2013-08-02 17:18:45:147 Main main
+INFO: DONE!
+#############################################################################################################
+2013-08-02 17:38:16:833 dcc.ufmg.anthill.Settings loadXMLFile
+INFO: Loading settings from ./../settings.xml
+2013-08-02 17:38:16:873 dcc.ufmg.anthill.AppSettings loadXMLFile
+INFO: Loading settings from ./wordCounter/app-settings.xml
+2013-08-02 17:38:16:893 Main main
+INFO: Server at 192.168.0.103 on port 8092
+2013-08-02 17:38:16:924 dcc.ufmg.anthill.net.WebServer start
+INFO: HTTP Server is listening on port 8092
+2013-08-02 17:38:16:926 dcc.ufmg.anthill.SSHEnvironment validateHosts
+WARNING: Host rcor NOT Reachable
+2013-08-02 17:38:17:710 dcc.ufmg.anthill.TaskManager start
+INFO: Sequence: 3
+2013-08-02 17:38:18:126 dcc.ufmg.anthill.TaskManager createTasks
+INFO: Sequence Item: mapper
+2013-08-02 17:38:18:127 dcc.ufmg.anthill.TaskManager createTasks
+INFO: Creating 4 instances of the module mapper
+2013-08-02 17:38:18:127 dcc.ufmg.anthill.TaskManager createTask
+INFO: Creating Task mapper taskId 1 host victor-laptop
+2013-08-02 17:38:18:131 dcc.ufmg.anthill.TaskManager createTask
+INFO: Creating Task mapper taskId 2 host victor-laptop
+2013-08-02 17:38:18:131 dcc.ufmg.anthill.TaskManager createTask
+INFO: Creating Task mapper taskId 3 host victor-laptop
+2013-08-02 17:38:18:131 dcc.ufmg.anthill.TaskManager createTask
+INFO: Creating Task mapper taskId 4 host victor-laptop
+2013-08-02 17:38:18:132 dcc.ufmg.anthill.TaskManager runTasks
+INFO: Starting 4 tasks
+2013-08-02 17:38:18:132 dcc.ufmg.anthill.TaskThread run
+INFO: Started Running mapper taskId 1 host victor-laptop
+2013-08-02 17:38:18:1342013-08-02 17:38:18:135 dcc.ufmg.anthill.TaskThread run
+INFO: Started Running mapper taskId 3 host victor-laptop
+ dcc.ufmg.anthill.TaskThread run
+INFO: Started Running mapper taskId 2 host victor-laptop
+2013-08-02 17:38:18:138 dcc.ufmg.anthill.TaskThread run
+INFO: Started Running mapper taskId 4 host victor-laptop
+2013-08-02 17:38:30:143 dcc.ufmg.anthill.TaskManager runTasks
+INFO: All 4 tasks have finished
+2013-08-02 17:38:30:143 dcc.ufmg.anthill.TaskManager createTasks
+INFO: Sequence Item: reducer
+2013-08-02 17:38:30:144 dcc.ufmg.anthill.TaskManager createTasks
+INFO: Creating 5 instances of the module reducer
+2013-08-02 17:38:30:144 dcc.ufmg.anthill.TaskManager createTask
+INFO: Creating Task reducer taskId 1 host victor-laptop
+2013-08-02 17:38:30:144 dcc.ufmg.anthill.TaskManager createTask
+INFO: Creating Task reducer taskId 2 host victor-laptop
+2013-08-02 17:38:30:144 dcc.ufmg.anthill.TaskManager createTask
+INFO: Creating Task reducer taskId 3 host victor-laptop
+2013-08-02 17:38:30:144 dcc.ufmg.anthill.TaskManager createTask
+INFO: Creating Task reducer taskId 4 host victor-laptop
+2013-08-02 17:38:30:144 dcc.ufmg.anthill.TaskManager createTask
+INFO: Creating Task reducer taskId 5 host victor-laptop
+2013-08-02 17:38:30:157 dcc.ufmg.anthill.TaskManager runTasks
+INFO: Starting 5 tasks
+2013-08-02 17:38:30:157 dcc.ufmg.anthill.TaskThread run
+INFO: Started Running reducer taskId 1 host victor-laptop
+2013-08-02 17:38:30:160 dcc.ufmg.anthill.TaskThread run
+INFO: Started Running reducer taskId 2 host victor-laptop
+2013-08-02 17:38:30:163 dcc.ufmg.anthill.TaskThread run
+INFO: Started Running reducer taskId 3 host victor-laptop
+2013-08-02 17:38:30:164 dcc.ufmg.anthill.TaskThread run
+INFO: Started Running reducer taskId 4 host victor-laptop
+2013-08-02 17:38:30:173 dcc.ufmg.anthill.TaskThread run
+INFO: Started Running reducer taskId 5 host victor-laptop
+2013-08-02 17:38:41:680 dcc.ufmg.anthill.TaskManager runTasks
+INFO: All 5 tasks have finished
+2013-08-02 17:38:41:680 dcc.ufmg.anthill.SSHEnvironment finish
+INFO: Closing 1 hosts connections
+2013-08-02 17:38:41:680 dcc.ufmg.anthill.SSHEnvironment finish
+INFO: Closing connection with host victor-laptop
+2013-08-02 17:38:41:684 dcc.ufmg.anthill.net.WebServer stop
+INFO: Stopping HTTP Server
+2013-08-02 17:38:41:685 dcc.ufmg.anthill.net.WebServer stop
+INFO: HTTP Server Stopped
+2013-08-02 17:38:41:685 Main main
+INFO: DONE!
+########################################################################################################
+2013-08-02 17:39:44:797 dcc.ufmg.anthill.Settings loadXMLFile
+INFO: Loading settings from ./../settings.xml
+2013-08-02 17:39:44:839 dcc.ufmg.anthill.AppSettings loadXMLFile
+INFO: Loading settings from ./wordCounter/app-settings.xml
+2013-08-02 17:39:44:856 Main main
+INFO: Server at 192.168.0.103 on port 8945
+2013-08-02 17:39:44:887 dcc.ufmg.anthill.net.WebServer start
+INFO: HTTP Server is listening on port 8945
+2013-08-02 17:39:44:889 dcc.ufmg.anthill.SSHEnvironment validateHosts
+WARNING: Host rcor NOT Reachable
+2013-08-02 17:39:45:590 dcc.ufmg.anthill.TaskManager start
+INFO: Sequence: 3
+2013-08-02 17:39:46:12 dcc.ufmg.anthill.TaskManager createTasks
+INFO: Sequence Item: mapper
+2013-08-02 17:39:46:12 dcc.ufmg.anthill.TaskManager createTasks
+INFO: Creating 4 instances of the module mapper
+2013-08-02 17:39:46:12 dcc.ufmg.anthill.TaskManager createTask
+INFO: Creating Task mapper taskId 1 host victor-laptop
+2013-08-02 17:39:46:17 dcc.ufmg.anthill.TaskManager createTask
+INFO: Creating Task mapper taskId 2 host victor-laptop
+2013-08-02 17:39:46:18 dcc.ufmg.anthill.TaskManager createTask
+INFO: Creating Task mapper taskId 3 host victor-laptop
+2013-08-02 17:39:46:18 dcc.ufmg.anthill.TaskManager createTask
+INFO: Creating Task mapper taskId 4 host victor-laptop
+2013-08-02 17:39:46:18 dcc.ufmg.anthill.TaskManager runTasks
+INFO: Starting 4 tasks
+2013-08-02 17:39:46:19 dcc.ufmg.anthill.TaskThread run
+INFO: Started Running mapper taskId 1 host victor-laptop
+2013-08-02 17:39:46:21 dcc.ufmg.anthill.TaskThread run
+INFO: Started Running mapper taskId 2 host victor-laptop
+2013-08-02 17:39:46:22 dcc.ufmg.anthill.TaskThread run
+INFO: Started Running mapper taskId 4 host victor-laptop
+2013-08-02 17:39:46:25 dcc.ufmg.anthill.TaskThread run
+INFO: Started Running mapper taskId 3 host victor-laptop
+2013-08-02 17:39:57:533 dcc.ufmg.anthill.TaskManager runTasks
+INFO: All 4 tasks have finished
+2013-08-02 17:39:57:534 dcc.ufmg.anthill.TaskManager createTasks
+INFO: Sequence Item: reducer
+2013-08-02 17:39:57:534 dcc.ufmg.anthill.TaskManager createTasks
+INFO: Creating 5 instances of the module reducer
+2013-08-02 17:39:57:534 dcc.ufmg.anthill.TaskManager createTask
+INFO: Creating Task reducer taskId 1 host victor-laptop
+2013-08-02 17:39:57:534 dcc.ufmg.anthill.TaskManager createTask
+INFO: Creating Task reducer taskId 2 host victor-laptop
+2013-08-02 17:39:57:534 dcc.ufmg.anthill.TaskManager createTask
+INFO: Creating Task reducer taskId 3 host victor-laptop
+2013-08-02 17:39:57:534 dcc.ufmg.anthill.TaskManager createTask
+INFO: Creating Task reducer taskId 4 host victor-laptop
+2013-08-02 17:39:57:534 dcc.ufmg.anthill.TaskManager createTask
+INFO: Creating Task reducer taskId 5 host victor-laptop
+2013-08-02 17:39:57:536 dcc.ufmg.anthill.TaskManager runTasks
+INFO: Starting 5 tasks
+2013-08-02 17:39:57:536 dcc.ufmg.anthill.TaskThread run
+INFO: Started Running reducer taskId 1 host victor-laptop
+2013-08-02 17:39:57:537 dcc.ufmg.anthill.TaskThread run
+INFO: Started Running reducer taskId 2 host victor-laptop
+2013-08-02 17:39:57:537 dcc.ufmg.anthill.TaskThread run
+INFO: Started Running reducer taskId 3 host victor-laptop
+2013-08-02 17:39:57:538 dcc.ufmg.anthill.TaskThread run
+INFO: Started Running reducer taskId 4 host victor-laptop
+2013-08-02 17:39:57:547 dcc.ufmg.anthill.TaskThread run
+INFO: Started Running reducer taskId 5 host victor-laptop
+2013-08-02 17:40:09:53 dcc.ufmg.anthill.TaskManager runTasks
+INFO: All 5 tasks have finished
+2013-08-02 17:40:09:54 dcc.ufmg.anthill.SSHEnvironment finish
+INFO: Closing 1 hosts connections
+2013-08-02 17:40:09:54 dcc.ufmg.anthill.SSHEnvironment finish
+INFO: Closing connection with host victor-laptop
+2013-08-02 17:40:09:57 dcc.ufmg.anthill.net.WebServer stop
+INFO: Stopping HTTP Server
+2013-08-02 17:40:09:58 dcc.ufmg.anthill.net.WebServer stop
+INFO: HTTP Server Stopped
+2013-08-02 17:40:09:58 Main main
+INFO: DONE!
+
