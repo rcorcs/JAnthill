@@ -32,6 +32,7 @@ public class AppSettings {
 	private static HashMap<String, FilterInfo> filters = new HashMap<String, FilterInfo>();
 	private static HashMap<String, StreamInfo> streams = new HashMap<String, StreamInfo>();
 	private static HashMap<String, ModuleInfo> modules = new HashMap<String, ModuleInfo>();
+	private static ArrayList<FlowInfo> flows = new ArrayList<FlowInfo>();
 	private static ArrayList<SequenceItemInfo> sequence = new ArrayList<SequenceItemInfo>();
 
 	private static ArrayList<File> files = new ArrayList<File>();
@@ -66,6 +67,10 @@ public class AppSettings {
 	
 	public static Set<String> getModules(){
 		return modules.keySet();
+	}
+
+	public static ArrayList<FlowInfo> getFlows(){
+		return flows;
 	}
 
 	public static ArrayList<SequenceItemInfo> getSequence(){
@@ -172,8 +177,17 @@ public class AppSettings {
 				}
 			}
 			
-			
-			
+			nList = doc.getElementsByTagName("flow");
+			FlowInfo flowInfo = null;
+			for(int temp = 0; temp < nList.getLength(); temp++){
+				nNode = nList.item(temp);
+				if(nNode.getNodeType() == Node.ELEMENT_NODE){
+					eElement = (Element)nNode;
+					flowInfo = new FlowInfo(eElement.getAttribute("name"), eElement.getAttribute("from"), eElement.getAttribute("to"));
+					flows.add(flowInfo);
+				}
+			}
+
 			nList = doc.getElementsByTagName("sequence");
 			SequenceItemInfo itemInfo = null;
 			if(nList.getLength()>0){

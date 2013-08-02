@@ -1,6 +1,7 @@
 <?xml version="1.0"?>
 <app-settings name="Test" path="/home/rcor/dev/Java/JAnthill/app/test/" file="test.jar">
 	<file path="/home/rcor/dev/Java/JAnthill/app/test/" name="app-settings.xml" />
+	<file path="/home/rcor/dev/Java/JAnthill/" name="settings.xml" />
 
 	<filter name="printer" class="TestFilter">
 	</filter>
@@ -8,7 +9,7 @@
 	<stream name="stream" class="TestStream">
 	</stream>
 
-	<module name="mainModule" filter="printer" from="stream" to="stream"  instances="5" />
+	<module name="mainModule" filter="printer" input="stream" output="stream"  instances="5" />
 	
 	<sequence>
 		<item name="1" module="mainModule" />

@@ -11,6 +11,8 @@ import java.io.BufferedWriter;
 import java.io.PrintWriter;
 import java.io.FileNotFoundException;
 
+import org.apache.commons.lang.RandomStringUtils;
+
 import dcc.ufmg.anthill.*;
 import dcc.ufmg.anthill.util.*;
 import dcc.ufmg.anthill.net.*;
@@ -26,7 +28,11 @@ public class LineWriterStream extends Stream<String> {
 	}
 
 	public void start(String hostName, int taskId){
-		String fileName = Settings.getHostInfo(hostName).getWorkspace()+AppSettings.getName()+("/tid"+taskId)+"/"+getModuleInfo().getAttribute("output");//"test.txt";
+		String fileName = getStreamInfo().getAttribute("output");//"test.txt";
+		if(fileName==null){
+			fileName = RandomStringUtils.randomAlphanumeric(20);
+		}
+		fileName = Settings.getHostInfo(hostName).getWorkspace()+AppSettings.getName()+("/tid"+taskId)+"/"+fileName;//"test.txt";
 		//Logger.info("Writing into "+fileName+" in "+hostName);
 		try{
 			File dir = new File(Settings.getHostInfo(hostName).getWorkspace()+AppSettings.getName()+("/tid"+taskId)+"/");

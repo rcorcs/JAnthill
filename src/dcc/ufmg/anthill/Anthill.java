@@ -92,7 +92,7 @@ public class Anthill {
 			WebServerSettings.setAddress(webServerAddr);
 			WebServerSettings.setPort(Integer.parseInt(webServerPort));
 			try{
-				TaskSettings.loadXMLString(WebClient.getContent(WebServerSettings.getTaskPage()));
+				TaskSettings.loadXMLString(WebClient.getContent(WebServerSettings.getTaskURL()));
 			}catch(Exception e){
 				e.printStackTrace();
 				System.exit(-1); //if there is something wrong, exits

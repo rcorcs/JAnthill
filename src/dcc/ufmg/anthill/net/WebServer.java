@@ -15,11 +15,14 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.Executors;
+import java.util.Map;
+import java.util.HashMap;
 
 import com.sun.net.httpserver.Headers;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import com.sun.net.httpserver.HttpServer;
+import com.sun.net.httpserver.HttpContext;
 
 import dcc.ufmg.anthill.*;
 import dcc.ufmg.anthill.util.*;
@@ -32,28 +35,20 @@ public class WebServer {
 	private int port;
 	private InetSocketAddress addr;
 	private HttpServer server;
-/*
-  public static void main(String[] args) throws IOException {
-    InetSocketAddress addr = new InetSocketAddress(8080);
-    HttpServer server = HttpServer.create(addr, 0);
+	//private HashMap<String, String> states;
 
-    server.createContext("/", new DefaultHandler());
-    server.createContext("/module/", new ModuleHandler());
-    server.createContext("/host/", new HostHandler());
-    server.setExecutor(Executors.newCachedThreadPool());
-    server.start();
-    System.out.println("Server is listening on port 8080" );
-  }
-*/
 	public WebServer(int port) throws IOException {
 		this.port = port;
 		addr = new InetSocketAddress(port);
 		server = HttpServer.create(addr, 0);
+		//states = new HashMap<String, String>();
 
 		server.createContext("/", new DefaultHandler());
 		server.createContext("/module/", new ModuleHandler());
 		server.createContext("/host/", new HostHandler());
 		server.createContext("/task/", new TaskHandler());
+		server.createContext("/state/get", new StateGetHandler()).getFilters().add(new WebParameterFilter());
+		server.createContext("/state/set", new StateSetHandler()).getFilters().add(new WebParameterFilter());
 		server.setExecutor(Executors.newCachedThreadPool());
 	}
 
@@ -68,6 +63,48 @@ public class WebServer {
 		Logger.info("Stopping HTTP Server");
 		server.stop(0);
 		Logger.info("HTTP Server Stopped");
+	}
+}
+
+class StateGetHandler implements HttpHandler {
+	public void handle(HttpExchange exchange) throws IOException {
+		String requestMethod = exchange.getRequestMethod();
+		URI requestURI = exchange.getRequestURI();
+		if (requestMethod.equalsIgnoreCase("GET")){
+			Headers responseHeaders = exchange.getResponseHeaders();
+	      responseHeaders.set("Content-Type", "text/plain");
+      	exchange.sendResponseHeaders(200, 0);
+			 Map<String, Object> params = (Map<String, Object>)exchange.getAttribute("parameters");
+
+			String name = (String)params.get("name");
+
+			OutputStream responseBody = exchange.getResponseBody();
+			//responseBody.write( (name+"="+GlobalState.get(name)).getBytes());
+			responseBody.write((GlobalState.get(name)+"\n").getBytes());
+			//responseBody.write(states.get(name).getBytes());
+			responseBody.close();
+		}
+	}
+}
+
+class StateSetHandler implements HttpHandler {
+	public void handle(HttpExchange exchange) throws IOException {
+		String requestMethod = exchange.getRequestMethod();
+		URI requestURI = exchange.getRequestURI();
+		if (requestMethod.equalsIgnoreCase("GET")){
+			Headers responseHeaders = exchange.getResponseHeaders();
+	      responseHeaders.set("Content-Type", "text/plain");
+      	exchange.sendResponseHeaders(200, 0);
+			 Map<String, Object> params = (Map<String, Object>)exchange.getAttribute("parameters");
+
+			String name = (String)params.get("name");
+			String value = (String)params.get("value");
+			GlobalState.set(name, value);
+			//states.put(name, value);
+			OutputStream responseBody = exchange.getResponseBody();
+			responseBody.write( (name+"="+value+"\n").getBytes());
+			responseBody.close();
+		}
 	}
 }
 
@@ -87,7 +124,7 @@ class ModuleHandler implements HttpHandler {
 			File uri = new File(requestURI.getPath());
 			File parentUri = uri.getParentFile();
 			if( parentUri!=null && "module".equals(parentUri.getName()) ){				
-				for(TaskInfo taskInfo : TaskSettings.getTaskInfo()){
+				for(TaskInfo taskInfo : TaskSettings.getTasks()){
 					if(taskInfo.getModuleInfo().getName().equals(uri.getName())){
 						responseBody.write("<task><host>".getBytes());
 						responseBody.write(taskInfo.getHostName().getBytes());
@@ -167,7 +204,7 @@ class HostHandler implements HttpHandler {
 			File uri = new File(requestURI.getPath());
 			File parentUri = uri.getParentFile();
 			if( parentUri!=null && "host".equals(parentUri.getName()) ){				
-				for(TaskInfo taskInfo : TaskSettings.getTaskInfo()){
+				for(TaskInfo taskInfo : TaskSettings.getTasks()){
 					if(taskInfo.getHostName().equals(uri.getName())){
 						responseBody.write("<task><host>".getBytes());
 						responseBody.write(taskInfo.getHostName().getBytes());
@@ -199,7 +236,7 @@ class TaskHandler implements HttpHandler {
 			File uri = new File(requestURI.getPath());
 			File parentUri = uri.getParentFile();		
 			responseBody.write("<tasks>\n".getBytes());
-			for(TaskInfo taskInfo : TaskSettings.getTaskInfo()){
+			for(TaskInfo taskInfo : TaskSettings.getTasks()){
 				/*
 				responseBody.write("<task><host>".getBytes());
 				responseBody.write(taskInfo.getHostName().getBytes());
@@ -222,6 +259,7 @@ class TaskHandler implements HttpHandler {
 		}
 	}
 }
+
 class DefaultHandler implements HttpHandler {
   public void handle(HttpExchange exchange) throws IOException {
     String requestMethod = exchange.getRequestMethod();

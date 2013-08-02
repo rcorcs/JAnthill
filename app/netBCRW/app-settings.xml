@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<app-settings name="NetBCRW" path="/home/rcor/dev/Java/JAnthill/app/netBCRW/" file="netBCRW.jar">
+	<file path="/home/rcor/dev/Java/JAnthill/app/netBCRW/" name="app-settings.xml" />
+	<file path="/home/rcor/dev/Java/JAnthill/" name="settings.xml" />
+	<file path="/home/rcor/dev/Java/JAnthill/app/netBCRW/" name="input.txt" />
+
+	<filter name="printer" class="TestFilter" />
+
+	<stream name="infilestream" class="dcc.ufmg.anthill.stream.LineReaderStream">
+		<attr name="input" value="input.txt"/>
+	</stream>
+
+	<stream name="netreader" class="dcc.ufmg.anthill.stream.net.LineReader" />
+
+	<stream name="netwriter" class="dcc.ufmg.anthill.stream.net.RoundRobinLineWriter" />
+
+	<stream name="outfilestream" class="dcc.ufmg.anthill.stream.LineWriterStream" />
+
+	<module name="reader" filter="printer" input="infilestream" output="netwriter"  instances="1" />
+	<module name="writer" filter="printer" input="netreader" output="outfilestream"  instances="3" />
+
+	<flow name="f1" from="reader" to="writer" />
+
+	<sequence>
+		<item name="1" module="reader" />
+		<item name="1" module="writer" />
+	</sequence>
+
+</app-settings>

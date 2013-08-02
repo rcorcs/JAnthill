@@ -10,6 +10,7 @@
 		<attr name="filename" value="pg5000.txt"/>
 		<attr name="path" value="/home/hduser/gutenberg/"/>
 	</stream>
+
 	<stream name="mapoutput" class="dcc.ufmg.anthill.stream.hdfs.KeyValueWriter">
 		<attr name="path" value="/home/hduser/output/KVOutput/"/>
 		<attr name="divisor" value="5"/>
@@ -26,6 +27,8 @@
 	<module name="mapper" filter="mapperfilter" input="mapinput" output="mapoutput"  instances="4" />
 	<module name="reducer" filter="reducerfilter" input="reduceinput" output="reduceoutput"  instances="5" />
 
+	<flow from="" to="" />
+ 
 	<sequence>
 		<item name="1" module="mapper" />
 		<item name="2" break="true" />

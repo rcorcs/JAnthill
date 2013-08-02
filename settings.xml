@@ -2,7 +2,7 @@
 <settings path="/home/rcor/dev/Java/JAnthill/" file="anthill.jar" class="dcc.ufmg.anthill.Anthill">
 	<host>
 		<name>rcor</name>
-		<address>localhost</address>
+		<address>192.168.0.101</address>
 		<workspace>/home/rcor/JAnthill/</workspace>
 		<ssh>
 			<user>rcor</user>

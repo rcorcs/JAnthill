@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<app-settings name="NetWordCounter" path="/home/rcor/dev/Java/JAnthill/app/netWordCounter/" file="netWordCounter.jar">
+	<file path="/home/rcor/dev/Java/JAnthill/app/netWordCounter/" name="app-settings.xml" />
+	<file path="/home/rcor/dev/Java/JAnthill/" name="settings.xml" />
+
+	<filter name="mapperfilter" class="MapFilter" />
+	<filter name="reducerfilter" class="ReduceFilter" />
+
+	<stream name="mapinput" class="dcc.ufmg.anthill.stream.hdfs.LineReader">
+		<attr name="filename" value="pg5000.txt"/>
+		<attr name="path" value="/home/hduser/gutenberg/"/>
+	</stream>
+
+	<stream name="netreader" class="dcc.ufmg.anthill.stream.net.KeyValueReader" />
+
+	<stream name="netwriter" class="dcc.ufmg.anthill.stream.net.KeyValueWriter" />
+
+	<stream name="reduceoutput" class="dcc.ufmg.anthill.stream.hdfs.KeyValueWriter">
+		<attr name="path" value="/home/hduser/output/WordCounterOutput/"/>
+		<attr name="divisor" value="1"/>
+	</stream>
+
+	<module name="mapper" filter="mapperfilter" input="mapinput" output="netwriter"  instances="4" />
+	<module name="reducer" filter="reducerfilter" input="netreader" output="reduceoutput"  instances="5" />
+
+	<flow name="f1" from="mapper" to="reducer" />
+
+	<sequence>
+		<item name="1" module="mapper" />
+		<item name="2" module="reducer" />
+	</sequence>
+
+</app-settings>

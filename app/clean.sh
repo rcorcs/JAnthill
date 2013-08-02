@@ -15,3 +15,12 @@ rm ./hdfsKeyValueRW/*.jar
 
 rm -r ./wordCounter/classes/*
 rm ./wordCounter/*.jar
+
+rm -r ./netBCRW/classes/*
+rm ./netBCRW/*.jar
+
+rm -r ./netKVRW/classes/*
+rm ./netKVRW/*.jar
+
+rm -r ./netWordCounter/classes/*
+rm ./netWordCounter/*.jar

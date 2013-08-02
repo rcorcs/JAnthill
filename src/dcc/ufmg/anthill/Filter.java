@@ -13,6 +13,11 @@ import dcc.ufmg.anthill.info.*;
 import dcc.ufmg.anthill.scheduler.*;
 import dcc.ufmg.anthill.stream.*;
 
+/**
+ * This class represents one of the key components of a module in the Anthill programming model.
+ * A filter is responsible for receiving data from the input stream, processing the data, and then sending the processed data to the output stream.
+ * The Filter has an event oriented abstraction and it is composed by three main methods: <code>start</code>, <code>process</code>, and <code>finish</code>.
+ */
 public abstract class Filter<InputType, OutputType>{
 	private ModuleInfo moduleInfo;
 
@@ -76,7 +81,22 @@ public abstract class Filter<InputType, OutputType>{
 		getOutputStream().finish();
 	}
 	
+	/**
+	 * Initializes the filter instance. This method is called at the begining of the execution of an instance of a module.
+	 * @param hostName is the name of the host in which this instance of the filter is being executed.
+	 * @param taskId is the identifier of the task that is executing this filter instance.
+	 */
 	public abstract void start(String hostName, int taskId);
+	
+	/**
+	 * Processes the data read from the input stream.
+	 * The filter receive data to process while there is data available in the input stream.
+	 * @param data is the data read from the input stream.
+	 */
 	public abstract void process(InputType data);
+	
+	/**
+	 * Finilizes the filter instance. This method is called at the end of the execution of an instance of a module.
+	 */
 	public abstract void finish();
 }

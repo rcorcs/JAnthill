@@ -47,7 +47,7 @@ public class TaskSettings {
 		}
 	}
 
-	public static ArrayList<TaskInfo> getTaskInfo(){
+	public static ArrayList<TaskInfo> getTasks(){
 		return tasks;
 	}
 

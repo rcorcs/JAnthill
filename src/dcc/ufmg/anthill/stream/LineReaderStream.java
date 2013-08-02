@@ -24,7 +24,7 @@ public class LineReaderStream extends Stream<String> {
 	}
 
 	public void start(String hostName, int taskId){
-		String fileName = Settings.getHostInfo(hostName).getWorkspace()+AppSettings.getName()+"/"+getModuleInfo().getAttribute("input");//"test.txt";
+		String fileName = Settings.getHostInfo(hostName).getWorkspace()+AppSettings.getName()+"/"+getStreamInfo().getAttribute("input");//"test.txt";
 		//Logger.info("Reading from "+fileName+" in "+hostName);
 		try{
 			reader = new BufferedReader(new FileReader(fileName));

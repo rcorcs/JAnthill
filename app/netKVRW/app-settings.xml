@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<app-settings name="NetKVRW" path="/home/rcor/dev/Java/JAnthill/app/netKVRW/" file="netKVRW.jar">
+	<file path="/home/rcor/dev/Java/JAnthill/app/netKVRW/" name="app-settings.xml" />
+	<file path="/home/rcor/dev/Java/JAnthill/" name="settings.xml" />
+	<file path="/home/rcor/dev/Java/JAnthill/app/netKVRW/" name="pg5000.txt" />
+
+	<filter name="mapperfilter" class="MapFilter" />
+	<filter name="reducerfilter" class="ReduceFilter" />
+
+	<stream name="infilestream" class="dcc.ufmg.anthill.stream.LineReaderStream">
+		<attr name="input" value="pg5000.txt"/>
+	</stream>
+
+	<stream name="netreader" class="dcc.ufmg.anthill.stream.net.KeyValueReader" />
+
+	<stream name="netwriter" class="dcc.ufmg.anthill.stream.net.KeyValueWriter" />
+
+	<stream name="outfilestream" class="dcc.ufmg.anthill.stream.LineWriterStream" />
+
+	<module name="reader" filter="mapperfilter" input="infilestream" output="netwriter"  instances="1" />
+	<module name="writer" filter="reducerfilter" input="netreader" output="outfilestream"  instances="3" />
+
+	<flow name="f1" from="reader" to="writer" />
+
+	<sequence>
+		<item name="1" module="reader" />
+		<item name="1" module="writer" />
+	</sequence>
+
+</app-settings>

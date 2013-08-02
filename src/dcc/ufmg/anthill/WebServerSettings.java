@@ -31,15 +31,24 @@ public class WebServerSettings {
 		return port;
 	}
 
-	public static String getTaskPage(){
+	public static String getTaskURL(){
 		return "http://"+address+":"+port+"/task/";
 	}
 
-	public static String getHostPage(){
+	public static String getHostURL(){
 		return "http://"+address+":"+port+"/host/";
 	}
 
-	public static String getModulePage(){
+	public static String getModuleURL(){
 		return "http://"+address+":"+port+"/module/";
 	}
+
+	public static String getStateGetURL(String name){
+		return "http://"+address+":"+port+"/state/get?name="+name;
+	}
+
+	public static String getStateSetURL(String name, String value){
+		return "http://"+address+":"+port+"/state/set?name="+name+"&value="+value;
+	}
+
 }

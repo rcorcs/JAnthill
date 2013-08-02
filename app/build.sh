@@ -22,4 +22,16 @@ javac -d ./wordCounter/classes/ -cp ./wordCounter/src/:./../anthill.jar:./../lib
 jar cvf ./wordCounter/wordCounter.jar -C ./wordCounter/classes/ .
 rm ./wordCounter/src/*~ ./wordCounter/*~
 
+javac -d ./netBCRW/classes/ -cp ./netBCRW/src/:./../anthill.jar:./../lib/jsch-0.1.50.jar ./netBCRW/src/*.java 
+jar cvf ./netBCRW/netBCRW.jar -C ./netBCRW/classes/ .
+rm ./netBCRW/src/*~ ./netBCRW/*~
+
+javac -d ./netKVRW/classes/ -cp ./netKVRW/src/:./../anthill.jar:./../lib/jsch-0.1.50.jar ./netKVRW/src/*.java 
+jar cvf ./netKVRW/netKVRW.jar -C ./netKVRW/classes/ .
+rm ./netKVRW/src/*~ ./netKVRW/*~
+
+javac -d ./netWordCounter/classes/ -cp ./netWordCounter/src/:./../anthill.jar:./../lib/jsch-0.1.50.jar ./netWordCounter/src/*.java 
+jar cvf ./netWordCounter/netWordCounter.jar -C ./netWordCounter/classes/ .
+rm ./netWordCounter/src/*~ ./netWordCounter/*~
+
 rm *~
