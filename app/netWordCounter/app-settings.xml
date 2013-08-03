@@ -20,8 +20,8 @@
 		<attr name="divisor" value="1"/>
 	</stream>
 
-	<module name="mapper" filter="mapperfilter" input="mapinput" output="netwriter"  instances="4" />
-	<module name="reducer" filter="reducerfilter" input="netreader" output="reduceoutput"  instances="5" />
+	<module name="mapper" filter="mapperfilter" input="mapinput" output="netwriter"  instances="2" />
+	<module name="reducer" filter="reducerfilter" input="netreader" output="reduceoutput"  instances="2" />
 
 	<flow name="f1" from="mapper" to="reducer" />
 

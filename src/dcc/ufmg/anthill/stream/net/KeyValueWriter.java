@@ -1,7 +1,7 @@
 package dcc.ufmg.anthill.stream.net;
 /**
  * @author Rodrigo Caetano O. ROCHA
- * @date 01 August 2013
+ * @date 02 August 2013
  */
 
 import java.io.*;
@@ -34,7 +34,8 @@ public class KeyValueWriter extends Stream< SimpleEntry<String,String> > {
 
 	int []ports;
 	String []addresses;
-	int next;
+	Socket []sockets;
+	DataOutputStream []outs;
 	int divisor;
 
 	public KeyValueWriter(){
@@ -43,7 +44,8 @@ public class KeyValueWriter extends Stream< SimpleEntry<String,String> > {
 
 		ports = null;
 		addresses = null;
-		next = -1;
+		sockets = null;
+		outs = null;
 		divisor = -1;
 	}
 
@@ -95,7 +97,17 @@ public class KeyValueWriter extends Stream< SimpleEntry<String,String> > {
 			}
 		}
 	
-		next = 0;
+		sockets = new Socket[addresses.length];
+		outs = new DataOutputStream[addresses.length];
+		for(int i = 0; i<addresses.length; i++){
+			try{
+				sockets[i] = new Socket(addresses[i], ports[i]);
+				outs[i] = new DataOutputStream(sockets[i].getOutputStream());
+			}catch(IOException e){
+				e.printStackTrace();
+				System.exit(-1);
+			}
+		}
 	}
 
 	public void write(SimpleEntry<String,String> data) throws StreamNotWritable, IOException{
@@ -104,11 +116,8 @@ public class KeyValueWriter extends Stream< SimpleEntry<String,String> > {
 			//byte[] bytes = (jsonStr.replace('\n', ' ')+"\n").getBytes();
 
 			int writerIndex = (Math.abs(data.getKey().hashCode()))%divisor;
-			
-			Socket clientSocket = new Socket(addresses[writerIndex], ports[writerIndex]);
-			DataOutputStream outToServer = new DataOutputStream(clientSocket.getOutputStream());
-			outToServer.writeBytes(jsonStr.replace('\n', ' ')+"\n");
-			clientSocket.close();
+
+			outs[writerIndex].writeBytes(jsonStr.replace('\n', ' ')+"\n");
 		}
 	}
 
@@ -119,12 +128,12 @@ public class KeyValueWriter extends Stream< SimpleEntry<String,String> > {
 	public void finish() {
 		for(int i = 0; i<addresses.length; i++){
 			try{
-				Socket clientSocket = new Socket(addresses[i], ports[i]);
-				DataOutputStream outToServer = new DataOutputStream(clientSocket.getOutputStream());
-				outToServer.writeBytes("\0\n");
-				clientSocket.close();
+				//outs[i].writeBytes("\0\n");
+				outs[i].close();
+				sockets[i].close();
 			}catch(Exception e){
 				e.printStackTrace();
+				System.exit(-1);
 			}
 		}
 	}

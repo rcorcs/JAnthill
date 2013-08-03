@@ -5,6 +5,7 @@
 
 import java.io.IOException;
 
+import java.util.HashMap;
 import java.util.AbstractMap.SimpleEntry;
 
 import dcc.ufmg.anthill.*;
@@ -16,24 +17,39 @@ import dcc.ufmg.anthill.stream.*;
 import dcc.ufmg.anthill.stream.hdfs.*;
 
 public class MapFilter extends Filter<String, SimpleEntry<String,String> >{
-	public void start(String hostName, int taskId){}
-	public void process(String data){
-		try{
-			String []strs = data.split("\\W");//non-word characters split
+	private HashMap<String, Integer> combiner;
+	
+	public void start(String hostName, int taskId){
+		combiner = new HashMap<String, Integer>();
+	}
 
-			//for each word emits a pair <word, 1> counting one more occurence of the word.
-			//this example is the map phase of the count word MapReduce common application
-			for(String word : strs){
-				if(word.length()>0){
-					SimpleEntry<String,String> pair = new SimpleEntry<String,String>(word, "1");
-					getOutputStream().write(pair);
+	public void process(String data){
+		String []strs = data.split("\\W");//non-word characters split
+
+		//for each word emits a pair <word, 1> counting one more occurence of the word.
+		//this example is the map phase of the count word MapReduce common application
+		for(String word : strs){
+			if(word.length()>0){
+				if(combiner.containsKey(word)){
+					combiner.put(word, new Integer(combiner.get(word).intValue()+1));
+				}else{
+					combiner.put(word, new Integer(1));
 				}
+
 			}
-		}catch(StreamNotWritable e){
-			e.printStackTrace();
-		}catch(IOException e){
-			e.printStackTrace();
 		}
 	}
-	public void finish(){}
+
+	public void finish(){
+		for(String word : combiner.keySet()){
+			try{
+				SimpleEntry<String,String> pair = new SimpleEntry<String,String>(word, combiner.get(word).toString());
+				getOutputStream().write(pair);
+			}catch(StreamNotWritable e){
+				e.printStackTrace();
+			}catch(IOException e){
+				e.printStackTrace();
+			}
+		}
+	}
 }

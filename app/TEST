@@ -17,6 +17,11 @@ WordCounter+Combiner in JAnthill (1 mappers, 1 reducers) avg: 10 seg
 18:08:07:387 -> 18:08:16:917
 18:08:57:276 -> 18:09:04:817
 
+WordCounter+Combiner in JAnthill (+ Java Optimizations) (1 mappers, 1 reducers) avg: 6.667 seg
+18:54:12:381 -> 18:54:19:416
+18:55:24:309 -> 18:55:30:836
+18:56:20:141 -> 18:56:27:180
+
 WordCounter in Hadoop (automatic 1 mapper, 1 reducer) avg: 20.33 seg
 17:23:15 -> 17:23:36
 17:41:18 -> 17:41:38

@@ -24,7 +24,7 @@
 		<attr name="divisor" value="1"/>
 	</stream>
 
-	<module name="mapper" filter="mapperfilter" input="mapinput" output="mapoutput"  instances="1" />
+	<module name="mapper" filter="mapperfilter" input="mapinput" output="mapoutput"  instances="2" />
 	<module name="reducer" filter="reducerfilter" input="reduceinput" output="reduceoutput"  instances="1" />
 
 	<flow from="" to="" />

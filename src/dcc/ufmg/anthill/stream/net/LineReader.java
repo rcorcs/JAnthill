@@ -1,7 +1,7 @@
 package dcc.ufmg.anthill.stream.net;
 /**
  * @author Rodrigo Caetano O. ROCHA
- * @date 01 August 2013
+ * @date 02 August 2013
  */
 
 import java.io.*;
@@ -17,17 +17,35 @@ import dcc.ufmg.anthill.scheduler.*;
 import dcc.ufmg.anthill.stream.*;
 
 public class LineReader extends Stream<String> {
-	private ServerSocket socket = null;
-	private int socketPort;
+	private NetStreamServer server;
+	private int endCount;
+
+	public LineReader(){
+		endCount = 0;
+		server = null;
+	}
+
 	public void start(String hostName, int taskId){
-		socketPort = 8000 + (int)(Math.random() * (9000 - 8000));
+		int socketPort = 8000 + (int)(Math.random() * (9000 - 8000));
 		try{
+			server = new NetStreamServer(socketPort);
 			WebClient.getContent(WebServerSettings.getStateSetURL(getModuleInfo().getName()+("."+taskId)+".port", ""+socketPort));
-			socket = new ServerSocket(socketPort);
+			server.start();
 		}catch(Exception e){
 			e.printStackTrace();
 			System.exit(-1); //if there is something wrong, exits
 		}
+
+		FlowInfo flowInfo = null;
+		for(FlowInfo flow : AppSettings.getFlows()){
+			if(flow.getToModuleName().equals(getModuleInfo().getName())){
+				flowInfo = flow;
+				break;
+			}
+		}
+		ModuleInfo fromModuleInfo = AppSettings.getModuleInfo(flowInfo.getFromModuleName());
+
+		endCount = fromModuleInfo.getInstances();//change this, use the voting thing
 	}
 
 	public void write(String data) throws StreamNotWritable, IOException{
@@ -35,19 +53,24 @@ public class LineReader extends Stream<String> {
 	}
 
 	public String read() throws StreamNotReadable, IOException {
-		if(socket==null) throw new IOException();
-
-		Socket connectionSocket = socket.accept();
-		BufferedReader inFromClient = new BufferedReader(new InputStreamReader(connectionSocket.getInputStream()));
-		String str = inFromClient.readLine();
-		if("\0".equals(str)) return null;
-		else return str;
+		if(server==null) throw new IOException();
+		while(server.isAlive() && !server.hasData()){
+			if(server.count>=endCount) {
+				server.setListening(false);
+				break;
+			}
+			try{Thread.sleep(100);}catch(InterruptedException e){}
+		}
+		if(server.hasData()){
+			return server.popData();
+		}else{
+			return null;
+		}
 	}
 
 	public void finish() {
-		try{
-			socket.close();
-		}catch(IOException e){
+		server.setListening(false);
+		try{server.join();}catch(InterruptedException e){
 			e.printStackTrace();
 		}
 	}

@@ -127,7 +127,7 @@ public class TaskManager {
 			done = true;
 			for(int i = 0; i<tasks.size(); i++){
 				TaskThread thread = tasks.get(i);
-				if(thread.isAlive()){
+				if(thread.isAlive() && !thread.isInterrupted()){
 					done = false;
 				}else{
 					if(thread.getErrorCode()!=0){

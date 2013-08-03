@@ -113,6 +113,8 @@ public class Anthill {
 			filter.getOutputStream().setModuleInfo(moduleInfo);
 			filter.getOutputStream().setStreamInfo(moduleInfo.getOutputStreamInfo());
 			filter.run(hostName, Integer.parseInt(taskId));
+			Logger.warning("FINISHING THIS MODULE");
+			System.exit(0);
 		}else System.exit(-1);
 	}
 }

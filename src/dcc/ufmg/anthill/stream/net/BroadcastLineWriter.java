@@ -1,7 +1,7 @@
 package dcc.ufmg.anthill.stream.net;
 /**
  * @author Rodrigo Caetano O. ROCHA
- * @date 01 August 2013
+ * @date 02 August 2013
  */
 
 import java.io.*;
@@ -21,6 +21,8 @@ import dcc.ufmg.anthill.stream.*;
 public class BroadcastLineWriter extends Stream<String> {
 	int []ports;
 	String []addresses;
+	Socket []sockets;
+	DataOutputStream []outs;
 
 	public void start(String hostName, int taskId){
 		FlowInfo flowInfo = null;
@@ -67,14 +69,24 @@ public class BroadcastLineWriter extends Stream<String> {
 				ports[i] = p;
 			}
 		}
+
+		sockets = new Socket[addresses.length];
+		outs = new DataOutputStream[addresses.length];
+		for(int i = 0; i<addresses.length; i++){
+			try{
+				sockets[i] = new Socket(addresses[i], ports[i]);
+				outs[i] = new DataOutputStream(sockets[i].getOutputStream());
+			}catch(IOException e){
+				e.printStackTrace();
+				System.exit(-1);
+			}
+		}
+
 	}
 
 	public void write(String data) throws StreamNotWritable, IOException{
 		for(int i = 0; i<addresses.length; i++){
-			Socket clientSocket = new Socket(addresses[i], ports[i]);
-			DataOutputStream outToServer = new DataOutputStream(clientSocket.getOutputStream());
-			outToServer.writeBytes(data+"\n");
-			clientSocket.close();
+			outs[i].writeBytes(data+"\n");
 		}
 	}
 
@@ -85,10 +97,9 @@ public class BroadcastLineWriter extends Stream<String> {
 	public void finish() {
 		for(int i = 0; i<addresses.length; i++){
 			try{
-				Socket clientSocket = new Socket(addresses[i], ports[i]);
-				DataOutputStream outToServer = new DataOutputStream(clientSocket.getOutputStream());
-				outToServer.writeBytes("\0\n");
-				clientSocket.close();
+				//outs[i].writeBytes("\0\n");
+				outs[i].close();
+				sockets[i].close();
 			}catch(Exception e){
 				e.printStackTrace();
 			}

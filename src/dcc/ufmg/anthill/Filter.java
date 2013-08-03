@@ -79,6 +79,8 @@ public abstract class Filter<InputType, OutputType>{
 		finish();
 		getInputStream().finish();
 		getOutputStream().finish();
+
+		Logger.warning("Finished Running the Filter");
 	}
 	
 	/**
