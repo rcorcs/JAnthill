@@ -25,7 +25,7 @@
 	</stream>
 
 	<module name="mapper" filter="mapperfilter" input="mapinput" output="mapoutput"  instances="2" />
-	<module name="reducer" filter="reducerfilter" input="reduceinput" output="reduceoutput"  instances="1" />
+	<module name="reducer" filter="reducerfilter" input="reduceinput" output="reduceoutput"  instances="2" />
 
 	<flow from="" to="" />
  

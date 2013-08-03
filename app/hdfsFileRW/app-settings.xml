@@ -13,7 +13,7 @@
 		<attr name="path" value="/home/hduser/output/"/>
 	</stream>
 
-	<module name="mainModule" filter="printer" input="instream" output="outstream"  instances="2">
+	<module name="mainModule" filter="printer" input="instream" output="outstream"  instances="5">
 	</module>
 
 	<sequence>

@@ -7,6 +7,9 @@ package dcc.ufmg.anthill.stream.net;
 import java.io.*;
 import java.net.*;
 
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
+
 import java.net.SocketTimeoutException;
 
 import java.io.IOException;
@@ -56,6 +59,8 @@ class ConnectionHandler extends Thread {
 }
 
 public class NetStreamServer extends Thread {
+	private final Lock lock = new ReentrantLock();
+
 	private ServerSocket socket;
 	private int port;
 	private boolean listening;
@@ -105,18 +110,33 @@ public class NetStreamServer extends Thread {
 	}
 
 	public void pushData(String data){
-		this.buffer.addLast(data);
+		try{
+			lock.lock();
+			this.buffer.addLast(data);
+		}finally{
+			lock.unlock();
+		}
 	}
 
 	public String popData(){
 		try{
-			return this.buffer.removeFirst();
-		}catch(NoSuchElementException e){
-			return null;
+			lock.lock();
+			try{
+				return this.buffer.removeFirst();
+			}catch(NoSuchElementException e){
+				return null;
+			}
+		}finally{
+			lock.unlock();
 		}
 	}
 
 	public boolean hasData(){
-		return (this.buffer.size()>0);
+		try{
+			lock.lock();
+			return (this.buffer.size()>0);
+		}finally{
+			lock.unlock();
+		}		
 	}
 }
