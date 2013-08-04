@@ -58,6 +58,10 @@ class ConnectionHandler extends Thread {
 	}
 }
 
+/**
+ * This class is responsible for handling multiple connections from instances of other streams.
+ * It offers the base for dealing with communication among streams and it is based on the producer-consumer problem.
+ */
 public class NetStreamServer extends Thread {
 	private final Lock lock = new ReentrantLock();
 
@@ -85,10 +89,16 @@ public class NetStreamServer extends Thread {
 		//threads = new ArrayList<Thread>();
 	}
 
-	public void setListening(boolean listening){
-		this.listening = listening;
+	/**
+	 * Finishes the server and stop listening.
+	 */
+	public void finish(){
+		this.listening = false;
 	}
-	
+
+	/**
+	 * Accepts multiple connections and start a separate {@link ConnectionHandler} thread for each one.
+	 */
 	public void run(){
 		while(this.listening){
 			try{
@@ -109,6 +119,10 @@ public class NetStreamServer extends Thread {
 		}
 	}
 
+	/**
+	 * Pushes a new data into the buffer.
+	 * This data will be consumed later by the stream.
+	 */
 	public void pushData(String data){
 		try{
 			lock.lock();
@@ -118,6 +132,10 @@ public class NetStreamServer extends Thread {
 		}
 	}
 
+	/**
+	 * Pops data from the buffer. It retrieves the data and removes it from the buffer.
+	 * @return the data retrieved from the buffer.
+	 */
 	public String popData(){
 		try{
 			lock.lock();
@@ -131,6 +149,10 @@ public class NetStreamServer extends Thread {
 		}
 	}
 
+	/**
+	 * Checks if there is data in the buffer.
+	 * @return <code>true</code> if there is data in the buffer or <code>false</code> otherwise.
+	 */
 	public boolean hasData(){
 		try{
 			lock.lock();

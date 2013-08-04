@@ -14,6 +14,6 @@
 
 #java -XX:+UseParallelGC -cp ./netKVRW/netKVRW.jar:./../anthill.jar:./../lib/jsch-0.1.50.jar Main ./../settings.xml ./netKVRW/app-settings.xml
 
-java -XX:+UseParallelGC -cp ./netWordCounter/netWordCounter.jar:./../anthill.jar:./../lib/jsch-0.1.50.jar Main ./../settings.xml ./netWordCounter/app-settings.xml
+#java -XX:+UseParallelGC -cp ./netWordCounter/netWordCounter.jar:./../anthill.jar:./../lib/jsch-0.1.50.jar Main ./../settings.xml ./netWordCounter/app-settings.xml
 
-#java -XX:+UseParallelGC -cp ./fastWordCounter/fastWordCounter.jar:./../anthill.jar:./../lib/jsch-0.1.50.jar Main ./../settings.xml ./fastWordCounter/app-settings.xml
+java -XX:+UseParallelGC -cp ./fastWordCounter/fastWordCounter.jar:./../anthill.jar:./../lib/jsch-0.1.50.jar Main ./../settings.xml ./fastWordCounter/app-settings.xml

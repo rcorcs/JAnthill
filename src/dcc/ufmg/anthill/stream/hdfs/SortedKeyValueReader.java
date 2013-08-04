@@ -3,7 +3,13 @@ package dcc.ufmg.anthill.stream.hdfs;
  * @author Rodrigo Caetano O. ROCHA
  * @date 30 July 2013
  */
-//TODO BUG: Too many files opened during the "group by key" phase in the start() method.
+//TODO MAKE IT WORK WITH TYPES OTHER THAN STRING (use Java Generics)
+//import com.google.gson.Gson;
+import com.google.gson.*;
+import com.google.gson.reflect.TypeToken;
+import com.google.gson.stream.JsonReader;
+
+import java.lang.reflect.Type;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -29,6 +35,10 @@ import java.util.AbstractMap.SimpleEntry;
 import java.util.SortedSet;
 import java.util.TreeSet;
 import java.util.HashMap;
+import java.util.Set;
+import java.util.Deque;
+import java.util.ArrayDeque;
+import java.util.Iterator;
 
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.FSDataInputStream;
@@ -45,19 +55,33 @@ import dcc.ufmg.anthill.scheduler.*;
 import dcc.ufmg.anthill.stream.*;
 
 public class SortedKeyValueReader extends Stream< SimpleEntry<String,String> > {
-	private FileSystem fileSystem;
-	private HashMap<String, String> keyFiles;
-	private SortedSet<String> keySet;
+	private Type dataType;
+	private Gson gson;
 
-	private BufferedReader keyReader;
+	private FileSystem fileSystem;
+	private Deque<Path> pathsDeque;
+	private BufferedReader reader;
+	//private JsonReader reader;
+
 	private String currentKey;
 
+	private HashMap<String, Deque<String> > pairs;
+	private SortedSet<String> keySet;
+	private Iterator<String> keyIterator;
+
 	public SortedKeyValueReader(){
+		dataType = new TypeToken< SimpleEntry<String,String> >() {}.getType();
+		gson = new Gson();
+
 		fileSystem = null;
-		keySet = new TreeSet<String>();
-		keyFiles = new HashMap<String, String>();
+		pathsDeque = new ArrayDeque<Path>();
+		reader = null;
+
+		keyIterator = null;
 		currentKey = null;
-		keyReader = null;
+
+		pairs = new HashMap<String, Deque<String> >();
+		keySet = new TreeSet<String>();
 	}
 
 	public void start(String hostName, int taskId){
@@ -83,60 +107,46 @@ public class SortedKeyValueReader extends Stream< SimpleEntry<String,String> > {
 			return;
 		}
 
-		HashMap<String, PrintWriter> keyWriters = new HashMap<String, PrintWriter>();
-		String line;
-
-		String dirPath = Settings.getHostInfo(hostName).getWorkspace()+AppSettings.getName()+"/"+RandomStringUtils.randomAlphanumeric(20)+"/";
-		File dir = new File(dirPath);
-		dir.mkdirs();
-
 		for(int i=0;i<status.length;i++){
-			BufferedReader br = null;
+			pathsDeque.add(status[i].getPath());
+		}
+
+		Path path = pathsDeque.removeFirst();
+		try{
+			//reader = new JsonReader(new BufferedReader(new InputStreamReader(fileSystem.open(path))));
+			reader = new BufferedReader(new InputStreamReader(fileSystem.open(path)));
+		}catch(IOException e){
+			e.printStackTrace();
+			return;
+		}
+
+		SimpleEntry<String,String> p;
+		while( true ){
 			try{
-				br = new BufferedReader(new InputStreamReader(fileSystem.open(status[i].getPath())));
-				line = br.readLine();
+				p=readPair();
 			}catch(IOException e){
 				e.printStackTrace();
-				return;
+				break;
 			}
-			while (line != null){
-				String []keyval = line.split("=");
-				if(keyval.length==2 && keyval[0].length()>0 && keyval[1].length()>0){
-					if(!keySet.contains(keyval[0])){
-						keySet.add(keyval[0]);
-						try{
-							String writerPath = dirPath+RandomStringUtils.randomAlphanumeric(20);
-							keyWriters.put(keyval[0], new PrintWriter(new BufferedWriter(new FileWriter(writerPath))));
-							keyFiles.put(keyval[0], writerPath);
-						}catch(IOException e){
-							e.printStackTrace();
-							return;
-						}
-						keyWriters.get(keyval[0]).println(keyval[1]);
-					}
-				}
-				if(br==null) return;
-				try{
-					line = br.readLine();
-				}catch(IOException e){
-					e.printStackTrace();
-					return;
-				}
+			if(p==null)break;
+
+			keySet.add(p.getKey());
+			if(!pairs.containsKey(p.getKey())){
+				pairs.put(p.getKey(), new ArrayDeque<String>());
 			}
+			pairs.get(p.getKey()).addLast(p.getValue());
 		}
 		
-		for(String key : keySet){
-			keyWriters.get(key).close();
+		try{
+			if(reader!=null) reader.close();
+			fileSystem.close();
+		}catch(IOException e){
+			e.printStackTrace();
 		}
 
-		if(keySet.size()>0){
-			currentKey = keySet.first();
-			keySet.remove(currentKey);
-			try{
-				keyReader = new BufferedReader(new FileReader(keyFiles.get(currentKey)));
-			}catch(FileNotFoundException e){
-				e.printStackTrace();
-			}
+		keyIterator = keySet.iterator();
+		if(keyIterator.hasNext()){
+			currentKey = keyIterator.next();
 		}
 	}
 
@@ -144,41 +154,39 @@ public class SortedKeyValueReader extends Stream< SimpleEntry<String,String> > {
 		throw new StreamNotWritable();
 	}
 
-	public SimpleEntry<String,String> read() throws StreamNotReadable, IOException {
-		if(keyReader==null) throw new IOException();
-		else {
-			String value = keyReader.readLine(); //return null if EOF
-			if(value!=null){
-				return new SimpleEntry<String,String>(currentKey, value);
+	public SimpleEntry<String,String> readPair() throws IOException {
+		if(reader==null) throw new IOException();
+		else{
+			String line = reader.readLine();
+			if(line!=null){
+				SimpleEntry<String,String> data = gson.fromJson(line, dataType);
+				return data;
 			}else{
-				if(keySet.size()>0){
-					currentKey = keySet.first();
-					keySet.remove(currentKey);
-					try{
-						keyReader.close();
-						keyReader = new BufferedReader(new FileReader(keyFiles.get(currentKey)));
-					}catch(FileNotFoundException e){
-						e.printStackTrace();
-					}
-					return read();
-				}else {
-					try{
-						keyReader.close();
-					}catch(FileNotFoundException e){
-						e.printStackTrace();
-					}
-					return null;
+				reader.close();
+				if(pathsDeque.size()==0) return null;
+				else{
+					Path path = pathsDeque.removeFirst();
+					reader = new BufferedReader(new InputStreamReader(fileSystem.open(path)));
+					return readPair();
 				}
 			}
-		}		
-	}
-
-	public void finish(){
-		try{
-			//TODO remove every temp file
-			fileSystem.close();
-		}catch(IOException e){
-			e.printStackTrace();
 		}
 	}
+
+	public SimpleEntry<String,String> read() throws StreamNotReadable, IOException {
+		if(currentKey==null) throw new IOException();
+		else {
+			if(pairs.get(currentKey).size()>0){
+				String val = pairs.get(currentKey).removeFirst();
+				return new SimpleEntry<String,String>(currentKey, val);
+			}else{
+				if(keyIterator.hasNext()){
+					currentKey = keyIterator.next();
+					return read();
+				}else return null;
+			}
+		}
+	}
+
+	public void finish(){}
 }

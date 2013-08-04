@@ -15,7 +15,11 @@ import dcc.ufmg.anthill.net.*;
 import dcc.ufmg.anthill.info.*;
 import dcc.ufmg.anthill.scheduler.*;
 import dcc.ufmg.anthill.stream.*;
-
+/**
+ * This class is a input stream that reads a String from other streams in the network.
+ * @see BroadcastLineWriter
+ * @see RoundRobinLineWriter
+ */
 public class LineReader extends Stream<String> {
 	private NetStreamServer server;
 	private int endCount;
@@ -56,7 +60,7 @@ public class LineReader extends Stream<String> {
 		if(server==null) throw new IOException();
 		while(server.isAlive() && !server.hasData()){
 			if(server.count>=endCount) {
-				server.setListening(false);
+				server.finish();
 				break;
 			}
 			try{Thread.sleep(100);}catch(InterruptedException e){}
@@ -69,7 +73,7 @@ public class LineReader extends Stream<String> {
 	}
 
 	public void finish() {
-		server.setListening(false);
+		server.finish();
 		try{server.join();}catch(InterruptedException e){
 			e.printStackTrace();
 		}

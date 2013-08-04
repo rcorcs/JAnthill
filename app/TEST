@@ -2,6 +2,11 @@ Hadoop in a single machine:
 CPU Intel Pentium Dual Core
 2GB RAM
 
+WordCounter in Hadoop (automatic 1 mapper, 1 reducer) avg: 20.33 seg
+17:23:15 -> 17:23:36
+17:41:18 -> 17:41:38
+17:42:37 -> 17:42:57
+
 WordCounter in JAnthill (4 mappers, 5 reducers) avg: 23 seg
 17:18:22:920 -> 17:18:45:147
 17:38:18:126 -> 17:38:41:685
@@ -22,7 +27,12 @@ WordCounter+Combiner in JAnthill (+ Java Optimizations) (1 mappers, 1 reducers) 
 18:55:24:309 -> 18:55:30:836
 18:56:20:141 -> 18:56:27:180
 
-WordCounter in Hadoop (automatic 1 mapper, 1 reducer) avg: 20.33 seg
-17:23:15 -> 17:23:36
-17:41:18 -> 17:41:38
-17:42:37 -> 17:42:57
+NetWordCounter+Combiner in JAnthill (+ Java Optimizations) (2 mappers, 2 reducers) avg: 11.333 seg
+11:29:33:667 -> 11:29:45:198
+11:55:10:483 -> 11:55:21:100
+11:56:23:612 -> 11:56:34:661
+
+NetWordCounter+Combiner in JAnthill (+ Java Optimizations) (1 mappers, 1 reducers) avg: 7 seg
+11:57:56:719 -> 11:58:03:235
+11:59:04:855 -> 11:59:11:371
+11:59:38:936 -> 11:59:45:453

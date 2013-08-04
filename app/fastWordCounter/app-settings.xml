@@ -13,12 +13,13 @@
 
 	<stream name="mapoutput" class="dcc.ufmg.anthill.stream.hdfs.KeyValueWriter">
 		<attr name="path" value="/home/hduser/output/KVOutput/"/>
-		<attr name="divisor" value="1"/>
+		<attr name="divisor" value="2"/>
 	</stream>
 
 	<stream name="reduceinput" class="dcc.ufmg.anthill.stream.hdfs.KeyValueReader">
 		<attr name="path" value="/home/hduser/output/KVOutput/"/>
 	</stream>
+
 	<stream name="reduceoutput" class="dcc.ufmg.anthill.stream.hdfs.KeyValueWriter">
 		<attr name="path" value="/home/hduser/output/WordCounterOutput/"/>
 		<attr name="divisor" value="1"/>
@@ -27,7 +28,7 @@
 	<module name="mapper" filter="mapperfilter" input="mapinput" output="mapoutput"  instances="2" />
 	<module name="reducer" filter="reducerfilter" input="reduceinput" output="reduceoutput"  instances="2" />
 
-	<flow from="" to="" />
+	<flow name="flow1" from="mapper" to="reducer" />
  
 	<sequence>
 		<item name="1" module="mapper" />

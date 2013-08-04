@@ -72,7 +72,7 @@ public class KeyValueReader extends Stream< SimpleEntry<String,String> > {
 		if(server==null) throw new IOException();
 		while(server.isAlive() && !server.hasData()){
 			if(server.count>=endCount) {
-				server.setListening(false);
+				server.finish();
 				break;
 			}
 			try{Thread.sleep(100);}catch(InterruptedException e){}
@@ -89,7 +89,7 @@ public class KeyValueReader extends Stream< SimpleEntry<String,String> > {
 	}
 
 	public void finish() {
-		server.setListening(false);
+		server.finish();
 		try{server.join();}catch(InterruptedException e){
 			e.printStackTrace();
 		}

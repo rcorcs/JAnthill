@@ -117,7 +117,8 @@ public class KeyValueWriter extends Stream< SimpleEntry<String,String> > {
 
 			int writerIndex = (Math.abs(data.getKey().hashCode()))%divisor;
 
-			outs[writerIndex].writeBytes(jsonStr.replace('\n', ' ')+"\n");
+			//outs[writerIndex].writeBytes(jsonStr.replace('\n', ' ')+"\n");
+			outs[writerIndex].writeBytes(jsonStr+"\n");
 		}
 	}
 

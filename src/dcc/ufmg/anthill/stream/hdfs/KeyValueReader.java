@@ -62,12 +62,6 @@ public class KeyValueReader extends Stream< SimpleEntry<String,String> > {
 	private BufferedReader reader;
 	//private JsonReader reader;
 
-	private HashMap<String, String> keyFiles;
-	private SortedSet<String> keySet;
-
-	private BufferedReader keyReader;
-	private String currentKey;
-
 	public KeyValueReader(){
 		dataType = new TypeToken< SimpleEntry<String,String> >() {}.getType();
 		gson = new Gson();

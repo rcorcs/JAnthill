@@ -25,6 +25,10 @@ import java.io.OutputStream;
 import org.apache.commons.lang.RandomStringUtils;
 
 import java.util.AbstractMap.SimpleEntry;
+import java.util.HashMap;
+import java.util.ArrayList;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.FSDataInputStream;
@@ -39,7 +43,7 @@ import dcc.ufmg.anthill.info.*;
 import dcc.ufmg.anthill.scheduler.*;
 import dcc.ufmg.anthill.stream.*;
 
-public class KeyValueWriter extends Stream< SimpleEntry<String,String> > {
+public class SortedKeyValueWriter extends Stream< SimpleEntry<String,String> > {
 	private Type dataType;
 	private Gson gson;
 
@@ -48,9 +52,15 @@ public class KeyValueWriter extends Stream< SimpleEntry<String,String> > {
 	private FileSystem fileSystem;
 	private int divisor;
 
-	public KeyValueWriter(){
+	private SortedSet<String> keySet;
+	private HashMap<String, ArrayList<String> > keyValues;
+
+	public SortedKeyValueWriter(){
 		dataType = new TypeToken< SimpleEntry<String,String> >() {}.getType();
 		gson = new Gson();
+
+		keySet = new TreeSet<String>();
+		keyValues = new HashMap<String, ArrayList<String> >();
 
 		writers = null;
 		fileSystem = null;
@@ -91,14 +101,11 @@ public class KeyValueWriter extends Stream< SimpleEntry<String,String> > {
 	}
 
 	public void write(SimpleEntry<String,String> data) throws StreamNotWritable, IOException {
-		if(writers!=null && divisor>0){
-			String jsonStr = gson.toJson(data, dataType);
-			//byte[] bytes = (jsonStr.replace('\n', ' ')+"\n").getBytes();
-			byte[] bytes = (jsonStr+"\n").getBytes();
-			int writerIndex = (Math.abs(data.getKey().hashCode()))%divisor;
-			writers[writerIndex].write(bytes, 0, bytes.length);
-			//gson.toJson(data, dataType, writers[writerIndex]);
-		}else throw new IOException();
+		keySet.add(data.getKey());
+		if(!keyValues.containsKey(data.getKey())){
+			keyValues.put(data.getKey(), new ArrayList<String>());
+		}
+		keyValues.get(data.getKey()).add(data.getValue());
 	}
 
 	public SimpleEntry<String,String> read() throws StreamNotReadable, IOException {
@@ -107,6 +114,18 @@ public class KeyValueWriter extends Stream< SimpleEntry<String,String> > {
 
 	public void finish(){
 		try{
+			for(String key : keySet){
+				for(String val : keyValues.get(key)){
+					if(writers!=null && divisor>0){
+						String jsonStr = gson.toJson(new SimpleEntry<String,String>(key, val), dataType);
+						//byte[] bytes = (jsonStr.replace('\n', ' ')+"\n").getBytes();
+						byte[] bytes = (jsonStr+"\n").getBytes();
+						int writerIndex = (Math.abs(key.hashCode()))%divisor;
+						writers[writerIndex].write(bytes, 0, bytes.length);
+						//gson.toJson(data, dataType, writers[writerIndex]);
+					}else throw new IOException();
+				}
+			}
 			if(writers!=null){
 				for(int i = 0; i<divisor; i++){
 					writers[i].close();	
