@@ -14,6 +14,7 @@ import dcc.ufmg.anthill.info.*;
 import dcc.ufmg.anthill.scheduler.*;
 import dcc.ufmg.anthill.stream.*;
 import dcc.ufmg.anthill.stream.hdfs.*;
+import dcc.ufmg.anthill.environment.*;
 
 public class Main{
 

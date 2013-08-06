@@ -41,7 +41,7 @@ public class KeyValueReader extends Stream< SimpleEntry<String,String> > {
 		endCount = -1;
 	}
 
-	public void start(String hostName, int taskId){
+	public void start(String hostName, int taskId) throws IOException{
 		int socketPort = 8000 + (int)(Math.random() * (9000 - 8000));
 		try{
 			server = new NetStreamServer(socketPort);
@@ -64,11 +64,11 @@ public class KeyValueReader extends Stream< SimpleEntry<String,String> > {
 		endCount = fromModuleInfo.getInstances();//change this, use the voting thing
 	}
 
-	public void write(SimpleEntry<String,String> data) throws StreamNotWritable, IOException{
+	public void write(SimpleEntry<String,String> data) throws IOException{
 		throw new StreamNotWritable();
 	}
 
-	public SimpleEntry<String,String> read() throws StreamNotReadable, IOException {
+	public SimpleEntry<String,String> read() throws IOException{
 		if(server==null) throw new IOException();
 		while(server.isAlive() && !server.hasData()){
 			if(server.count>=endCount) {
@@ -88,7 +88,7 @@ public class KeyValueReader extends Stream< SimpleEntry<String,String> > {
 		}
 	}
 
-	public void finish() {
+	public void finish() throws IOException{
 		server.finish();
 		try{server.join();}catch(InterruptedException e){
 			e.printStackTrace();

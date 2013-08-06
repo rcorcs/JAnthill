@@ -67,7 +67,7 @@ public class SortedKeyValueWriter extends Stream< SimpleEntry<String,String> > {
 		divisor = 0;
 	}
 
-	public void start(String hostName, int taskId){
+	public void start(String hostName, int taskId) throws IOException{
 		try{
 			fileSystem = FileSystem.get(new Configuration());
 		}catch(IOException e){
@@ -100,7 +100,7 @@ public class SortedKeyValueWriter extends Stream< SimpleEntry<String,String> > {
 		}
 	}
 
-	public void write(SimpleEntry<String,String> data) throws StreamNotWritable, IOException {
+	public void write(SimpleEntry<String,String> data) throws IOException{
 		keySet.add(data.getKey());
 		if(!keyValues.containsKey(data.getKey())){
 			keyValues.put(data.getKey(), new ArrayList<String>());
@@ -108,11 +108,11 @@ public class SortedKeyValueWriter extends Stream< SimpleEntry<String,String> > {
 		keyValues.get(data.getKey()).add(data.getValue());
 	}
 
-	public SimpleEntry<String,String> read() throws StreamNotReadable, IOException {
+	public SimpleEntry<String,String> read() throws IOException{
 		throw new StreamNotReadable();
 	}
 
-	public void finish(){
+	public void finish() throws IOException{
 		try{
 			for(String key : keySet){
 				for(String val : keyValues.get(key)){

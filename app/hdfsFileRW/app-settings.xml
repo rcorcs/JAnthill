@@ -9,6 +9,7 @@
 		<attr name="filename" value="pg5000.txt"/>
 		<attr name="path" value="/home/hduser/gutenberg/"/>
 	</stream>
+
 	<stream name="outstream" class="dcc.ufmg.anthill.stream.hdfs.LineWriter">
 		<attr name="path" value="/home/hduser/output/"/>
 	</stream>

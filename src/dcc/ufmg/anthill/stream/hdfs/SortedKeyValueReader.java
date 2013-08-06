@@ -84,7 +84,7 @@ public class SortedKeyValueReader extends Stream< SimpleEntry<String,String> > {
 		keySet = new TreeSet<String>();
 	}
 
-	public void start(String hostName, int taskId){
+	public void start(String hostName, int taskId) throws IOException{
 		try{
 			fileSystem = FileSystem.get(new Configuration());
 		}catch(IOException e){
@@ -150,7 +150,7 @@ public class SortedKeyValueReader extends Stream< SimpleEntry<String,String> > {
 		}
 	}
 
-	public void write(SimpleEntry<String,String> data) throws StreamNotWritable, IOException {
+	public void write(SimpleEntry<String,String> data) throws IOException{
 		throw new StreamNotWritable();
 	}
 
@@ -173,7 +173,7 @@ public class SortedKeyValueReader extends Stream< SimpleEntry<String,String> > {
 		}
 	}
 
-	public SimpleEntry<String,String> read() throws StreamNotReadable, IOException {
+	public SimpleEntry<String,String> read() throws IOException{
 		if(currentKey==null) throw new IOException();
 		else {
 			if(pairs.get(currentKey).size()>0){
@@ -188,5 +188,5 @@ public class SortedKeyValueReader extends Stream< SimpleEntry<String,String> > {
 		}
 	}
 
-	public void finish(){}
+	public void finish() throws IOException{}
 }

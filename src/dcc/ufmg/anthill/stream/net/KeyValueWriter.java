@@ -49,7 +49,7 @@ public class KeyValueWriter extends Stream< SimpleEntry<String,String> > {
 		divisor = -1;
 	}
 
-	public void start(String hostName, int taskId){
+	public void start(String hostName, int taskId) throws IOException{
 		FlowInfo flowInfo = null;
 		for(FlowInfo flow : AppSettings.getFlows()){
 			if(flow.getFromModuleName().equals(getModuleInfo().getName())){
@@ -110,7 +110,7 @@ public class KeyValueWriter extends Stream< SimpleEntry<String,String> > {
 		}
 	}
 
-	public void write(SimpleEntry<String,String> data) throws StreamNotWritable, IOException{
+	public void write(SimpleEntry<String,String> data) throws IOException{
 		if(data!=null){
 			String jsonStr = gson.toJson(data, dataType);
 			//byte[] bytes = (jsonStr.replace('\n', ' ')+"\n").getBytes();
@@ -122,11 +122,11 @@ public class KeyValueWriter extends Stream< SimpleEntry<String,String> > {
 		}
 	}
 
-	public SimpleEntry<String,String> read() throws StreamNotReadable, IOException {
+	public SimpleEntry<String,String> read() throws IOException{
 		throw new StreamNotReadable();
 	}
 
-	public void finish() {
+	public void finish() throws IOException{
 		for(int i = 0; i<addresses.length; i++){
 			try{
 				//outs[i].writeBytes("\0\n");

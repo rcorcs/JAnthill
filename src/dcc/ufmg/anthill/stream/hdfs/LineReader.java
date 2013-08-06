@@ -108,7 +108,7 @@ public class LineReader extends Stream<String> {
 		}
 	}
 
-	public void start(String hostName, int taskId){
+	public void start(String hostName, int taskId) throws IOException{
 		try{
 			fileSystem = FileSystem.get(new Configuration());
 		}catch(IOException e){
@@ -159,11 +159,11 @@ public class LineReader extends Stream<String> {
 		nextFile();
 	}
 
-	public void write(String data) throws StreamNotWritable, IOException {
+	public void write(String data) throws IOException{
 		throw new StreamNotWritable();
 	}
 
-	public String read() throws StreamNotReadable, IOException {
+	public String read() throws IOException{
 		if(pos>=endPos) return null;
 
 		if(reader==null) throw new IOException();
@@ -203,7 +203,7 @@ public class LineReader extends Stream<String> {
 		}
 	}
 
-	public void finish(){
+	public void finish() throws IOException{
 		try{
 			if(reader!=null){
 				reader.close();

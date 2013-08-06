@@ -24,32 +24,25 @@ import dcc.ufmg.anthill.net.*;
 import dcc.ufmg.anthill.info.*;
 import dcc.ufmg.anthill.scheduler.*;
 import dcc.ufmg.anthill.stream.*;
+import dcc.ufmg.anthill.environment.*;
 
 public class TaskManager {
-	//DONE
-	//load the app-settings and instantiate the TaskThreads with the Anthill app filters.
-	//load the settings, check the reachable hosts and delete the hosts that are not reachable.
-	//schedule the tasks properly in the hosts.
-	//Round Robin Scheduler - just run a round robin
-
-	//TODO
-	//HDFS Scheduler - get the input file info, check the DataNodes that have the file blocks, and schedule properly. 
-	//File Scheduler - load the xml input files info, check the hosts that have the pieces of the file, and schedule properly.
-
 	private TaskScheduler taskScheduler;
 	private Environment environment;
 
-	private ArrayList<TaskThread> tasks;
+	private ArrayList<TaskMonitor> tasks;
 	private Deque<SequenceItemInfo> sequenceDeque;
 
 	public TaskManager(TaskScheduler taskScheduler, Environment environment){
 		this.taskScheduler = taskScheduler;
 		this.environment = environment;
 
-		tasks = new ArrayList<TaskThread>();
+		tasks = new ArrayList<TaskMonitor>();
+
 		sequenceDeque = new ArrayDeque<SequenceItemInfo>();
 	}
 
+	/*
 	private TaskThread cloneTask(TaskThread task){
 		String hostName = taskScheduler.nextHost(task.getModuleInfo(), task.getTaskId());
 		//DEBUG LOG
@@ -59,14 +52,16 @@ public class TaskManager {
 		TaskSettings.addTaskInfo(new TaskInfo(hostName, task.getModuleInfo(), task.getTaskId()));
 		return thread;
 	}
+	*/
 
-	private TaskThread createTask(String hostName, ModuleInfo moduleInfo, int taskId){
+	private void createTask(String hostName, ModuleInfo moduleInfo, int taskId){
 		//DEBUG LOG
 		Logger.info("Creating Task "+moduleInfo.getName()+" taskId "+taskId+" host "+hostName);
-		TaskThread thread = new TaskThread(environment, hostName, moduleInfo, taskId);
-		this.tasks.add(thread);
-		TaskSettings.addTaskInfo(new TaskInfo(hostName, moduleInfo, taskId));
-		return thread;
+
+		TaskInfo taskInfo = new TaskInfo(hostName, moduleInfo, taskId);
+		TaskMonitor monitor = environment.instantiate(taskInfo);
+		this.tasks.add(monitor);
+		TaskSettings.addTaskInfo(taskInfo);
 	}
 
 	public void start(){
@@ -78,25 +73,11 @@ public class TaskManager {
 		}
 
 		Logger.info("Sequence: "+sequenceDeque.size());
-		environment.setup();
-	}
-	public void createTasks(){
-		/*
-		environment.start();
-		taskScheduler.start();
-	
-		for(String moduleName : AppSettings.getModules()){
-			ModuleInfo moduleInfo = AppSettings.getModuleInfo(moduleName);
-			//DEBUG LOG
-			Logger.info("Creating "+moduleInfo.getInstances()+" instances of the module "+moduleInfo.getName());
-			for(int i = 0; i<moduleInfo.getInstances(); i++){
-				String hostName = taskScheduler.nextHost(moduleInfo, i+1);
-				createTask(hostName, moduleInfo, i+1);
-			}
-		}
 
 		environment.setup();
-		*/
+	}
+
+	public void createTasks(){
 		while(sequenceDeque.size()>0){
 			SequenceItemInfo sequenceItem = sequenceDeque.removeFirst(); // Remove the host from the top
 			if(sequenceItem.getModuleName()!=null && sequenceItem.getModuleName().trim().length()>0){
@@ -119,17 +100,17 @@ public class TaskManager {
 		//DEBUG LOG
 		Logger.info("Starting "+this.tasks.size()+" tasks");
 
-		for(TaskThread thread : this.tasks){
-			thread.start();
+		for(TaskMonitor monitor : this.tasks){
+			monitor.start();
 		}
 		boolean done;
 		do{
 			done = true;
 			for(int i = 0; i<tasks.size(); i++){
-				TaskThread thread = tasks.get(i);
-				if(thread.isAlive() && !thread.isInterrupted()){
+				TaskMonitor monitor = tasks.get(i);
+				if(monitor.isAlive() && !monitor.isInterrupted()){
 					done = false;
-				}else{
+				}/*else{
 					if(thread.getErrorCode()!=0){
 						//DEBUG LOG
 						Logger.warning("Task "+thread.getModuleInfo().getName()+" taskId "+thread.getTaskId()+" host "+thread.getHostName()+" Error("+thread.getErrorCode()+")");
@@ -139,24 +120,20 @@ public class TaskManager {
 						TaskThread newTask = cloneTask(thread);
 						newTask.start();
 					}
-				}
+				}*/
 			}
 		}while(!done);
 
 		//DEBUG LOG
 		Logger.info("All "+this.tasks.size()+" tasks have finished");
-		for(TaskThread thread : this.tasks){
-			try{thread.interrupt(); thread.join();}catch(InterruptedException e){e.printStackTrace();}
+		for(TaskMonitor monitor : this.tasks){
+			try{monitor.interrupt(); monitor.join();}catch(InterruptedException e){e.printStackTrace();}
 		}
 	}
 
 	public void finishTasks(){
-		/*for(TaskThread thread : this.tasks){
-			thread.stop();
-		}*/
 		this.tasks.clear();
 		TaskSettings.clear();
-		//environment.finish();
 	}
 
 	public void run(){

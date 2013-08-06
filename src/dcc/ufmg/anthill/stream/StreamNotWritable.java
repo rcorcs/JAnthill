@@ -11,7 +11,7 @@ import dcc.ufmg.anthill.info.*;
 import dcc.ufmg.anthill.scheduler.*;
 import dcc.ufmg.anthill.stream.*;
 
-public class StreamNotWritable extends Exception {
+public class StreamNotWritable extends StreamException {
 	public StreamNotWritable(){
 		super("Stream not writable");
 	}

@@ -37,7 +37,7 @@ public class LineWriter extends Stream<String> {
 		fileSystem = null;
 	}
 
-	public void start(String hostName, int taskId){
+	public void start(String hostName, int taskId) throws IOException{
 		try{
 			fileSystem = FileSystem.get(new Configuration());
 		}catch(IOException e){
@@ -67,18 +67,18 @@ public class LineWriter extends Stream<String> {
 		}
 	}
 
-	public void write(String data) throws StreamNotWritable, IOException {
+	public void write(String data) throws IOException{
 		if(writer!=null){
 			byte[] bytes = (data+"\n").getBytes();
 			writer.write(bytes, 0, bytes.length);
 		}else throw new IOException();
 	}
 
-	public String read() throws StreamNotReadable, IOException {
+	public String read() throws IOException{
 		throw new StreamNotReadable();
 	}
 
-	public void finish(){
+	public void finish() throws IOException{
 		try{
 			writer.close();
 			fileSystem.close();

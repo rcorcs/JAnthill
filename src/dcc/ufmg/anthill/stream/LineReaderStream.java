@@ -23,7 +23,7 @@ public class LineReaderStream extends Stream<String> {
 		reader = null;
 	}
 
-	public void start(String hostName, int taskId){
+	public void start(String hostName, int taskId) throws IOException{
 		String fileName = Settings.getHostInfo(hostName).getWorkspace()+AppSettings.getName()+"/"+getStreamInfo().getAttribute("input");//"test.txt";
 		//Logger.info("Reading from "+fileName+" in "+hostName);
 		try{
@@ -33,16 +33,16 @@ public class LineReaderStream extends Stream<String> {
 		}
 	}
 
-	public void write(String data) throws StreamNotWritable, IOException {
+	public void write(String data) throws IOException{
 		throw new StreamNotWritable();
 	}
 
-	public String read() throws StreamNotReadable, IOException {
-		if(reader==null) throw new IOException();
+	public String read() throws IOException{
+		if(reader==null) throw new StreamException();
 		return reader.readLine(); //return null if EOF
 	}
 
-	public void finish(){
+	public void finish() throws IOException{
 		try{
 			reader.close();
 		}catch(IOException e){

@@ -27,7 +27,7 @@ public class LineWriterStream extends Stream<String> {
 		writer = null;
 	}
 
-	public void start(String hostName, int taskId){
+	public void start(String hostName, int taskId) throws IOException{
 		String fileName = getStreamInfo().getAttribute("output");//"test.txt";
 		if(fileName==null){
 			fileName = RandomStringUtils.randomAlphanumeric(20);
@@ -43,15 +43,15 @@ public class LineWriterStream extends Stream<String> {
 		}
 	}
 
-	public void write(String data) throws StreamNotWritable, IOException {
+	public void write(String data) throws IOException{
 		writer.println(data);
 	}
 
-	public String read() throws StreamNotReadable, IOException {
+	public String read() throws IOException{
 		throw new StreamNotReadable();
 	}
 
-	public void finish(){
+	public void finish() throws IOException{
 		writer.close();
 	}
 }

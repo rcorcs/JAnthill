@@ -57,7 +57,7 @@ public class KeyValueWriter extends Stream< SimpleEntry<String,String> > {
 		divisor = 0;
 	}
 
-	public void start(String hostName, int taskId){
+	public void start(String hostName, int taskId) throws IOException{
 		try{
 			fileSystem = FileSystem.get(new Configuration());
 		}catch(IOException e){
@@ -90,7 +90,7 @@ public class KeyValueWriter extends Stream< SimpleEntry<String,String> > {
 		}
 	}
 
-	public void write(SimpleEntry<String,String> data) throws StreamNotWritable, IOException {
+	public void write(SimpleEntry<String,String> data) throws IOException{
 		if(writers!=null && divisor>0){
 			String jsonStr = gson.toJson(data, dataType);
 			//byte[] bytes = (jsonStr.replace('\n', ' ')+"\n").getBytes();
@@ -101,7 +101,7 @@ public class KeyValueWriter extends Stream< SimpleEntry<String,String> > {
 		}else throw new IOException();
 	}
 
-	public SimpleEntry<String,String> read() throws StreamNotReadable, IOException {
+	public SimpleEntry<String,String> read() throws IOException{
 		throw new StreamNotReadable();
 	}
 

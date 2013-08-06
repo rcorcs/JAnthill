@@ -13,8 +13,7 @@ import dcc.ufmg.anthill.scheduler.*;
 import dcc.ufmg.anthill.stream.*;
 
 public class TestFilter extends Filter<String, String>{
-	int taskId;
-	public void start(String hostName, int taskId){this.taskId = taskId;}
+	public void start(String hostName, int taskId){}
 	public void process(String data){
 		try{
 			getOutputStream().write(data);

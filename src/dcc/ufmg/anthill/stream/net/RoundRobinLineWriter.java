@@ -18,6 +18,9 @@ import dcc.ufmg.anthill.info.*;
 import dcc.ufmg.anthill.scheduler.*;
 import dcc.ufmg.anthill.stream.*;
 
+/**
+ * This class implements the round robin in the output stream.
+ */
 public class RoundRobinLineWriter extends Stream<String> {
 	int []ports;
 	String []addresses;
@@ -25,7 +28,10 @@ public class RoundRobinLineWriter extends Stream<String> {
 	DataOutputStream []outs;
 	int next;
 
-	public void start(String hostName, int taskId){
+	/**
+	 * Starts the round robin stream.
+	 */
+	public void start(String hostName, int taskId) throws IOException{
 		FlowInfo flowInfo = null;
 		for(FlowInfo flow : AppSettings.getFlows()){
 			if(flow.getFromModuleName().equals(getModuleInfo().getName())){
@@ -85,17 +91,17 @@ public class RoundRobinLineWriter extends Stream<String> {
 		next = 0;
 	}
 
-	public void write(String data) throws StreamNotWritable, IOException{
+	public void write(String data) throws IOException{
 		outs[next].writeBytes(data+"\n");
 		next++;
 		if(next>=addresses.length) next = 0;
 	}
 
-	public String read() throws StreamNotReadable, IOException {
+	public String read() throws IOException{
 		throw new StreamNotReadable();
 	}
 
-	public void finish() {
+	public void finish() throws IOException{
 		for(int i = 0; i<addresses.length; i++){
 			try{
 				//outs[i].writeBytes("\0\n");

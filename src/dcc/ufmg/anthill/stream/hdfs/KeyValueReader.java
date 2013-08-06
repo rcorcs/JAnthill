@@ -71,7 +71,7 @@ public class KeyValueReader extends Stream< SimpleEntry<String,String> > {
 		reader = null;
 	}
 
-	public void start(String hostName, int taskId){
+	public void start(String hostName, int taskId) throws IOException{
 		try{
 			fileSystem = FileSystem.get(new Configuration());
 		}catch(IOException e){
@@ -108,11 +108,11 @@ public class KeyValueReader extends Stream< SimpleEntry<String,String> > {
 		}
 	}
 
-	public void write(SimpleEntry<String,String> data) throws StreamNotWritable, IOException {
+	public void write(SimpleEntry<String,String> data) throws IOException{
 		throw new StreamNotWritable();
 	}
 
-	public SimpleEntry<String,String> read() throws StreamNotReadable, IOException {
+	public SimpleEntry<String,String> read() throws IOException{
 		if(reader==null) throw new IOException();
 		else {
 			/*SimpleEntry<String,String> data = gson.fromJson(reader, dataType);
@@ -152,7 +152,7 @@ public class KeyValueReader extends Stream< SimpleEntry<String,String> > {
 		}
 	}
 
-	public void finish(){
+	public void finish() throws IOException{
 		try{
 			if(reader!=null) reader.close();
 			fileSystem.close();

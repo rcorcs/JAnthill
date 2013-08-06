@@ -33,8 +33,8 @@ public abstract class Stream<StreamingType> {
 		return this.streamInfo;
 	}
 
-	public abstract void start(String hostName, int taskId);
-	public abstract void write(StreamingType data) throws StreamNotWritable, IOException;
-	public abstract StreamingType read() throws StreamNotReadable, IOException;
-	public abstract void finish();
+	public abstract void start(String hostName, int taskId) throws IOException;
+	public abstract void write(StreamingType data) throws IOException;
+	public abstract StreamingType read() throws IOException;
+	public abstract void finish() throws IOException;
 }

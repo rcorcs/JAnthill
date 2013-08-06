@@ -27,7 +27,7 @@
 	<module name="mapper" filter="mapperfilter" input="mapinput" output="mapoutput"  instances="4" />
 	<module name="reducer" filter="reducerfilter" input="reduceinput" output="reduceoutput"  instances="5" />
 
-	<flow from="" to="" />
+	<flow from="mapper" to="reducer" />
  
 	<sequence>
 		<item name="1" module="mapper" />

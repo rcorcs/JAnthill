@@ -57,8 +57,12 @@ public abstract class Filter<InputType, OutputType>{
 	}
 
 	public void run(String hostName, int taskId){
-		getInputStream().start(hostName, taskId);
-		getOutputStream().start(hostName, taskId);
+		try{
+			getInputStream().start(hostName, taskId);
+			getOutputStream().start(hostName, taskId);
+		}catch(IOException e){
+			e.printStackTrace();
+		}
 		start(hostName, taskId);
 
 		InputType data = null;
@@ -77,10 +81,12 @@ public abstract class Filter<InputType, OutputType>{
 		}
 
 		finish();
-		getInputStream().finish();
-		getOutputStream().finish();
-
-		Logger.warning("Finished Running the Filter");
+		try{
+			getInputStream().finish();
+			getOutputStream().finish();
+		}catch(IOException e){
+			e.printStackTrace();
+		}
 	}
 	
 	/**

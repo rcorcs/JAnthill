@@ -1,4 +1,4 @@
-package dcc.ufmg.anthill;
+package dcc.ufmg.anthill.environment;
 /**
  * @author Rodrigo Caetano O. ROCHA
  * @date 26 July 2013
@@ -22,6 +22,44 @@ import dcc.ufmg.anthill.info.*;
 import dcc.ufmg.anthill.scheduler.*;
 import dcc.ufmg.anthill.stream.*;
 
+class SSHExecutor extends Executor {
+	private SSHEnvironment environment;
+	public SSHExecutor(SSHEnvironment environment){
+		this.environment = environment;
+	}
+
+	public void run(TaskInfo taskInfo){
+		HostInfo hostInfo = Settings.getHostInfo(taskInfo.getHostName());
+
+		String anthillPath = hostInfo.getWorkspace()+Settings.getFileName();
+		String appPath = hostInfo.getWorkspace()+AppSettings.getName()+"/"+AppSettings.getFileName();
+		String appXml = hostInfo.getWorkspace()+AppSettings.getName()+"/"+(new File(AppSettings.getXMLFileName())).getName();
+		String xml = hostInfo.getWorkspace()+AppSettings.getName()+"/"+(new File(Settings.getXMLFileName())).getName();
+		String executable = "java";
+		String classPath = anthillPath+":"+appPath;
+		String cmd;
+		if(environment.getUseHDFS()){
+			executable = hostInfo.getHDFSInfo().getPath()+" jar "+anthillPath+" "+Settings.getClassName();
+			//classPath = appPath;
+			String exportClassPath = "export HADOOP_CLASSPATH="+classPath;
+			//Logger.warning(exportClassPath);
+			cmd = executable+" -tid "+taskInfo.getTaskId()+" -app-xml "+appXml+" -m "+taskInfo.getModuleInfo().getName()+" -xml "+xml+" -h "+taskInfo.getHostName()+" -sa "+WebServerSettings.getAddress()+" -sp "+WebServerSettings.getPort();
+			cmd = exportClassPath+" && "+cmd;
+		}else {
+			cmd = executable+" -cp "+classPath+" "+Settings.getClassName()+" -tid "+taskInfo.getTaskId()+" -app-xml "+appXml+" -m "+taskInfo.getModuleInfo().getName()+" -xml "+xml+" -h "+taskInfo.getHostName()+" -sa "+WebServerSettings.getAddress()+" -sp "+WebServerSettings.getPort()+" > "+hostInfo.getWorkspace()+AppSettings.getName()+"/"+(taskInfo.getModuleInfo().getName()+"-tid"+taskInfo.getTaskId())+".log";
+		}
+
+		try{
+			environment.getSSHHosts().get(taskInfo.getHostName()).executeInBackground(cmd);
+		}catch(SSHConnectionLost e){
+			Logger.warning("Connection lost with the host "+taskInfo.getHostName());
+			Logger.warning("Host "+taskInfo.getHostName()+" NOT reachable");
+			Settings.removeHost(taskInfo.getHostName()); //remove host
+			//this.error = -1;
+		}
+	}
+}
+
 public class SSHEnvironment extends Environment {
 	private HashMap<String, SSHHost> sshHosts = new HashMap<String, SSHHost>();
 	private boolean usingHDFS = false;
@@ -32,6 +70,10 @@ public class SSHEnvironment extends Environment {
 
 	public boolean getUseHDFS(){
 		return this.usingHDFS;
+	}
+
+	public HashMap<String, SSHHost> getSSHHosts(){
+		return this.sshHosts;
 	}
 
 	public void start(){
@@ -56,60 +98,10 @@ public class SSHEnvironment extends Environment {
 		}
 	}
 	
-	public int instantiate(String hostName, ModuleInfo moduleInfo, int taskId){
-		HostInfo hostInfo = Settings.getHostInfo(hostName);
-
-		String anthillPath = hostInfo.getWorkspace()+Settings.getFileName();
-		String appPath = hostInfo.getWorkspace()+AppSettings.getName()+"/"+AppSettings.getFileName();
-		String appXml = hostInfo.getWorkspace()+AppSettings.getName()+"/"+(new File(AppSettings.getXMLFileName())).getName();
-		String xml = hostInfo.getWorkspace()+AppSettings.getName()+"/"+(new File(Settings.getXMLFileName())).getName();
-		String executable = "java";
-		String classPath = anthillPath+":"+appPath;
-		String cmd;
-		if(usingHDFS){
-			executable = hostInfo.getHDFSInfo().getPath()+" jar "+anthillPath+" "+Settings.getClassName();
-			//classPath = appPath;
-			String exportClassPath = "export HADOOP_CLASSPATH="+classPath;
-			//Logger.warning(exportClassPath);
-			//this.sshHosts.get(hostName).executeInBackground(exportClassPath);
-			cmd = executable+" -tid "+taskId+" -app-xml "+appXml+" -m "+moduleInfo.getName()+" -xml "+xml+" -h "+hostName+" -sa "+WebServerSettings.getAddress()+" -sp "+WebServerSettings.getPort();
-			cmd = exportClassPath+" && "+cmd;
-		}else {
-			cmd = executable+" -cp "+classPath+" "+Settings.getClassName()+" -tid "+taskId+" -app-xml "+appXml+" -m "+moduleInfo.getName()+" -xml "+xml+" -h "+hostName+" -sa "+WebServerSettings.getAddress()+" -sp "+WebServerSettings.getPort()+" > "+hostInfo.getWorkspace()+AppSettings.getName()+"/"+(moduleInfo.getName()+"-tid"+taskId)+".log";
-		}
-		//Logger.warning(cmd);
-
-		int error = 0;
-		try{
-			this.sshHosts.get(hostName).executeInBackground(cmd);
-		}catch(SSHConnectionLost e){
-			Logger.warning("Connection lost with the host "+hostName);
-			Logger.warning("Host "+hostName+" NOT reachable");
-			Settings.removeHost(hostName); //remove host
-			error = -1;
-		}
-		/*
-		if(error!=0){
-			InetAddress inetAddr = null;
-			try{
-				inetAddr = InetAddress.getByName(hostInfo.getAddress());
-			}catch(UnknownHostException e){
-				e.printStackTrace();
-			}
-			try{
-				if(!inetAddr.isReachable(500)){ //the host is not reachable
-					//DEBUG LOG
-					Logger.warning("Host "+hostName+" NOT reachable");
-					Settings.removeHost(hostName); //remove host
-				}
-			}catch(IOException e){
-				e.printStackTrace();
-			}
-		}
-		*/
-		return error;
+	public TaskMonitor instantiate(TaskInfo taskInfo){
+		return new TaskMonitor(taskInfo, new SSHExecutor(this));
 	}
-	
+
 	public void finish(){
 		//DEBUG LOG
 		Logger.info("Closing "+Settings.getHosts().size()+" hosts connections");

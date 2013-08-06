@@ -24,7 +24,7 @@ public class BroadcastLineWriter extends Stream<String> {
 	Socket []sockets;
 	DataOutputStream []outs;
 
-	public void start(String hostName, int taskId){
+	public void start(String hostName, int taskId) throws IOException{
 		FlowInfo flowInfo = null;
 		for(FlowInfo flow : AppSettings.getFlows()){
 			if(flow.getFromModuleName().equals(getModuleInfo().getName())){
@@ -84,17 +84,17 @@ public class BroadcastLineWriter extends Stream<String> {
 
 	}
 
-	public void write(String data) throws StreamNotWritable, IOException{
+	public void write(String data) throws IOException{
 		for(int i = 0; i<addresses.length; i++){
 			outs[i].writeBytes(data+"\n");
 		}
 	}
 
-	public String read() throws StreamNotReadable, IOException {
+	public String read() throws IOException{
 		throw new StreamNotReadable();
 	}
 
-	public void finish() {
+	public void finish() throws IOException{
 		for(int i = 0; i<addresses.length; i++){
 			try{
 				//outs[i].writeBytes("\0\n");

@@ -11,7 +11,7 @@ import dcc.ufmg.anthill.info.*;
 import dcc.ufmg.anthill.scheduler.*;
 import dcc.ufmg.anthill.stream.*;
 
-public class StreamNotReadable extends Exception {
+public class StreamNotReadable extends StreamException {
 	public StreamNotReadable(){
 		super("Stream not readable");
 	}

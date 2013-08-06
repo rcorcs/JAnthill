@@ -24,12 +24,18 @@ public class LineReader extends Stream<String> {
 	private NetStreamServer server;
 	private int endCount;
 
+	/**
+	 * The default constructor of the LineReader class.
+	 */
 	public LineReader(){
 		endCount = 0;
 		server = null;
 	}
 
-	public void start(String hostName, int taskId){
+	/**
+	 * ...
+	 */
+	public void start(String hostName, int taskId) throws IOException{
 		int socketPort = 8000 + (int)(Math.random() * (9000 - 8000));
 		try{
 			server = new NetStreamServer(socketPort);
@@ -52,11 +58,11 @@ public class LineReader extends Stream<String> {
 		endCount = fromModuleInfo.getInstances();//change this, use the voting thing
 	}
 
-	public void write(String data) throws StreamNotWritable, IOException{
+	public void write(String data) throws IOException{
 		throw new StreamNotWritable();
 	}
 
-	public String read() throws StreamNotReadable, IOException {
+	public String read() throws IOException{
 		if(server==null) throw new IOException();
 		while(server.isAlive() && !server.hasData()){
 			if(server.count>=endCount) {
@@ -72,7 +78,7 @@ public class LineReader extends Stream<String> {
 		}
 	}
 
-	public void finish() {
+	public void finish() throws IOException{
 		server.finish();
 		try{server.join();}catch(InterruptedException e){
 			e.printStackTrace();
