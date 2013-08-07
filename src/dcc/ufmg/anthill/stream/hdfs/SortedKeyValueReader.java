@@ -54,10 +54,7 @@ import dcc.ufmg.anthill.info.*;
 import dcc.ufmg.anthill.scheduler.*;
 import dcc.ufmg.anthill.stream.*;
 
-public class SortedKeyValueReader extends Stream< SimpleEntry<String,String> > {
-	private Type dataType;
-	private Gson gson;
-
+public class SortedKeyValueReader extends JSONStream< SimpleEntry<String,String> > {
 	private FileSystem fileSystem;
 	private Deque<Path> pathsDeque;
 	private BufferedReader reader;
@@ -70,9 +67,6 @@ public class SortedKeyValueReader extends Stream< SimpleEntry<String,String> > {
 	private Iterator<String> keyIterator;
 
 	public SortedKeyValueReader(){
-		dataType = new TypeToken< SimpleEntry<String,String> >() {}.getType();
-		gson = new Gson();
-
 		fileSystem = null;
 		pathsDeque = new ArrayDeque<Path>();
 		reader = null;
@@ -159,7 +153,7 @@ public class SortedKeyValueReader extends Stream< SimpleEntry<String,String> > {
 		else{
 			String line = reader.readLine();
 			if(line!=null){
-				SimpleEntry<String,String> data = gson.fromJson(line, dataType);
+				SimpleEntry<String,String> data = decode(line);
 				return data;
 			}else{
 				reader.close();

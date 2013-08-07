@@ -6,12 +6,8 @@ package dcc.ufmg.anthill;
 
 import java.io.IOException;
 
-import dcc.ufmg.anthill.*;
-import dcc.ufmg.anthill.util.*;
-import dcc.ufmg.anthill.net.*;
-import dcc.ufmg.anthill.info.*;
-import dcc.ufmg.anthill.scheduler.*;
-import dcc.ufmg.anthill.stream.*;
+import dcc.ufmg.anthill.info.StreamInfo;
+import dcc.ufmg.anthill.info.ModuleInfo;
 
 public abstract class Stream<StreamingType> {
 	private ModuleInfo moduleInfo;

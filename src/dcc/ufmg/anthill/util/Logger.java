@@ -8,13 +8,6 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Calendar;
 
-import dcc.ufmg.anthill.*;
-import dcc.ufmg.anthill.util.*;
-import dcc.ufmg.anthill.net.*;
-import dcc.ufmg.anthill.info.*;
-import dcc.ufmg.anthill.scheduler.*;
-import dcc.ufmg.anthill.stream.*;
-
 public class Logger {
 	private final static SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd' 'HH:mm:ss:S");
 	private static StringBuffer sBuffer = new StringBuffer();

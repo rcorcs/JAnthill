@@ -43,10 +43,7 @@ import dcc.ufmg.anthill.info.*;
 import dcc.ufmg.anthill.scheduler.*;
 import dcc.ufmg.anthill.stream.*;
 
-public class SortedKeyValueWriter extends Stream< SimpleEntry<String,String> > {
-	private Type dataType;
-	private Gson gson;
-
+public class SortedKeyValueWriter extends JSONStream< SimpleEntry<String,String> > {
 	private FSDataOutputStream []writers;
 	//private JsonWriter []writers;
 	private FileSystem fileSystem;
@@ -56,9 +53,6 @@ public class SortedKeyValueWriter extends Stream< SimpleEntry<String,String> > {
 	private HashMap<String, ArrayList<String> > keyValues;
 
 	public SortedKeyValueWriter(){
-		dataType = new TypeToken< SimpleEntry<String,String> >() {}.getType();
-		gson = new Gson();
-
 		keySet = new TreeSet<String>();
 		keyValues = new HashMap<String, ArrayList<String> >();
 
@@ -117,7 +111,7 @@ public class SortedKeyValueWriter extends Stream< SimpleEntry<String,String> > {
 			for(String key : keySet){
 				for(String val : keyValues.get(key)){
 					if(writers!=null && divisor>0){
-						String jsonStr = gson.toJson(new SimpleEntry<String,String>(key, val), dataType);
+						String jsonStr = encode(new SimpleEntry<String,String>(key, val));
 						//byte[] bytes = (jsonStr.replace('\n', ' ')+"\n").getBytes();
 						byte[] bytes = (jsonStr+"\n").getBytes();
 						int writerIndex = (Math.abs(key.hashCode()))%divisor;

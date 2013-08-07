@@ -6,12 +6,9 @@ package dcc.ufmg.anthill;
 
 import java.io.IOException;
 
-import dcc.ufmg.anthill.*;
-import dcc.ufmg.anthill.util.*;
-import dcc.ufmg.anthill.net.*;
-import dcc.ufmg.anthill.info.*;
-import dcc.ufmg.anthill.scheduler.*;
-import dcc.ufmg.anthill.stream.*;
+import dcc.ufmg.anthill.info.ModuleInfo;
+import dcc.ufmg.anthill.Stream;
+import dcc.ufmg.anthill.stream.StreamNotReadable;
 
 /**
  * This class represents one of the key components of a module in the Anthill programming model.

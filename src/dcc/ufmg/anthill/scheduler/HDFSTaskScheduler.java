@@ -8,12 +8,9 @@ import java.util.Set;
 import java.util.Deque;
 import java.util.ArrayDeque;
 
-import dcc.ufmg.anthill.*;
-import dcc.ufmg.anthill.util.*;
-import dcc.ufmg.anthill.net.*;
-import dcc.ufmg.anthill.info.*;
-import dcc.ufmg.anthill.scheduler.*;
-import dcc.ufmg.anthill.stream.*;
+import dcc.ufmg.anthill.Settings;
+import dcc.ufmg.anthill.TaskScheduler;
+import dcc.ufmg.anthill.info.ModuleInfo;
 
 //TODO schedule the modules considering data locality
 public class HDFSTaskScheduler extends TaskScheduler {

@@ -26,17 +26,11 @@ import dcc.ufmg.anthill.info.*;
 import dcc.ufmg.anthill.scheduler.*;
 import dcc.ufmg.anthill.stream.*;
 
-public class KeyValueReader extends Stream< SimpleEntry<String,String> > {
-	private Type dataType;
-	private Gson gson;
-
+public class KeyValueReader extends JSONStream< SimpleEntry<String,String> > {
 	private NetStreamServer server;
 	private int endCount;
 
 	public KeyValueReader(){
-		dataType = new TypeToken< SimpleEntry<String,String> >() {}.getType();
-		gson = new Gson();
-
 		server = null;
 		endCount = -1;
 	}
@@ -80,7 +74,7 @@ public class KeyValueReader extends Stream< SimpleEntry<String,String> > {
 		if(server.hasData()){
 			String str = server.popData();
 			if(str!=null){
-				SimpleEntry<String,String> data = gson.fromJson(str, dataType);
+				SimpleEntry<String,String> data = decode(str);
 				return data;
 			}else return null;
 		}else{

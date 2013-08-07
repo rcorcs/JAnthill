@@ -6,12 +6,8 @@ package dcc.ufmg.anthill.info;
 
 import java.util.HashMap;
 
-import dcc.ufmg.anthill.*;
-import dcc.ufmg.anthill.util.*;
-import dcc.ufmg.anthill.net.*;
-import dcc.ufmg.anthill.info.*;
-import dcc.ufmg.anthill.scheduler.*;
-import dcc.ufmg.anthill.stream.*;
+import dcc.ufmg.anthill.info.FilterInfo;
+import dcc.ufmg.anthill.info.StreamInfo;
 
 public class ModuleInfo {
 	private String name;

@@ -28,10 +28,7 @@ import dcc.ufmg.anthill.info.*;
 import dcc.ufmg.anthill.scheduler.*;
 import dcc.ufmg.anthill.stream.*;
 
-public class KeyValueWriter extends Stream< SimpleEntry<String,String> > {
-	private Type dataType;
-	private Gson gson;
-
+public class KeyValueWriter extends JSONStream< SimpleEntry<String,String> > {
 	int []ports;
 	String []addresses;
 	Socket []sockets;
@@ -39,9 +36,6 @@ public class KeyValueWriter extends Stream< SimpleEntry<String,String> > {
 	int divisor;
 
 	public KeyValueWriter(){
-		dataType = new TypeToken< SimpleEntry<String,String> >() {}.getType();
-		gson = new Gson();
-
 		ports = null;
 		addresses = null;
 		sockets = null;
@@ -112,7 +106,7 @@ public class KeyValueWriter extends Stream< SimpleEntry<String,String> > {
 
 	public void write(SimpleEntry<String,String> data) throws IOException{
 		if(data!=null){
-			String jsonStr = gson.toJson(data, dataType);
+			String jsonStr = encode(data);
 			//byte[] bytes = (jsonStr.replace('\n', ' ')+"\n").getBytes();
 
 			int writerIndex = (Math.abs(data.getKey().hashCode()))%divisor;
