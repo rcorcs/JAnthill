@@ -3,26 +3,10 @@ package dcc.ufmg.anthill.stream.hdfs;
  * @author Rodrigo Caetano O. ROCHA
  * @date 30 July 2013
  */
-//TODO MAKE IT WORK WITH TYPES OTHER THAN STRING (use Java Generics)
 
-import com.google.gson.*;
-import com.google.gson.reflect.TypeToken;
-import com.google.gson.stream.JsonWriter;
+//import com.google.gson.reflect.TypeToken;
 
-import java.lang.reflect.Type;
-
-
-import java.io.OutputStreamWriter;
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-
-import org.apache.commons.lang.RandomStringUtils;
 
 import java.util.AbstractMap.SimpleEntry;
 import java.util.HashMap;
@@ -30,104 +14,35 @@ import java.util.ArrayList;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
-import org.apache.hadoop.conf.Configuration;
-import org.apache.hadoop.fs.FSDataInputStream;
-import org.apache.hadoop.fs.FSDataOutputStream;
-import org.apache.hadoop.fs.FileSystem;
-import org.apache.hadoop.fs.Path;
+import dcc.ufmg.anthill.stream.hdfs.KeyValueWriter;
 
-import dcc.ufmg.anthill.*;
-import dcc.ufmg.anthill.util.*;
-import dcc.ufmg.anthill.net.*;
-import dcc.ufmg.anthill.info.*;
-import dcc.ufmg.anthill.scheduler.*;
-import dcc.ufmg.anthill.stream.*;
+public class SortedKeyValueWriter<KeyType, ValueType> extends KeyValueWriter<KeyType, ValueType> {
 
-public class SortedKeyValueWriter extends JSONStream< SimpleEntry<String,String> > {
-	private FSDataOutputStream []writers;
-	//private JsonWriter []writers;
-	private FileSystem fileSystem;
-	private int divisor;
-
-	private SortedSet<String> keySet;
-	private HashMap<String, ArrayList<String> > keyValues;
+	private SortedSet<KeyType> keySet;
+	private HashMap<KeyType, ArrayList<ValueType> > keyValues;
 
 	public SortedKeyValueWriter(){
-		keySet = new TreeSet<String>();
-		keyValues = new HashMap<String, ArrayList<String> >();
+		super();
+		//setDataType( new TypeToken< SimpleEntry<KeyType, ValueType> >() {}.getType() );
 
-		writers = null;
-		fileSystem = null;
-		divisor = 0;
+		keySet = new TreeSet<KeyType>();
+		keyValues = new HashMap<KeyType, ArrayList<ValueType> >();
 	}
 
-	public void start(String hostName, int taskId) throws IOException{
-		try{
-			fileSystem = FileSystem.get(new Configuration());
-		}catch(IOException e){
-			e.printStackTrace();
-			return;
-		}
-
-		//check for possible errors
-		if(getStreamInfo().getAttribute("divisor")==null || getStreamInfo().getAttribute("path")==null) return;
-
-		divisor = Integer.parseInt(getStreamInfo().getAttribute("divisor"));
-		String folder = 	getStreamInfo().getAttribute("path");
-		String nameNodeAddr = "localhost"+":"+Settings.getHostInfo(hostName).getHDFSInfo().getPort();
-		writers = new FSDataOutputStream[divisor];
-		//writers = new JsonWriter[divisor];
-		for(int i = 0; i<divisor; i++){
-			String fileName = RandomStringUtils.randomAlphanumeric(20);
-			Path path = new Path("hdfs://"+nameNodeAddr+folder+("keyset"+(i+1))+"/"+fileName);
-			try{
-				if(fileSystem.exists(path)) {
-					//DEBUG LOG
-					Logger.severe("Output file "+(folder+("keyset"+(i+1))+"/"+fileName)+" already exists");
-					return;
-				}
-				writers[i] = fileSystem.create(path);
-				//writers[i] = new JsonWriter(new OutputStreamWriter(fileSystem.create(path)));
-			}catch(IOException e){
-				e.printStackTrace();
-			}
-		}
-	}
-
-	public void write(SimpleEntry<String,String> data) throws IOException{
+	public void write(SimpleEntry<KeyType,ValueType> data) throws IOException{
 		keySet.add(data.getKey());
 		if(!keyValues.containsKey(data.getKey())){
-			keyValues.put(data.getKey(), new ArrayList<String>());
+			keyValues.put(data.getKey(), new ArrayList<ValueType>());
 		}
 		keyValues.get(data.getKey()).add(data.getValue());
 	}
 
-	public SimpleEntry<String,String> read() throws IOException{
-		throw new StreamNotReadable();
-	}
-
 	public void finish() throws IOException{
-		try{
-			for(String key : keySet){
-				for(String val : keyValues.get(key)){
-					if(writers!=null && divisor>0){
-						String jsonStr = encode(new SimpleEntry<String,String>(key, val));
-						//byte[] bytes = (jsonStr.replace('\n', ' ')+"\n").getBytes();
-						byte[] bytes = (jsonStr+"\n").getBytes();
-						int writerIndex = (Math.abs(key.hashCode()))%divisor;
-						writers[writerIndex].write(bytes, 0, bytes.length);
-						//gson.toJson(data, dataType, writers[writerIndex]);
-					}else throw new IOException();
-				}
+		for(KeyType key : keySet){
+			for(ValueType val : keyValues.get(key)){
+				super.write(new SimpleEntry<KeyType,ValueType>(key, val));
 			}
-			if(writers!=null){
-				for(int i = 0; i<divisor; i++){
-					writers[i].close();	
-				}
-			}
-			fileSystem.close();
-		}catch(IOException e){
-			e.printStackTrace();
 		}
+		super.finish();
 	}
 }

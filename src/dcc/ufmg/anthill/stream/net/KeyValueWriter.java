@@ -9,11 +9,7 @@ import java.net.*;
 
 import java.io.IOException;
 
-import com.google.gson.*;
 import com.google.gson.reflect.TypeToken;
-import com.google.gson.stream.JsonReader;
-
-import java.lang.reflect.Type;
 
 import org.apache.commons.lang.RandomStringUtils;
 
@@ -36,6 +32,9 @@ public class KeyValueWriter extends JSONStream< SimpleEntry<String,String> > {
 	int divisor;
 
 	public KeyValueWriter(){
+		super();
+		setDataType( new TypeToken< SimpleEntry<String,String> >() {}.getType() );
+
 		ports = null;
 		addresses = null;
 		sockets = null;

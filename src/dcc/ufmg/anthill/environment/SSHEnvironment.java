@@ -43,7 +43,7 @@ class SSHExecutor extends Executor {
 			//classPath = appPath;
 			String exportClassPath = "export HADOOP_CLASSPATH="+classPath;
 			//Logger.warning(exportClassPath);
-			cmd = executable+" -tid "+taskInfo.getTaskId()+" -app-xml "+appXml+" -m "+taskInfo.getModuleInfo().getName()+" -xml "+xml+" -h "+taskInfo.getHostName()+" -sa "+WebServerSettings.getAddress()+" -sp "+WebServerSettings.getPort();
+			cmd = executable+" -tid "+taskInfo.getTaskId()+" -app-xml "+appXml+" -m "+taskInfo.getModuleInfo().getName()+" -xml "+xml+" -h "+taskInfo.getHostName()+" -sa "+WebServerSettings.getAddress()+" -sp "+WebServerSettings.getPort()+" > "+hostInfo.getWorkspace()+AppSettings.getName()+"/"+(taskInfo.getModuleInfo().getName()+"-tid"+taskInfo.getTaskId())+".log";
 			cmd = exportClassPath+" && "+cmd;
 		}else {
 			cmd = executable+" -cp "+classPath+" "+Settings.getClassName()+" -tid "+taskInfo.getTaskId()+" -app-xml "+appXml+" -m "+taskInfo.getModuleInfo().getName()+" -xml "+xml+" -h "+taskInfo.getHostName()+" -sa "+WebServerSettings.getAddress()+" -sp "+WebServerSettings.getPort()+" > "+hostInfo.getWorkspace()+AppSettings.getName()+"/"+(taskInfo.getModuleInfo().getName()+"-tid"+taskInfo.getTaskId())+".log";

@@ -11,16 +11,16 @@
 		<attr name="path" value="/home/hduser/gutenberg/"/>
 	</stream>
 
-	<stream name="mapoutput" class="dcc.ufmg.anthill.stream.hdfs.KeyValueWriter">
+	<stream name="mapoutput" class="dcc.ufmg.anthill.stream.hdfs.StringKeyValueWriter">
 		<attr name="path" value="/home/hduser/output/KVOutput/"/>
 		<attr name="divisor" value="2"/>
 	</stream>
 
-	<stream name="reduceinput" class="dcc.ufmg.anthill.stream.hdfs.KeyValueReader">
+	<stream name="reduceinput" class="dcc.ufmg.anthill.stream.hdfs.StringKeyValueReader">
 		<attr name="path" value="/home/hduser/output/KVOutput/"/>
 	</stream>
 
-	<stream name="reduceoutput" class="dcc.ufmg.anthill.stream.hdfs.KeyValueWriter">
+	<stream name="reduceoutput" class="dcc.ufmg.anthill.stream.hdfs.StringKeyValueWriter">
 		<attr name="path" value="/home/hduser/output/WordCounterOutput/"/>
 		<attr name="divisor" value="1"/>
 	</stream>

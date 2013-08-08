@@ -8,13 +8,8 @@ import java.io.IOException;
 import java.util.AbstractMap.SimpleEntry;
 import java.util.HashMap;
 
-import dcc.ufmg.anthill.*;
-import dcc.ufmg.anthill.util.*;
-import dcc.ufmg.anthill.net.*;
-import dcc.ufmg.anthill.info.*;
-import dcc.ufmg.anthill.scheduler.*;
-import dcc.ufmg.anthill.stream.*;
-import dcc.ufmg.anthill.stream.hdfs.*;
+import dcc.ufmg.anthill.Filter;
+import dcc.ufmg.anthill.stream.StreamNotWritable;
 
 public class ReduceFilter extends Filter< SimpleEntry<String,String> , SimpleEntry<String,String> >{
 	private HashMap<String, Integer> wordCounter;

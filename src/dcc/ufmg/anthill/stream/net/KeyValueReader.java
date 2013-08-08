@@ -9,11 +9,7 @@ import java.net.*;
 
 import java.io.IOException;
 
-import com.google.gson.*;
 import com.google.gson.reflect.TypeToken;
-import com.google.gson.stream.JsonReader;
-
-import java.lang.reflect.Type;
 
 import org.apache.commons.lang.RandomStringUtils;
 
@@ -31,6 +27,8 @@ public class KeyValueReader extends JSONStream< SimpleEntry<String,String> > {
 	private int endCount;
 
 	public KeyValueReader(){
+		super();
+		setDataType( new TypeToken< SimpleEntry<String,String> >() {}.getType() );
 		server = null;
 		endCount = -1;
 	}
@@ -74,8 +72,7 @@ public class KeyValueReader extends JSONStream< SimpleEntry<String,String> > {
 		if(server.hasData()){
 			String str = server.popData();
 			if(str!=null){
-				SimpleEntry<String,String> data = decode(str);
-				return data;
+				return decode(str);
 			}else return null;
 		}else{
 			return null;

@@ -15,7 +15,7 @@
 
 	<stream name="netwriter" class="dcc.ufmg.anthill.stream.net.KeyValueWriter" />
 
-	<stream name="reduceoutput" class="dcc.ufmg.anthill.stream.hdfs.KeyValueWriter">
+	<stream name="reduceoutput" class="dcc.ufmg.anthill.stream.hdfs.StringKeyValueWriter">
 		<attr name="path" value="/home/hduser/output/WordCounterOutput/"/>
 		<attr name="divisor" value="1"/>
 	</stream>
