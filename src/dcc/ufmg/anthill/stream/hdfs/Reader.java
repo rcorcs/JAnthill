@@ -21,7 +21,7 @@ import dcc.ufmg.anthill.Settings;
 import dcc.ufmg.anthill.stream.JSONStream;
 import dcc.ufmg.anthill.stream.StreamNotWritable;
 
-public class JSONReader<StreamingType> extends JSONStream<StreamingType> {
+public class Reader<StreamingType> extends JSONStream<StreamingType> {
 	private FSDataInputStream reader;
 	private FileSystem fileSystem;
 	private HashMap<String, FileStatus> files;
@@ -32,7 +32,7 @@ public class JSONReader<StreamingType> extends JSONStream<StreamingType> {
 	private long pos;
 	private StringBuffer buffer;
 
-	public JSONReader(){
+	public Reader(){
 		reader = null;
 		fileSystem = null;
 		files = new HashMap<String, FileStatus>();

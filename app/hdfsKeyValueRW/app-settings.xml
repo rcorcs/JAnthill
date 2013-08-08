@@ -5,10 +5,10 @@
 
 	<filter name="keyvaluefilter" class="KVFilter" />
 
-	<stream name="instream" class="dcc.ufmg.anthill.stream.hdfs.KeyValueReader">
+	<stream name="instream" class="dcc.ufmg.anthill.stream.hdfs.StringKeyValueReader">
 		<attr name="path" value="/home/hduser/output/KVOutput/"/>
 	</stream>
-	<stream name="outstream" class="dcc.ufmg.anthill.stream.hdfs.KeyValueWriter">
+	<stream name="outstream" class="dcc.ufmg.anthill.stream.hdfs.StringKeyValueWriter">
 		<attr name="path" value="/home/hduser/output/WordCounterOutput/"/>
 		<attr name="divisor" value="1"/>
 	</stream>

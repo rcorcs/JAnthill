@@ -4,30 +4,32 @@ package dcc.ufmg.anthill.stream.net;
  * @date 02 August 2013
  */
 
-import java.io.*;
-import java.net.*;
-
 import java.io.IOException;
 
-import dcc.ufmg.anthill.*;
-import dcc.ufmg.anthill.util.*;
-import dcc.ufmg.anthill.net.*;
-import dcc.ufmg.anthill.info.*;
-import dcc.ufmg.anthill.scheduler.*;
-import dcc.ufmg.anthill.stream.*;
+import dcc.ufmg.anthill.Settings;
+import dcc.ufmg.anthill.AppSettings;
+import dcc.ufmg.anthill.WebServerSettings;
+import dcc.ufmg.anthill.info.FlowInfo;
+import dcc.ufmg.anthill.info.ModuleInfo;
+import dcc.ufmg.anthill.net.WebClient;
+import dcc.ufmg.anthill.stream.StreamNotWritable;
+import dcc.ufmg.anthill.stream.JSONStream;
+import dcc.ufmg.anthill.stream.net.NetStreamServer;
+
 /**
  * This class is a input stream that reads a String from other streams in the network.
  * @see BroadcastLineWriter
  * @see RoundRobinLineWriter
  */
-public class LineReader extends Stream<String> {
+public class Reader<StreamingType> extends JSONStream<StreamingType> {
 	private NetStreamServer server;
 	private int endCount;
 
 	/**
 	 * The default constructor of the LineReader class.
 	 */
-	public LineReader(){
+	public Reader(){
+		super();
 		endCount = 0;
 		server = null;
 	}
@@ -58,11 +60,11 @@ public class LineReader extends Stream<String> {
 		endCount = fromModuleInfo.getInstances();//change this, use the voting thing
 	}
 
-	public void write(String data) throws IOException{
+	public void write(StreamingType data) throws IOException{
 		throw new StreamNotWritable();
 	}
 
-	public String read() throws IOException{
+	public StreamingType read() throws IOException{
 		if(server==null) throw new IOException();
 		while(server.isAlive() && !server.hasData()){
 			if(server.count>=endCount) {
@@ -72,7 +74,7 @@ public class LineReader extends Stream<String> {
 			try{Thread.sleep(100);}catch(InterruptedException e){}
 		}
 		if(server.hasData()){
-			return server.popData();
+			return decode(server.popData());
 		}else{
 			return null;
 		}

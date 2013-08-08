@@ -4,9 +4,6 @@ package dcc.ufmg.anthill.stream.hdfs;
  * @date 07 August 2013
  */
 
-import dcc.ufmg.anthill.stream.hdfs.JSONReader;
+import dcc.ufmg.anthill.stream.hdfs.Reader;
 
-/**
- * 
- */
-public class ObjectReader extends JSONReader<Object> {}
+public class ObjectReader extends Reader<Object> {}

@@ -4,31 +4,29 @@ package dcc.ufmg.anthill.stream.net;
  * @date 02 August 2013
  */
 
-import java.io.*;
-import java.net.*;
+import com.google.gson.reflect.TypeToken;
 
 import java.io.IOException;
 
-import com.google.gson.reflect.TypeToken;
-
-import org.apache.commons.lang.RandomStringUtils;
-
 import java.util.AbstractMap.SimpleEntry;
 
-import dcc.ufmg.anthill.*;
-import dcc.ufmg.anthill.util.*;
-import dcc.ufmg.anthill.net.*;
-import dcc.ufmg.anthill.info.*;
-import dcc.ufmg.anthill.scheduler.*;
-import dcc.ufmg.anthill.stream.*;
+import dcc.ufmg.anthill.Settings;
+import dcc.ufmg.anthill.AppSettings;
+import dcc.ufmg.anthill.WebServerSettings;
+import dcc.ufmg.anthill.info.FlowInfo;
+import dcc.ufmg.anthill.info.ModuleInfo;
+import dcc.ufmg.anthill.net.WebClient;
+import dcc.ufmg.anthill.stream.StreamNotWritable;
+import dcc.ufmg.anthill.stream.JSONStream;
+import dcc.ufmg.anthill.stream.net.NetStreamServer;
 
-public class KeyValueReader extends JSONStream< SimpleEntry<String,String> > {
+public class KeyValueReader<KeyType, ValueType> extends JSONStream< SimpleEntry<KeyType, ValueType> > {
 	private NetStreamServer server;
 	private int endCount;
 
 	public KeyValueReader(){
 		super();
-		setDataType( new TypeToken< SimpleEntry<String,String> >() {}.getType() );
+		setDataType( new TypeToken< SimpleEntry<KeyType, ValueType> >() {}.getType() );
 		server = null;
 		endCount = -1;
 	}
@@ -56,11 +54,11 @@ public class KeyValueReader extends JSONStream< SimpleEntry<String,String> > {
 		endCount = fromModuleInfo.getInstances();//change this, use the voting thing
 	}
 
-	public void write(SimpleEntry<String,String> data) throws IOException{
+	public void write(SimpleEntry<KeyType, ValueType> data) throws IOException{
 		throw new StreamNotWritable();
 	}
 
-	public SimpleEntry<String,String> read() throws IOException{
+	public SimpleEntry<KeyType, ValueType> read() throws IOException{
 		if(server==null) throw new IOException();
 		while(server.isAlive() && !server.hasData()){
 			if(server.count>=endCount) {

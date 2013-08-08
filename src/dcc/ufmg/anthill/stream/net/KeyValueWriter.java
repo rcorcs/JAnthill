@@ -4,27 +4,27 @@ package dcc.ufmg.anthill.stream.net;
  * @date 02 August 2013
  */
 
-import java.io.*;
-import java.net.*;
-
-import java.io.IOException;
-
 import com.google.gson.reflect.TypeToken;
 
-import org.apache.commons.lang.RandomStringUtils;
+import java.net.Socket;
+
+import java.io.IOException;
+import java.io.DataOutputStream;
 
 import java.util.AbstractMap.SimpleEntry;
 
-import java.util.ArrayList;
+import dcc.ufmg.anthill.Settings;
+import dcc.ufmg.anthill.AppSettings;
+import dcc.ufmg.anthill.TaskSettings;
+import dcc.ufmg.anthill.WebServerSettings;
+import dcc.ufmg.anthill.info.FlowInfo;
+import dcc.ufmg.anthill.info.ModuleInfo;
+import dcc.ufmg.anthill.info.TaskInfo;
+import dcc.ufmg.anthill.net.WebClient;
+import dcc.ufmg.anthill.stream.StreamNotReadable;
+import dcc.ufmg.anthill.stream.JSONStream;
 
-import dcc.ufmg.anthill.*;
-import dcc.ufmg.anthill.util.*;
-import dcc.ufmg.anthill.net.*;
-import dcc.ufmg.anthill.info.*;
-import dcc.ufmg.anthill.scheduler.*;
-import dcc.ufmg.anthill.stream.*;
-
-public class KeyValueWriter extends JSONStream< SimpleEntry<String,String> > {
+public class KeyValueWriter<KeyType, ValueType> extends JSONStream< SimpleEntry<KeyType, ValueType> > {
 	int []ports;
 	String []addresses;
 	Socket []sockets;
@@ -33,7 +33,7 @@ public class KeyValueWriter extends JSONStream< SimpleEntry<String,String> > {
 
 	public KeyValueWriter(){
 		super();
-		setDataType( new TypeToken< SimpleEntry<String,String> >() {}.getType() );
+		setDataType( new TypeToken< SimpleEntry<KeyType, ValueType> >() {}.getType() );
 
 		ports = null;
 		addresses = null;
@@ -65,9 +65,9 @@ public class KeyValueWriter extends JSONStream< SimpleEntry<String,String> > {
 		for(int i = 0; i<toModuleInfo.getInstances(); i++){
 			String key = toModuleInfo.getName()+("."+(i+1))+".port";
 			String value = null;
-			try{
+			//try{
 				value = WebClient.getContent(WebServerSettings.getStateGetURL(key));
-			}catch(ConnectException e){
+			/*}catch(ConnectException e){
 				e.printStackTrace();
 				System.exit(-1);
 			}catch(ProtocolException e){
@@ -76,7 +76,7 @@ public class KeyValueWriter extends JSONStream< SimpleEntry<String,String> > {
 			}catch(IOException e){
 				e.printStackTrace();
 				System.exit(-1);
-			}
+			}*/
 			int p = -1;
 			try{
 				p = Integer.parseInt(value);
@@ -93,17 +93,17 @@ public class KeyValueWriter extends JSONStream< SimpleEntry<String,String> > {
 		sockets = new Socket[addresses.length];
 		outs = new DataOutputStream[addresses.length];
 		for(int i = 0; i<addresses.length; i++){
-			try{
+			//try{
 				sockets[i] = new Socket(addresses[i], ports[i]);
 				outs[i] = new DataOutputStream(sockets[i].getOutputStream());
-			}catch(IOException e){
+			/*}catch(IOException e){
 				e.printStackTrace();
 				System.exit(-1);
-			}
+			}*/
 		}
 	}
 
-	public void write(SimpleEntry<String,String> data) throws IOException{
+	public void write(SimpleEntry<KeyType, ValueType> data) throws IOException{
 		if(data!=null){
 			String jsonStr = encode(data);
 			//byte[] bytes = (jsonStr.replace('\n', ' ')+"\n").getBytes();
@@ -115,20 +115,20 @@ public class KeyValueWriter extends JSONStream< SimpleEntry<String,String> > {
 		}
 	}
 
-	public SimpleEntry<String,String> read() throws IOException{
+	public SimpleEntry<KeyType, ValueType> read() throws IOException{
 		throw new StreamNotReadable();
 	}
 
 	public void finish() throws IOException{
 		for(int i = 0; i<addresses.length; i++){
-			try{
-				//outs[i].writeBytes("\0\n");
-				outs[i].close();
-				sockets[i].close();
-			}catch(Exception e){
+			//try{
+			//outs[i].writeBytes("\0\n");
+			outs[i].close();
+			sockets[i].close();
+			/*}catch(Exception e){
 				e.printStackTrace();
 				System.exit(-1);
-			}
+			}*/
 		}
 	}
 }

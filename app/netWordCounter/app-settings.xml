@@ -11,9 +11,9 @@
 		<attr name="path" value="/home/hduser/gutenberg/"/>
 	</stream>
 
-	<stream name="netreader" class="dcc.ufmg.anthill.stream.net.KeyValueReader" />
+	<stream name="netreader" class="dcc.ufmg.anthill.stream.net.StringKeyValueReader" />
 
-	<stream name="netwriter" class="dcc.ufmg.anthill.stream.net.KeyValueWriter" />
+	<stream name="netwriter" class="dcc.ufmg.anthill.stream.net.StringKeyValueWriter" />
 
 	<stream name="reduceoutput" class="dcc.ufmg.anthill.stream.hdfs.StringKeyValueWriter">
 		<attr name="path" value="/home/hduser/output/WordCounterOutput/"/>

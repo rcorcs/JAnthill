@@ -17,11 +17,11 @@ import dcc.ufmg.anthill.Settings;
 import dcc.ufmg.anthill.stream.JSONStream;
 import dcc.ufmg.anthill.stream.StreamNotReadable;
 
-public class JSONWriter<StreamingType> extends JSONStream<StreamingType> {
+public class Writer<StreamingType> extends JSONStream<StreamingType> {
 	private FSDataOutputStream writer;
 	private FileSystem fileSystem;
 
-	public JSONWriter(){
+	public Writer(){
 		writer = null;
 		fileSystem = null;
 	}

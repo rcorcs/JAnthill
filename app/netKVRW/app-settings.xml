@@ -11,9 +11,9 @@
 		<attr name="input" value="pg5000.txt"/>
 	</stream>
 
-	<stream name="netreader" class="dcc.ufmg.anthill.stream.net.KeyValueReader" />
+	<stream name="netreader" class="dcc.ufmg.anthill.stream.net.StringKeyValueReader" />
 
-	<stream name="netwriter" class="dcc.ufmg.anthill.stream.net.KeyValueWriter" />
+	<stream name="netwriter" class="dcc.ufmg.anthill.stream.net.StringKeyValueWriter" />
 
 	<stream name="outfilestream" class="dcc.ufmg.anthill.stream.LineWriterStream" />
 

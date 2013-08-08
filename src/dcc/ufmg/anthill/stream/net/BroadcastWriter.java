@@ -4,33 +4,32 @@ package dcc.ufmg.anthill.stream.net;
  * @date 02 August 2013
  */
 
-import java.io.*;
-import java.net.*;
+import java.net.Socket;
 
 import java.io.IOException;
+import java.io.DataOutputStream;
 
-import java.util.ArrayList;
+import dcc.ufmg.anthill.Settings;
+import dcc.ufmg.anthill.AppSettings;
+import dcc.ufmg.anthill.TaskSettings;
+import dcc.ufmg.anthill.WebServerSettings;
+import dcc.ufmg.anthill.info.FlowInfo;
+import dcc.ufmg.anthill.info.ModuleInfo;
+import dcc.ufmg.anthill.info.TaskInfo;
+import dcc.ufmg.anthill.net.WebClient;
+import dcc.ufmg.anthill.stream.JSONStream;
+import dcc.ufmg.anthill.stream.StreamNotReadable;
 
-import dcc.ufmg.anthill.*;
-import dcc.ufmg.anthill.util.*;
-import dcc.ufmg.anthill.net.*;
-import dcc.ufmg.anthill.info.*;
-import dcc.ufmg.anthill.scheduler.*;
-import dcc.ufmg.anthill.stream.*;
-
-/**
- * This class implements the round robin in the output stream.
- */
-public class RoundRobinLineWriter extends Stream<String> {
+public class BroadcastWriter<StreamingType> extends JSONStream<StreamingType> {
 	int []ports;
 	String []addresses;
 	Socket []sockets;
 	DataOutputStream []outs;
-	int next;
 
-	/**
-	 * Starts the round robin stream.
-	 */
+	public BroadcastWriter(){
+		super();
+	}
+
 	public void start(String hostName, int taskId) throws IOException{
 		FlowInfo flowInfo = null;
 		for(FlowInfo flow : AppSettings.getFlows()){
@@ -52,9 +51,9 @@ public class RoundRobinLineWriter extends Stream<String> {
 		for(int i = 0; i<toModuleInfo.getInstances(); i++){
 			String key = toModuleInfo.getName()+("."+(i+1))+".port";
 			String value = null;
-			try{
+			//try{
 				value = WebClient.getContent(WebServerSettings.getStateGetURL(key));
-			}catch(ConnectException e){
+			/*}catch(ConnectException e){
 				e.printStackTrace();
 				System.exit(-1);
 			}catch(ProtocolException e){
@@ -63,7 +62,7 @@ public class RoundRobinLineWriter extends Stream<String> {
 			}catch(IOException e){
 				e.printStackTrace();
 				System.exit(-1);
-			}
+			}*/
 			int p = -1;
 			try{
 				p = Integer.parseInt(value);
@@ -80,37 +79,32 @@ public class RoundRobinLineWriter extends Stream<String> {
 		sockets = new Socket[addresses.length];
 		outs = new DataOutputStream[addresses.length];
 		for(int i = 0; i<addresses.length; i++){
-			try{
+			//try{
 				sockets[i] = new Socket(addresses[i], ports[i]);
 				outs[i] = new DataOutputStream(sockets[i].getOutputStream());
-			}catch(IOException e){
+			/*}catch(IOException e){
 				e.printStackTrace();
 				System.exit(-1);
-			}
+			}*/
 		}
-		next = 0;
+
 	}
 
-	public void write(String data) throws IOException{
-		outs[next].writeBytes(data+"\n");
-		next++;
-		if(next>=addresses.length) next = 0;
+	public void write(StreamingType data) throws IOException{
+		for(int i = 0; i<addresses.length; i++){
+			outs[i].writeBytes(encode(data)+"\n");
+		}
 	}
 
-	public String read() throws IOException{
+	public StreamingType read() throws IOException{
 		throw new StreamNotReadable();
 	}
 
 	public void finish() throws IOException{
 		for(int i = 0; i<addresses.length; i++){
-			try{
-				//outs[i].writeBytes("\0\n");
-				outs[i].close();
-				sockets[i].close();
-			}catch(Exception e){
-				e.printStackTrace();
-				System.exit(-1);
-			}
+			//outs[i].writeBytes("\0\n");
+			outs[i].close();
+			sockets[i].close();
 		}
 	}
 }

@@ -4,28 +4,20 @@ package dcc.ufmg.anthill.stream.net;
  * @date 02 August 2013
  */
 
-import java.io.*;
-import java.net.*;
-
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
+import java.net.ServerSocket;
+import java.net.Socket;
 import java.net.SocketTimeoutException;
 
 import java.io.IOException;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 
-import java.util.Set;
 import java.util.Deque;
 import java.util.ArrayDeque;
-import java.util.ArrayList;
 import java.util.NoSuchElementException;
-
-import dcc.ufmg.anthill.*;
-import dcc.ufmg.anthill.util.*;
-import dcc.ufmg.anthill.net.*;
-import dcc.ufmg.anthill.info.*;
-import dcc.ufmg.anthill.scheduler.*;
-import dcc.ufmg.anthill.stream.*;
 
 class ConnectionHandler extends Thread {
 	private NetStreamServer server;

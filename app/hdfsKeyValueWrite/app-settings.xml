@@ -9,7 +9,7 @@
 		<attr name="filename" value="pg5000.txt"/>
 		<attr name="path" value="/home/hduser/gutenberg/"/>
 	</stream>
-	<stream name="outstream" class="dcc.ufmg.anthill.stream.hdfs.KeyValueWriter">
+	<stream name="outstream" class="dcc.ufmg.anthill.stream.hdfs.StringKeyValueWriter">
 		<attr name="path" value="/home/hduser/output/KVOutput/"/>
 		<attr name="divisor" value="5"/>
 	</stream>

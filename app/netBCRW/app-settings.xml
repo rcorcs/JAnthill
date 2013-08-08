@@ -10,9 +10,9 @@
 		<attr name="input" value="input.txt"/>
 	</stream>
 
-	<stream name="netreader" class="dcc.ufmg.anthill.stream.net.LineReader" />
+	<stream name="netreader" class="dcc.ufmg.anthill.stream.net.StringReader" />
 
-	<stream name="netwriter" class="dcc.ufmg.anthill.stream.net.RoundRobinLineWriter" />
+	<stream name="netwriter" class="dcc.ufmg.anthill.stream.net.StringRoundRobinWriter" />
 
 	<stream name="outfilestream" class="dcc.ufmg.anthill.stream.LineWriterStream" />
 
